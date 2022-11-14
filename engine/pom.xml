@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>com.xamlo</groupId>
+    <artifactId>game</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>com.xamlo.core</groupId>
+  <artifactId>engine</artifactId>
+  <packaging>pom</packaging>
+  
+  <modules>
+  	<module>engine-graphics</module>
+  	<module>engine-world</module>
+    <module>engine-common</module>
+  </modules>
+  
+  
+  	<dependencies>
+		<dependency>
+			<groupId>com.xamlo.engine</groupId>
+			<artifactId>engine-graphics</artifactId>
+    		<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.xamlo.engine</groupId>
+			<artifactId>engine-world</artifactId>
+    		<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	
+</project>
