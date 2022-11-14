@@ -9,4 +9,11 @@
   	<module>engine</module>
   </modules>
   
+    <dependencies>
+  	  <dependency>
+		<groupId>com.xamlo.core</groupId>
+		<artifactId>engine</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+    </dependencies>  
 </project>
