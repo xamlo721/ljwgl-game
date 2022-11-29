@@ -1,20 +1,11 @@
 package com.xamlo.core.engine.graphics.components;
 
-//import core.utils.ImageLoader;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.opengl.GL;
-
-//import java.nio.ByteBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 
-/**
- * 
- * @author oreon3D
- * GLFW Window implementation
- *
- */
 public class Window {
 
 	private static Window instance = null;
@@ -29,9 +20,7 @@ public class Window {
 	    }
 	      return instance;
 	}
-	
-	public void init() {}
-	
+		
 	public void create(int width, int height) {
 		
 		setWidth(width);
@@ -47,18 +36,7 @@ public class Window {
 		if(window == 0) {
 		    throw new RuntimeException("Failed to create window");
 		}
-		
-//		ByteBuffer bufferedImage = ImageLoader.loadImageToByteBuffer("./res/logo/oreon_lwjgl_icon32.png");
-//		
-//		GLFWImage image = GLFWImage.malloc();
-//		
-//		image.set(32, 32, bufferedImage);
-//		
-//		GLFWImage.Buffer images = GLFWImage.malloc(1);
-//        images.put(0, image);
-//		
-//		glfwSetWindowIcon(window, images);
-//		
+
 		glfwMakeContextCurrent(window);
 		GL.createCapabilities();
 		glfwShowWindow(window);
@@ -78,7 +56,7 @@ public class Window {
 		glfwSwapBuffers(window);
 	}
 	
-	public void dispose() {
+	public void close() {
 		glfwDestroyWindow(window);
 	}
 	
