@@ -39,7 +39,7 @@ public class Engine {
 	private GLFWErrorCallback errorCallback;
 	
 	private boolean isRunning;
-	
+		
 	private VisualEngine renderingEngine;
 
 	public void createWindow(int width, int height) {

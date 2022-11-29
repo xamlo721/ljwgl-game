@@ -1,7 +1,7 @@
 package com.xamlo.core.engine.graphics.components;
 
 //import core.utils.ImageLoader;
-//import org.lwjgl.glfw.GLFWImage;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.opengl.GL;
 
 //import java.nio.ByteBuffer;
@@ -23,16 +23,14 @@ public class Window {
 	private int width;
 	private int height;
 	
-	public static Window getInstance() 
-	{
-	    if(instance == null) 
-	    {
+	public static Window getInstance() {
+	    if(instance == null) {
 	    	instance = new Window();
 	    }
 	      return instance;
 	}
 	
-	public void init(){}
+	public void init() {}
 	
 	public void create(int width, int height) {
 		
@@ -44,40 +42,47 @@ public class Window {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);	
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);	
 		
-		window = glfwCreateWindow(width, height, "TEST", 0, 0);
+		window = glfwCreateWindow(width, height, "base window title", 0, 0);
 		
 		if(window == 0) {
 		    throw new RuntimeException("Failed to create window");
 		}
 		
-		//ByteBuffer bufferedImage = ImageLoader.loadImageToByteBuffer("./res/logo/oreon_lwjgl_icon32.png");
-		
-		//GLFWImage image = GLFWImage.malloc();
-		
-		//image.set(32, 32, bufferedImage);
-		
-		//GLFWImage.Buffer images = GLFWImage.malloc(1);
-        //images.put(0, image);
-		
-		//glfwSetWindowIcon(window, images);
-		
+//		ByteBuffer bufferedImage = ImageLoader.loadImageToByteBuffer("./res/logo/oreon_lwjgl_icon32.png");
+//		
+//		GLFWImage image = GLFWImage.malloc();
+//		
+//		image.set(32, 32, bufferedImage);
+//		
+//		GLFWImage.Buffer images = GLFWImage.malloc(1);
+//        images.put(0, image);
+//		
+//		glfwSetWindowIcon(window, images);
+//		
 		glfwMakeContextCurrent(window);
 		GL.createCapabilities();
 		glfwShowWindow(window);
 	}
 	
-	public void render()
-	{
+	public void setWindowTitle(String title) {
+		glfwSetWindowTitle(window, title);
+	}
+	
+	public void setWindowIcon(GLFWImage icon) {
+		GLFWImage.Buffer images = GLFWImage.malloc(1);
+        images.put(0, icon);
+		glfwSetWindowIcon(window, images);
+	}
+	
+	public void render() {
 		glfwSwapBuffers(window);
 	}
 	
-	public void dispose()
-	{
+	public void dispose() {
 		glfwDestroyWindow(window);
 	}
 	
-	public boolean isCloseRequested()
-	{
+	public boolean isCloseRequested() {
 		return glfwWindowShouldClose(window);
 	}
 	
@@ -89,8 +94,7 @@ public class Window {
 		Camera.getInstance().setProjection(70, x, y);
 	}
 	
-	public int getWidth()
-	{
+	public int getWidth() {
 		return width;
 	}
 	
@@ -98,8 +102,7 @@ public class Window {
 		this.width = width;
 	}
 	
-	public int getHeight()
-	{
+	public int getHeight() {
 		return height;
 	}
 	
