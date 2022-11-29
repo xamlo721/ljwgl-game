@@ -64,7 +64,7 @@ public class RenderEngine {
 		
 
 		
-		window.create(720, 480);
+		window.create(width, height);
 		window.setWindowTitle("Game window");
 		
 //		ByteBuffer bufferedImage = ImageLoader.loadImageToByteBuffer("./res/logo/logo_lwjgl_icon32.png");

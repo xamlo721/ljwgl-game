@@ -6,11 +6,7 @@ public class Main {
 
 	
 		GameApplication game = new GameApplication();
-		
-		
-	
-		//game.loadWorld();
-		
+				
 		game.init();
 	
 		game.launch();
