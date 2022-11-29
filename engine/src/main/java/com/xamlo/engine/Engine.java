@@ -7,8 +7,6 @@ public class Engine {
 	
 	World w;
 	
-
-	
 	private boolean isRunning;
 		
 	private RenderEngine renderingEngine;
@@ -21,16 +19,18 @@ public class Engine {
 		renderingEngine.init();
 		renderingEngine.createWindow(1920/2, 1080/2);
 		
-
-		
 	}
 
 	public void start() {
 		if(isRunning)
 			return;
 		
-//		run();
+		renderingEngine.startRender();
+		
 	}
+	
+	
+
 	
 
 

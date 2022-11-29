@@ -2,6 +2,7 @@ package com.xamlo.core.engine.graphics;
 
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.GL_BACK;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_CW;
@@ -31,9 +32,14 @@ public class RenderEngine {
 	
 	private Window window;
 	private Camera camera;
-	//private Skydome skydome;
-	//private DcWrapper dcWrapper;
-//	private ChunkOctreeWrapper chunkOctreeWrapper;
+	
+	
+	private static int fps;
+	private static float framerate = 30;
+	private static float frameTime = 1.0f/framerate;
+	private boolean isRendering;
+	
+	private static final long NANOSECOND = 1000000000;
 	
 	public RenderEngine() {
 		window = Window.getInstance();
@@ -47,22 +53,11 @@ public class RenderEngine {
 
 		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
-		
-
-		
-		
-		//skydome = new Skydome();
-		//dcWrapper = new DcWrapper();
-		//Почему ChunkOctreeWrapper это часть RenderEngine?
-//		chunkOctreeWrapper = new ChunkOctreeWrapper(planet.getWorld().getChunkMap(), planet.getWorld().getMesh());
-		
         camera.setPosition(new Vec3f(0.f, 0f, 0f));
         
 	}
 	
 	public void createWindow(int width, int height) {
-		
-
 		
 		window.create(width, height);
 		window.setWindowTitle("Game window");
@@ -82,9 +77,81 @@ public class RenderEngine {
 		getDeviceProperties();
 	}
 	
+	public void startRender() {
+		if(isRendering)
+			return;
+		
+		run();
+	}
 	
+	private void run() {
+		
+		this.isRendering = true;
+		
+		int frames = 0;
+		long frameCounter = 0;
+		
+		long lastTime = System.nanoTime();
+		double unprocessedTime = 0;
+		
+		// Rendering Loop
+		while(isRendering) {
+			
+			boolean render = false;
+			
+			long startTime = System.nanoTime();
+			long passedTime = startTime - lastTime;
+			lastTime = startTime;
+			
+			unprocessedTime += passedTime / (double) NANOSECOND;
+			frameCounter += passedTime;
+		
+			
+			while(unprocessedTime > frameTime) {
 
-	public void render() {	
+				render = true;
+				unprocessedTime -= frameTime;
+				
+				if(Window.getInstance().isCloseRequested()) {
+					stopRendering();
+				}
+				
+				renderFrame();
+				
+				if(frameCounter >= NANOSECOND) {
+					fps = frames;
+					frames = 0;
+					frameCounter = 0;
+				}
+			}
+			
+			if(render) {
+				renderFrame();
+				frames++;
+			} else {
+				
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+			}		
+		}
+		
+		shutdown();	
+	}
+	
+	private void stopRendering() {
+		
+		if(!isRendering)
+			return;
+		
+		isRendering = false;
+		
+	}
+
+	public void renderFrame() {	
 		
 //		Camera.getInstance().update();
 //		
@@ -108,12 +175,12 @@ public class RenderEngine {
 //		// draw into OpenGL window
 //		window.render();
 	}
-	
-	public void update(){}
-	
+		
 	public void shutdown(){
 		
 		window.close();
+		glfwTerminate();
+
 	}
 	
 	
