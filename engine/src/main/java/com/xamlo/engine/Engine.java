@@ -1,6 +1,7 @@
 package com.xamlo.engine;
 
 import com.xamlo.core.engine.graphics.RenderEngine;
+import com.xamlo.core.engine.graphics.threads.RenderThread;
 import com.xamlo.engine.world.World;
 
 public class Engine {
@@ -10,14 +11,15 @@ public class Engine {
 	private boolean isRunning;
 		
 	private RenderEngine renderingEngine;
+	private RenderThread glThread;
 
 
 	
 	public void init() {
 
 		renderingEngine = new RenderEngine();
-		renderingEngine.init();
-		renderingEngine.createWindow(1920/2, 1080/2);
+		glThread = new RenderThread(renderingEngine);
+		glThread.start();
 		
 	}
 
@@ -25,8 +27,9 @@ public class Engine {
 		if(isRunning)
 			return;
 		
-		renderingEngine.startRender();
-		
+		//Поток здесь больше не виснет
+		glThread.startRender();
+
 	}
 	
 	

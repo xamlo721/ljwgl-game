@@ -42,15 +42,20 @@ public class RenderEngine {
 	private static final long NANOSECOND = 1000000000;
 	
 	public RenderEngine() {
-		window = Window.getInstance();
-        camera = Camera.getInstance();
+
 
 	}
 	
 	public void init() {
+		
+		window = Window.getInstance();
+        camera = Camera.getInstance();
+        
+		if(glfwInit() == false) {
+			//Исключение, если мы не можем инициализироваться
+		}
 
-		glfwInit();
-
+		//Может вызываться перед инициализацией
 		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
         camera.setPosition(new Vec3f(0.f, 0f, 0f));
