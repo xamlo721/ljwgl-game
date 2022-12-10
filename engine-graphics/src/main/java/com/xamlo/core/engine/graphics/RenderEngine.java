@@ -114,6 +114,8 @@ public class RenderEngine {
 			
 			while(unprocessedTime > frameTime) {
 
+				//Нам нужно где-то делать glfwPollEvents();
+
 				render = true;
 				unprocessedTime -= frameTime;
 				
@@ -133,6 +135,8 @@ public class RenderEngine {
 			if(render) {
 				renderFrame();
 				frames++;
+				System.out.println(Thread.currentThread().getName());
+
 			} else {
 				
 				try {
@@ -158,6 +162,7 @@ public class RenderEngine {
 
 	public void renderFrame() {	
 		
+		
 //		Camera.getInstance().update();
 //		
 //		Default.clearScreen();
@@ -177,8 +182,11 @@ public class RenderEngine {
 //		
 //		chunkOctreeWrapper.render();
 //		
-//		// draw into OpenGL window
-//		window.render();
+		
+		
+		// draw into OpenGL window
+		this.window.render();
+		
 	}
 		
 	public void shutdown(){

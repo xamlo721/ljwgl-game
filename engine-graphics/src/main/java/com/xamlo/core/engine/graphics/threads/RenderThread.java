@@ -20,6 +20,7 @@ public class RenderThread extends Thread {
 
     public RenderThread(RenderEngine renderingEngine) {
         this.renderingEngine = renderingEngine;
+        this.setName("LJWGL-Thread");
     }
 
     public void run() {

@@ -26,12 +26,16 @@ public class Window {
 		setWidth(width);
 		setHeight(height);
 		
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);	
+
 		//Установка минимальных версий OpenGL 3.3
 		//Если требуемая минимальная версия не поддерживается на компьютере, создание контекста (и окна) завершается ошибкой
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);	
+		//Установка профайла для которого создается контекст
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);	
+		
+		//Включение возможности изменения размера окна
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);	
 		
 		window = glfwCreateWindow(width, height, "base window title", 0, 0);
 		
@@ -77,6 +81,10 @@ public class Window {
 	 */
 	public void render() {
 		glfwSwapBuffers(window);
+		//Пул ивентс вызывает обработки движений клавиатуры, мышки и т.д
+		//Без него не будет нормально передвигаться окно
+		//Вызывать надо в начале каждого цикла, но пока не знаю куда перетащить
+		glfwPollEvents();
 	}
 	
 	public void close() {
