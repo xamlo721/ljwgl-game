@@ -34,13 +34,11 @@ public class RenderEngine {
 	private Camera camera;
 	
 	
-	private static int fps;
-	private static float framerate = 30;
-	private static float frameTime = 1.0f/framerate;
 	private boolean isRendering;
 	
 	private static final long NANOSECOND = 1000000000;
-	
+	private static final long SECOND = 1;
+
 	public RenderEngine() {
 
 
@@ -91,52 +89,65 @@ public class RenderEngine {
 	
 	private void run() {
 		
+		//****************Пресет***************//
 		this.isRendering = true;
-		
+		//Количество отрисованных кадров
 		int frames = 0;
-		long frameCounter = 0;
-		
+		//Время последнего отрисованного кадра
 		long lastTime = System.nanoTime();
-		double unprocessedTime = 0;
-		
-		// Rendering Loop
-		while(isRendering) {
-			
-			boolean render = false;
-			
-			long startTime = System.nanoTime();
-			long passedTime = startTime - lastTime;
-			lastTime = startTime;
-			
-			unprocessedTime += passedTime / (double) NANOSECOND;
-			frameCounter += passedTime;
-		
-			
-			while(unprocessedTime > frameTime) {
+		//Прошедшее время с начала цикла
+		double idleTime = 0;
+		//Лимит кадров
+		float framerate = 60;
+		//Количество кадров за прошлую секунду
+		int fps = 0;
+		//Счётчик времени по которому мы будем мерить 1 секунду
+		int secondsForFpsCounter = 0;
+		//Лимит времени на отрисовку 1 кадра
+		float frameTime = 1.0f/framerate;
+		//************************************//
 
-				//Нам нужно где-то делать glfwPollEvents();
 
-				render = true;
-				unprocessedTime -= frameTime;
-				
-				if(Window.getInstance().isCloseRequested()) {
-					stopRendering();
-				}
-				
-				renderFrame();
-				
-				if(frameCounter >= NANOSECOND) {
-					fps = frames;
-					frames = 0;
-					frameCounter = 0;
-				}
+		while (isRendering) {
+			
+			boolean isRenderFrame = false;
+						
+			//Количество циклов сейчас
+			long currentTime = System.nanoTime();
+
+			//прибавим к времени ожидания с прошлого кадра время которое проспал цикл
+			idleTime += (currentTime - lastTime) / (double) NANOSECOND;
+			
+			//Разница в секундах между прошлым замером fps и текущим временем
+			int currentDelta = (int) ((currentTime / (double) NANOSECOND) - secondsForFpsCounter);
+			
+			//Если прошла секунда, отмерить ФПС и сбросиь счётчики
+			if (currentDelta > 0) {
+				fps = frames;
+				frames = 0;
+				secondsForFpsCounter +=currentDelta;
+				System.out.println(Thread.currentThread().getName() + " " + idleTime );
+				System.out.println(Thread.currentThread().getName() + " " + fps );
+
 			}
 			
-			if(render) {
+			//Если с времени последнего кадра прошло времени больше чем время кадра, то пора рисовать следующий
+			if (idleTime > frameTime) {
+				isRenderFrame = true;
+				idleTime -= frameTime;
+				lastTime = currentTime;
+			}
+			
+			//Проверка желания окна закрыться
+			if(this.window.isCloseRequested()) {
+				stopRendering();
+				break;
+			}
+						
+			
+			if(isRenderFrame) {
 				renderFrame();
 				frames++;
-				System.out.println(Thread.currentThread().getName());
-
 			} else {
 				
 				try {
@@ -144,8 +155,9 @@ public class RenderEngine {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				
-			}		
+			}	
+			
+			
 		}
 		
 		shutdown();	
@@ -153,10 +165,12 @@ public class RenderEngine {
 	
 	private void stopRendering() {
 		
+		System.out.println("stop rendering");
 		if(!isRendering)
 			return;
 		
 		isRendering = false;
+
 		
 	}
 
