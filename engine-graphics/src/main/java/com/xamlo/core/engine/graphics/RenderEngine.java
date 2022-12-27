@@ -199,7 +199,7 @@ public class RenderEngine {
 		
 		
 		// draw into OpenGL window
-		this.window.render();
+		this.window.swapBuffers();
 		
 	}
 		
