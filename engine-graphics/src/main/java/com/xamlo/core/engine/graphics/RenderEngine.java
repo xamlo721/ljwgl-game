@@ -20,6 +20,8 @@ import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
 import com.xamlo.core.engine.graphics.components.Camera;
+import com.xamlo.core.engine.graphics.components.IScene;
+import com.xamlo.core.engine.graphics.components.PrimitiveScene;
 import com.xamlo.core.engine.graphics.components.Window;
 
 import ru.satomi.dc.primitive.Vec3f;
@@ -32,7 +34,7 @@ public class RenderEngine {
 	
 	private Window window;
 	private Camera camera;
-	
+	public IScene scene;
 	
 	private boolean isRendering;
 	
@@ -57,7 +59,7 @@ public class RenderEngine {
 		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
         camera.setPosition(new Vec3f(0.f, 0f, 0f));
-        
+
 	}
 	
 	public void createWindow(int width, int height) {
@@ -196,7 +198,8 @@ public class RenderEngine {
 //		
 //		chunkOctreeWrapper.render();
 //		
-		
+		// Вся логическая сцена
+		scene.renderFrame();
 		
 		// draw into OpenGL window
 		this.window.swapBuffers();

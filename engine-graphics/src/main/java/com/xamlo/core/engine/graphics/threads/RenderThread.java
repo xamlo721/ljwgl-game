@@ -1,6 +1,7 @@
 package com.xamlo.core.engine.graphics.threads;
 
 import com.xamlo.core.engine.graphics.RenderEngine;
+import com.xamlo.core.engine.graphics.components.PrimitiveScene;
 
 /**
  * Я думаю, что я немного ошибся, позволив потоку управлять RenderEngine
@@ -36,6 +37,11 @@ public class RenderThread extends Thread {
 	    		//FIXME: Настройки здесь не должны находиться 100%
 	    		renderingEngine.createWindow(1920/2, 1080/2);
 	    		this.isWindowed = true;
+	    	}
+	    	
+	    	if (renderingEngine.scene == null) {
+	    		renderingEngine.scene = new PrimitiveScene();
+	    		renderingEngine.scene.load();
 	    	}
     	
 	    	if (isRenderStarted) {
