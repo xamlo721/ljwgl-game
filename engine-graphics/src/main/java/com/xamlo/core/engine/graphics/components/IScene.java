@@ -6,5 +6,7 @@ public interface IScene {
 
 	void renderFrame();
 	
+	void release();
+	
 	
 }
