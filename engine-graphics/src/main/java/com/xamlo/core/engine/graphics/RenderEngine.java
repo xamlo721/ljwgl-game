@@ -4,14 +4,19 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.GL_BACK;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_CW;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glFrontFace;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_SRGB;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glViewport;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
@@ -19,7 +24,6 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
-import com.xamlo.core.engine.graphics.components.Camera;
 import com.xamlo.core.engine.graphics.components.IScene;
 import com.xamlo.core.engine.graphics.components.PrimitiveScene;
 import com.xamlo.core.engine.graphics.components.Window;
@@ -33,23 +37,23 @@ public class RenderEngine {
 	private GLFWErrorCallback errorCallback;
 	
 	private Window window;
-	private Camera camera;
 	public IScene scene;
 	
 	private boolean isRendering;
+	public boolean isCloseRequest;
 	
 	private static final long NANOSECOND = 1000000000;
 	private static final long SECOND = 1;
 
 	public RenderEngine() {
-
+		this.isCloseRequest = false;
 
 	}
 	
 	public void init() {
 		
 		window = Window.getInstance();
-        camera = Camera.getInstance();
+        //camera = Camera.getInstance();
         
 		if(glfwInit() == false) {
 			//Исключение, если мы не можем инициализироваться
@@ -58,7 +62,7 @@ public class RenderEngine {
 		//Может вызываться перед инициализацией
 		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
-        camera.setPosition(new Vec3f(0.f, 0f, 0f));
+        //camera.setPosition(new Vec3f(0.f, 0f, 0f));
 
 	}
 	
@@ -73,13 +77,15 @@ public class RenderEngine {
 //		window.setWindowIcon(image);
 				
 		glFrontFace(GL_CW);				
-		glEnable(GL_CULL_FACE);
+//		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glEnable(GL_DEPTH_TEST);     	
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_FRAMEBUFFER_SRGB);
 		
 		getDeviceProperties();
+		
+
 	}
 	
 	public void startRender() {
@@ -110,7 +116,7 @@ public class RenderEngine {
 		//************************************//
 
 
-		while (isRendering) {
+		while (isRendering && !this.window.isCloseRequested()) {
 			
 			boolean isRenderFrame = false;
 						
@@ -139,14 +145,7 @@ public class RenderEngine {
 				idleTime -= frameTime;
 				lastTime = currentTime;
 			}
-			
-			//Проверка желания окна закрыться
-			if(this.window.isCloseRequested()) {
-				stopRendering();
-				break;
-			}
 						
-			
 			if(isRenderFrame) {
 				renderFrame();
 				frames++;
@@ -162,14 +161,18 @@ public class RenderEngine {
 			
 		}
 		
+		stopRendering();
 		shutdown();	
+		
 	}
 	
 	private void stopRendering() {
 		
 		System.out.println("stop rendering");
-		if(!isRendering)
+		
+		if(!isRendering) {
 			return;
+		}
 		
 		isRendering = false;
 
@@ -177,39 +180,26 @@ public class RenderEngine {
 	}
 
 	public void renderFrame() {	
-		
-		
-//		Camera.getInstance().update();
-//		
-//		Default.clearScreen();
-//		
-//		//skydome.render();
-//
-//		//dcWrapper.update();
-//		//dcWrapper.render();
-//
-//		chunkOctreeWrapper.update(Camera.getInstance().getPosition());
-//		//-->chunkOctree.processCSGOperations();
-//		//-->chunkOctree.update(pos);
-//		//--> renderMesh();
-//		chunkOctreeWrapper.updateKeyBoard();
-//		
-//		
-//		
-//		chunkOctreeWrapper.render();
-//		
+        // Set the clear color
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+
+        glViewport(0, 0, window.getWidth(), window.getHeight());
+
 		// Вся логическая сцена
 		scene.renderFrame();
 		
 		// draw into OpenGL window
 		this.window.swapBuffers();
 		
+
 	}
 		
 	public void shutdown(){
 		
+		scene.release();
 		window.close();
 		glfwTerminate();
+		this.isCloseRequest = true;
 
 	}
 	

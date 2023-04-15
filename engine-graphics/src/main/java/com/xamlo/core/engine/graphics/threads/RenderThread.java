@@ -26,7 +26,7 @@ public class RenderThread extends Thread {
 
     public void run() {
 
-    	while (true) {
+    	while (!renderingEngine.isCloseRequest) {
     	
 	    	if (!this.isInit) {
 	    		renderingEngine.init();

@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
 
 public class Window {
 
@@ -26,7 +27,10 @@ public class Window {
 		setWidth(width);
 		setHeight(height);
 		
-
+        glfwDefaultWindowHints();
+        glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+        glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+        
 		//Установка минимальных версий OpenGL 3.3
 		//Если требуемая минимальная версия не поддерживается на компьютере, создание контекста (и окна) завершается ошибкой
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -107,8 +111,7 @@ public class Window {
 		glfwSetWindowSize(window, x, y);
 		setHeight(y);
 		setWidth(x);
-		//Пусть тот кто написал этот вызов сдохнет от спида
-		Camera.getInstance().setProjection(70, x, y);
+
 	}
 	
 	public int getWidth() {
