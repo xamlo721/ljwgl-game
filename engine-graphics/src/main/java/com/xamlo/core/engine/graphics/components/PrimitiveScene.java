@@ -33,6 +33,11 @@ import java.util.List;
 
 import org.lwjgl.system.MemoryUtil;
 //import org.lwjglb.engine.graph.Mesh;
+import org.lwjglb.engine.graph.Mesh;
+
+import com.xamlo.core.engine.graphics.primitives.Vertex;
+
+import ru.satomi.dc.primitive.Vec3f;
 
 import static org.lwjgl.opengl.GL30.glDeleteShader;
 import static org.lwjgl.opengl.GL30.GL_VERTEX_SHADER;
@@ -47,12 +52,13 @@ import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 
 public class PrimitiveScene implements IScene {
 	
-	float[] vertices = new float[] {
+	float[] trianglePos = new float[] {
 		     0.0f,  0.5f, 0.0f,
 		     -0.5f, -0.5f, 0.0f,
 		      0.5f, -0.5f, 0.0f
 	};
-	
+	private Mesh mesh;
+
 	// Shaders
 	
 	private final String vertexShaderSource = ShaderProgram.loadShader("C:/workspace/eclipse/gamedev/engine-graphics/res/shaders/PrimitiveVertexShader.glsl");
@@ -74,43 +80,19 @@ public class PrimitiveScene implements IScene {
 		shaderProgram.addFragmentShader(fragmentShaderSource);
 		shaderProgram.compileShader();
 
-		
-		FloatBuffer verticesBuffer = MemoryUtil.memAllocFloat(vertices.length);
-		verticesBuffer.put(vertices).flip();
-		
-		
-		vaoId = glGenVertexArrays();
-		glBindVertexArray(vaoId);
-		
-		
-		vboId = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, vboId);
-		glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
-		MemoryUtil.memFree(verticesBuffer);
-		
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+    	Vertex[] vertices = new Vertex[3];
+    	
+    	for (int i = 0; i < vertices.length; i ++) {
+    		Vec3f coords = new Vec3f(trianglePos[i*3 + 0], trianglePos[i*3 + 1],  trianglePos[i*3 + 2]);
+    		vertices[i] = new Vertex(coords);
+    	}
+    	
+        mesh = new Mesh(vertices);
 
-		// Unbind the VBO
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		// Unbind the VAO
-		glBindVertexArray(0);
-		
-		if (verticesBuffer != null) {
-		    MemoryUtil.memFree(verticesBuffer);
-		}
         // clear the framebuffer
         glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 		System.out.println("Primitive scene loaded");
-		
-		
-		
-//        float[] positions = new float[]{
-//                0.0f, 0.5f, 0.0f,
-//                -0.5f, -0.5f, 0.0f,
-//                0.5f, -0.5f, 0.0f
-//        };
-//        mesh = new Mesh(positions, 3);
+
 	}
 
 	@Override
@@ -124,11 +106,13 @@ public class PrimitiveScene implements IScene {
 //        glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
 		
 	    // Bind to the VAO
-	    glBindVertexArray(vaoId);
-	    glEnableVertexAttribArray(0);
+	    //glBindVertexArray(vaoId);
+	    //glBindVertexArray(mesh.getVaoId());
+	    //glEnableVertexAttribArray(0);
+		mesh.use();
 
 	    // Draw the vertices
-	    glDrawArrays(GL_TRIANGLES, 0, 3);
+	    glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
 
 	    // Restore state
 	    glDisableVertexAttribArray(0);
@@ -151,7 +135,7 @@ public class PrimitiveScene implements IScene {
 	    glDeleteVertexArrays(vaoId);
 	    
 		shaderProgram.cleanup();	
-
+		//mesh.cleanup();
 	}
 	
 

@@ -1,11 +1,9 @@
 package org.lwjglb.engine.graph;
 
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryStack;
+import com.xamlo.core.engine.graphics.primitives.Vertex;
+import com.xamlo.core.engine.graphics.primitives.VertexArrayObject;
 
-import java.nio.FloatBuffer;
-import java.util.*;
-
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.*;
 
 public class Mesh {
@@ -13,44 +11,30 @@ public class Mesh {
 
 	///Количество вершин в Меше
     private int numVertices;
-    ///Указатель на Объект в VRAM
-    private int vaoId;
-    ///Список указателей на вершины
-    private List<Integer> vboIdList;
+    
+    //Объект, хранящий в себе копию памяти VRAM
+    //И правильные способы работы с ней
+    VertexArrayObject vao;
+    
+    public Mesh(Vertex[] vertices) {
+    	
+    	vao = new VertexArrayObject(vertices);
+    	vao.allocMemory();
+        this.numVertices = vertices.length;
+    }
+    
+    public void use() {
+	    glBindVertexArray(vao.vaoId);
+	    glEnableVertexAttribArray(0);
 
-    public Mesh(float[] positions, int numVertices) {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            this.numVertices = numVertices;
-            vboIdList = new ArrayList<>();
-
-            vaoId = glGenVertexArrays();
-            glBindVertexArray(vaoId);
-
-            // Positions VBO
-            int vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            FloatBuffer positionsBuffer = stack.callocFloat(positions.length);
-            positionsBuffer.put(0, positions);
-            glBindBuffer(GL_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ARRAY_BUFFER, positionsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindVertexArray(0);
-        }
     }
 
     public void cleanup() {
-        vboIdList.stream().forEach(GL30::glDeleteBuffers);
-        glDeleteVertexArrays(vaoId);
+        vao.releaseMemory();
     }
 
     public int getNumVertices() {
         return numVertices;
     }
 
-    public final int getVaoId() {
-        return vaoId;
-    }
 }

@@ -23,12 +23,12 @@ public class SceneRender {
 		shaderProgram.addFragmentShader(fragmentShaderSource);
 		shaderProgram.compileShader();
 		
-	       float[] positions = new float[]{
-	                0.0f, 0.5f, 0.0f,
-	                -0.5f, -0.5f, 0.0f,
-	                0.5f, -0.5f, 0.0f
-	        };
-	        mesh = new Mesh(positions, 3);
+//	       float[] positions = new float[]{
+//	                0.0f, 0.5f, 0.0f,
+//	                -0.5f, -0.5f, 0.0f,
+//	                0.5f, -0.5f, 0.0f
+//	        };
+//	        mesh = new Mesh(positions, 3);
     }
 
     public void cleanup() {
@@ -38,7 +38,7 @@ public class SceneRender {
     public void render() {
         shaderProgram.bind();
 
-        glBindVertexArray(mesh.getVaoId());
+        //glBindVertexArray(mesh.getVaoId());
         glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
 
         glBindVertexArray(0);

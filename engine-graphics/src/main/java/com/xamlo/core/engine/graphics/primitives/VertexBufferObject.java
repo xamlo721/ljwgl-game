@@ -2,9 +2,17 @@ package com.xamlo.core.engine.graphics.primitives;
 
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+
+import java.nio.FloatBuffer;
+
+import org.lwjgl.system.MemoryStack;
+
 import static org.lwjgl.opengl.GL15.glBufferData;
 
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
@@ -30,13 +38,13 @@ public class VertexBufferObject {
 	 * Целочисленный ID области памяти (буфера) в VRAM видеокарты
 	 * Устанавливается какое-то значение методом glBindBuffer
 	 */
-	private int bufferID;
+	public int bufferID;
 	/**
 	 * Копия данных, которые должны быть положены в VRAM
 	 * Возможно их стоило убрать из озу совсем, но ладно
 	 */
 	
-	private float[] vertexData;
+	public float[] vertexData;
 
 	/**
 	 * Тип области памяти, в которой мы хотим разместить буфер.
@@ -50,6 +58,7 @@ public class VertexBufferObject {
 	private int bufferType = GL_STATIC_DRAW;
 	
 	public VertexBufferObject(float[] vertexData) {
+
 		this.vertexData = vertexData;
 		bufferID = glGenBuffers();
 	}
@@ -67,11 +76,25 @@ public class VertexBufferObject {
 		}
 		this.isRegistred = true;
 		
-		//Говорим, что сейчас будем работать с конкретно этим VBO
-		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-		//Пихаем в него массив
-		glBufferData(GL_ARRAY_BUFFER, vertexData, bufferType);
-		
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+
+	        FloatBuffer positionsBuffer = stack.callocFloat(vertexData.length);
+	        positionsBuffer.put(0, vertexData);
+        
+			/**
+			 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
+			 */
+			glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+			/**
+			 * Перемещаем в выбранную область памяти массив из ОЗУ
+			 */
+			glBufferData(GL_ARRAY_BUFFER, positionsBuffer, bufferType);
+			
+            glEnableVertexAttribArray(0);
+
+	        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        }
+
 		return true;
 	}
 	
