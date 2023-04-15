@@ -3,7 +3,17 @@ package com.xamlo.core.engine.graphics.primitives;
 import ru.satomi.dc.primitive.Vec2f;
 import ru.satomi.dc.primitive.Vec3f;
 
+/**
+ * Класс Vertex Описывает базовый случай расположения в VRAM информации о точке.
+ * Точка содержит координаты Х, У, Z
+ * Точка содержит векторы нормалей
+ * Точка содержит цвет формата RGB
+ * Точка содержит координату текстуры (предположительно UV)
+ * @author Satomi
+ *
+ */
 public class Vertex {
+	
 	public static final int FLOATS = 11;
 	private Vec3f pos;
 	private Vec3f normal;
@@ -26,8 +36,13 @@ public class Vertex {
 	
 	public Vertex(Vec3f pos) {
 		this.setPos(pos);
+		//TODO:
 		this.setNormal(new Vec3f(0,0,0));
+		//TODO:
 		this.setColor(new Vec3f(0,0,0));
+		//TODO:
+		this.setTextureCoord(new Vec2f(0,0));
+
 	}
 
 	public Vec2f getTextureCoord() {
@@ -60,5 +75,22 @@ public class Vertex {
 
 	public void setColor(Vec3f color) {
 		this.color = color;
+	}
+	
+	public float[] toFloatArray() {
+		float[] out = new float[Vertex.FLOATS];
+		int index = 0;
+		out[index++] = pos.X;
+		out[index++] = pos.Y;
+		out[index++] = pos.Z;
+		out[index++] = normal.X;
+		out[index++] = normal.Y;
+		out[index++] = normal.Z;
+		out[index++] = color.X;
+		out[index++] = color.Y;
+		out[index++] = color.Z;
+		out[index++] = textureCoord.X;
+		out[index++] = textureCoord.Y;
+		return out;
 	}
 }

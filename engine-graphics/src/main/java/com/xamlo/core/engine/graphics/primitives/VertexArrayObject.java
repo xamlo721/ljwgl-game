@@ -20,17 +20,35 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 import java.util.ArrayList;
 
+/**
+ * Согласно документации Opengl, под VAO понимают список VBO
+ * Причём такой список, который относится к одному объекту
+ * По сути, VBO в таком случае являются примитивными хранилищами атрибутов
+ * таких как координаты, цвета, текстуры и т.д
+ * А VAO интерпретирует VBO как буферы одного конкретного элемента
+ * @author Satomi
+ *
+ */
 public class VertexArrayObject {
-	
+	/**
+	 * Флаг, сообщающий о том, что данный буфер уже был размещён в VRAM
+	 * Для такого объекта можно вызвать release, но нельзя вызвать bind
+	 */
 	private boolean isRegistred;
 		
 	protected int ibo;
-	protected int vaoId;
-	protected int size;
 	
+	/**
+	 * Целочисленный ID области памяти (буфера) в VRAM видеокарты
+	 * Устанавливается какое-то значение методом glBindVertexArray
+	 */
+	protected int vaoId;
+	/**
+	 * Список VBO, сходящих в состав VAO
+	 */
 	private ArrayList<VertexBufferObject> vbos;
 	
-	public boolean bindMemory() {
+	public boolean allocMemory() {
 		if (isRegistred) {
 			//FIXME: Наверное лучше кинуть своё исключение
 			return false;
@@ -41,7 +59,7 @@ public class VertexArrayObject {
 		
 		glBindVertexArray(vaoId);
 		for (VertexBufferObject vbo : vbos) {
-			vbo.bindMemory();
+			vbo.allocMemory();
 		}
 		glBindVertexArray(0);
 
@@ -58,7 +76,7 @@ public class VertexArrayObject {
 		//TODO: Код регистрации в памяти видеокарты
 		glBindVertexArray(vaoId);
 		for (VertexBufferObject vbo : vbos) {
-			vbo.bindMemory();
+			vbo.allocMemory();
 		}
 		glDeleteVertexArrays(vaoId);
 
