@@ -2,7 +2,7 @@ package com.xamlo.core.engine.graphics.primitives;
 
 public interface IBufferObject {
 
-	public boolean allocMemory();
+	public boolean allocMemory(int indexVBO);
 	
 	public void bind();
 	

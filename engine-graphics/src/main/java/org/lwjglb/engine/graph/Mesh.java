@@ -14,13 +14,13 @@ public class Mesh {
     
     public Mesh(Vertex[] vertices) {
     	vao = new VertexArrayObject(vertices);
-    	vao.allocMemory();
+    	vao.allocMemory(0);
         this.numVertices = vertices.length;
     }
     
     public Mesh(Vertex[] vertices, int[] indices) {
     	vao = new VertexArrayObject(vertices, indices);
-    	vao.allocMemory();
+    	vao.allocMemory(0);
         this.numVertices = indices.length;
     }
     

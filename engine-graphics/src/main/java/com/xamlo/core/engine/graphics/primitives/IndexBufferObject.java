@@ -55,7 +55,7 @@ public class IndexBufferObject implements IBufferObject {
 	}
 	
 	@Override
-	public boolean allocMemory() {
+	public boolean allocMemory(int indexVBO) {
 		if (isRegistred) {
 			//FIXME: Наверное лучше кинуть своё исключение
 			return false;

@@ -79,7 +79,7 @@ public class VertexBufferObject implements IBufferObject {
 	}
 	
 	@Override
-	public boolean allocMemory() {
+	public boolean allocMemory(int indexVBO) {
 		if (isRegistred) {
 			//FIXME: Наверное лучше кинуть своё исключение
 			return false;
@@ -124,7 +124,7 @@ public class VertexBufferObject implements IBufferObject {
           *  
           *  offset: Задает смещение по отношению к первому компоненту в буфере.
           */
-	    glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+	    glVertexAttribPointer(indexVBO, 3, GL_FLOAT, false, 0, 0);
 
 	    MemoryUtil.memFree(attribBuffer);
 	    
