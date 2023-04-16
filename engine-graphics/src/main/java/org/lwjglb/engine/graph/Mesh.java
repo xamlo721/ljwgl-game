@@ -21,11 +21,16 @@ public class Mesh {
     public Mesh(Vertex[] vertices, int[] indices) {
     	vao = new VertexArrayObject(vertices, indices);
     	vao.allocMemory();
-        this.numVertices = vertices.length;
+        this.numVertices = indices.length;
     }
     
-    public void use() {
+    public void bind() {
     	vao.bind();
+    }
+
+    
+    public void unbind() {
+    	vao.unbind();
     }
 
     public void cleanup() {

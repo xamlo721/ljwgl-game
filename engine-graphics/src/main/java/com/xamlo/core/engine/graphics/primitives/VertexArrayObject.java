@@ -31,22 +31,24 @@ public class VertexArrayObject implements IBufferObject {
 	/**
 	 * Список VBO, сходящих в состав VAO
 	 */
-	private ArrayList<VertexBufferObject> vbos;
+	//private ArrayList<VertexBufferObject> vbos;
 	
-	private IndexBufferObject indexBufferObject;
 	
 	private VertexBufferObject coordsVBuffer;
 	private VertexBufferObject normalesVBuffer;
 	private VertexBufferObject colorsVBuffer;
 	private VertexBufferObject textureVBuffer;
+	private IndexBufferObject indexBufferObject;
 
 	public VertexArrayObject(Vertex[] vertices) {
+		vaoId = glGenVertexArrays();
+
 		int[] vertexOrder = new int[vertices.length];
 		for (int i = 0; i < vertices.length; i++) {
 			vertexOrder[i] = i;
 		}
 		
-		vbos = new ArrayList<VertexBufferObject>();
+		//vbos = new ArrayList<VertexBufferObject>();
 		
 		float[] coordsData = new float[vertices.length * 3]; //FIXME: Magic number
 		float[] normalesData= new float[vertices.length * 3]; //FIXME: Magic number
@@ -55,20 +57,20 @@ public class VertexArrayObject implements IBufferObject {
 		
 		for (int i = 0; i < vertices.length; i++) {
 			Vertex v  = vertices[i];
-			coordsData[i*3 + 0] = v.getPos().Z; //FIXME: Magic number
-			coordsData[i*3 + 1] = v.getPos().Z; //FIXME: Magic number
-			coordsData[i*3 + 2] = v.getPos().Y; //FIXME: Magic number
+			coordsData[i*3 + 0] = v.getPos().X; //FIXME: Magic number
+			coordsData[i*3 + 1] = v.getPos().Y; //FIXME: Magic number
+			coordsData[i*3 + 2] = v.getPos().Z; //FIXME: Magic number
 			
-			normalesData[i*3 + 0] = v.getPos().X; //FIXME: Magic number
-			normalesData[i*3 + 1] = v.getPos().Y; //FIXME: Magic number
-			normalesData[i*3 + 2] = v.getPos().Z; //FIXME: Magic number
+			normalesData[i*3 + 0] = v.getNormal().X; //FIXME: Magic number
+			normalesData[i*3 + 1] = v.getNormal().Y; //FIXME: Magic number
+			normalesData[i*3 + 2] = v.getNormal().Z; //FIXME: Magic number
 			
-			colorsData[i*3 + 0] = v.getPos().X; //FIXME: Magic number
-			colorsData[i*3 + 1] = v.getPos().Y; //FIXME: Magic number
-			colorsData[i*3 + 2] = v.getPos().Z; //FIXME: Magic number
+			colorsData[i*3 + 0] = v.getColor().X; //FIXME: Magic number
+			colorsData[i*3 + 1] = v.getColor().Y; //FIXME: Magic number
+			colorsData[i*3 + 2] = v.getColor().Z; //FIXME: Magic number
 			
-			textureData[i*2 + 0] = v.getPos().X; //FIXME: Magic number
-			textureData[i*2 + 1] = v.getPos().Y; //FIXME: Magic number
+			textureData[i*2 + 0] = v.getTextureCoord().X; //FIXME: Magic number
+			textureData[i*2 + 1] = v.getTextureCoord().Y; //FIXME: Magic number
 		}
         
 		coordsVBuffer = new VertexBufferObject(coordsData);
@@ -77,39 +79,40 @@ public class VertexArrayObject implements IBufferObject {
 		textureVBuffer = new VertexBufferObject(textureData);
 		indexBufferObject = new IndexBufferObject(vertexOrder);
 		
-		this.vbos.add(coordsVBuffer);
-		this.vbos.add(normalesVBuffer);
-		this.vbos.add(colorsVBuffer);
-		this.vbos.add(textureVBuffer);
+//		this.vbos.add(coordsVBuffer);
+//		this.vbos.add(normalesVBuffer);
+//		this.vbos.add(colorsVBuffer);
+//		this.vbos.add(textureVBuffer);
 		
-		vaoId = glGenVertexArrays();
 
 	}
 	
 	public VertexArrayObject(Vertex[] vertices, int[] vertexOrder)  {
-		vbos = new ArrayList<VertexBufferObject>();
+		vaoId = glGenVertexArrays();
+
+		//vbos = new ArrayList<VertexBufferObject>();
 		
 		float[] coordsData = new float[vertices.length * 3]; //FIXME: Magic number
 		float[] normalesData= new float[vertices.length * 3]; //FIXME: Magic number
 		float[] colorsData = new float[vertices.length * 3]; //FIXME: Magic number
 		float[] textureData = new float[vertices.length * 2]; //FIXME: Magic number
-		
+
 		for (int i = 0; i < vertices.length; i++) {
 			Vertex v  = vertices[i];
-			coordsData[i*3 + 0] = v.getPos().Z; //FIXME: Magic number
-			coordsData[i*3 + 1] = v.getPos().Z; //FIXME: Magic number
-			coordsData[i*3 + 2] = v.getPos().Y; //FIXME: Magic number
+			coordsData[i*3 + 0] = v.getPos().X; //FIXME: Magic number
+			coordsData[i*3 + 1] = v.getPos().Y; //FIXME: Magic number
+			coordsData[i*3 + 2] = v.getPos().Z; //FIXME: Magic number
 			
-			normalesData[i*3 + 0] = v.getPos().X; //FIXME: Magic number
-			normalesData[i*3 + 1] = v.getPos().Y; //FIXME: Magic number
-			normalesData[i*3 + 2] = v.getPos().Z; //FIXME: Magic number
+			normalesData[i*3 + 0] = v.getNormal().X; //FIXME: Magic number
+			normalesData[i*3 + 1] = v.getNormal().Y; //FIXME: Magic number
+			normalesData[i*3 + 2] = v.getNormal().Z; //FIXME: Magic number
 			
-			colorsData[i*3 + 0] = v.getPos().X; //FIXME: Magic number
-			colorsData[i*3 + 1] = v.getPos().Y; //FIXME: Magic number
-			colorsData[i*3 + 2] = v.getPos().Z; //FIXME: Magic number
+			colorsData[i*3 + 0] = v.getColor().X; //FIXME: Magic number
+			colorsData[i*3 + 1] = v.getColor().Y; //FIXME: Magic number
+			colorsData[i*3 + 2] = v.getColor().Z; //FIXME: Magic number
 			
-			textureData[i*2 + 0] = v.getPos().X; //FIXME: Magic number
-			textureData[i*2 + 1] = v.getPos().Y; //FIXME: Magic number
+			textureData[i*2 + 0] = v.getTextureCoord().X; //FIXME: Magic number
+			textureData[i*2 + 1] = v.getTextureCoord().Y; //FIXME: Magic number
 		}
         
 		coordsVBuffer = new VertexBufferObject(coordsData);
@@ -118,12 +121,11 @@ public class VertexArrayObject implements IBufferObject {
 		textureVBuffer = new VertexBufferObject(textureData);
 		indexBufferObject = new IndexBufferObject(vertexOrder);
 		
-		this.vbos.add(coordsVBuffer);
-		this.vbos.add(normalesVBuffer);
-		this.vbos.add(colorsVBuffer);
-		this.vbos.add(textureVBuffer);
+//		this.vbos.add(coordsVBuffer);
+//		this.vbos.add(normalesVBuffer);
+//		this.vbos.add(colorsVBuffer);
+//		this.vbos.add(textureVBuffer);
 		
-		vaoId = glGenVertexArrays();
 	}
 
 	@Override
@@ -135,9 +137,14 @@ public class VertexArrayObject implements IBufferObject {
 		this.isRegistred = true;
 		///
         glBindVertexArray(vaoId);
-		for (VertexBufferObject vbo : vbos) {
-			vbo.allocMemory();
-		}
+		coordsVBuffer.allocMemory();
+//		normalesVBuffer.allocMemory();
+//		colorsVBuffer.allocMemory();
+//		textureVBuffer.allocMemory();
+		indexBufferObject.allocMemory();
+//		for (VertexBufferObject vbo : vbos) {
+//			vbo.allocMemory();
+//		}
 		glBindVertexArray(0);
 
 		return true;
@@ -166,9 +173,14 @@ public class VertexArrayObject implements IBufferObject {
 		
 		//TODO: Код регистрации в памяти видеокарты
 		glBindVertexArray(vaoId);
-		for (VertexBufferObject vbo : vbos) {
-			vbo.allocMemory();
-		}
+		coordsVBuffer.releaseMemory();
+		normalesVBuffer.releaseMemory();
+		colorsVBuffer.releaseMemory();
+		textureVBuffer.releaseMemory();
+		indexBufferObject.releaseMemory();
+//		for (VertexBufferObject vbo : vbos) {
+//			vbo.releaseMemory();
+//		}
 		indexBufferObject.releaseMemory();
 		glDeleteVertexArrays(vaoId);
 		return true;

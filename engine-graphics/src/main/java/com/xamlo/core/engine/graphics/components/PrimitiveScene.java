@@ -44,19 +44,15 @@ import static org.lwjgl.opengl.GL30.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL30.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 
 public class PrimitiveScene implements IScene {
-	
-	float[] trianglePos = new float[] {
-		     0.0f,  0.5f, 0.0f,
-		     -0.5f, -0.5f, 0.0f,
-		      0.5f, -0.5f, 0.0f
-	};
 	
 	private Mesh mesh;
 
@@ -68,9 +64,6 @@ public class PrimitiveScene implements IScene {
 	
 	private ShaderProgram shaderProgram;
 
-	private int vaoId;
-	private int vboId;
-		
 	@Override
 	public void load() {		
 		
@@ -79,14 +72,23 @@ public class PrimitiveScene implements IScene {
 		shaderProgram.addFragmentShader(fragmentShaderSource);
 		shaderProgram.compileShader();
 
-    	Vertex[] vertices = new Vertex[3];
+    	Vertex[] vertices = new Vertex[4];
+    	int i = 0;
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, 0.0f)); //V1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, 0.0f)); //V2
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, 0.0f)); //V3
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, 0.0f)); //V4
+
+    	int[] indices = new int[6]; 
+    	indices[0] = 0;
+    	indices[1] = 1;
+    	indices[2] = 3;
+    	indices[3] = 3;
+    	indices[4] = 1;
+    	indices[5] = 2;
+
     	
-    	for (int i = 0; i < vertices.length; i ++) {
-    		Vec3f coords = new Vec3f(trianglePos[i*3 + 0], trianglePos[i*3 + 1],  trianglePos[i*3 + 2]);
-    		vertices[i] = new Vertex(coords);
-    	}
-    	
-        mesh = new Mesh(vertices);
+        mesh = new Mesh(vertices, indices);
 
         // clear the framebuffer
         glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
@@ -98,21 +100,18 @@ public class PrimitiveScene implements IScene {
 	public void renderFrame() {
         
 		shaderProgram.bind();
-		//System.out.println("FRAME RENDER: " + vaoId + " # " + vboId);		
-		//some render code
-		
-//        glBindVertexArray(mesh.getVaoId());
-//        glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
-		
-	    // Bind to the VAO
-	    //glBindVertexArray(vaoId);
-	    //glBindVertexArray(mesh.getVaoId());
-	    //glEnableVertexAttribArray(0);
-		mesh.use();
+		mesh.bind();
 
 	    // Draw the vertices
-	    glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
+	    //glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
 
+		/**
+		 * mode: Задает примитивы для рендеринга, в данном случае треугольники. Здесь никаких изменений.
+		 * count: Указывает количество элементов, которые должны быть отрисованы.
+		 * type: Указывает тип значения в данных индексов. В данном случае мы используем целые числа.
+		 * indices: Задает смещение, которое необходимо применить к данным индексов для начала рендеринга.
+		 */
+		glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
 	    // Restore state
 	    glDisableVertexAttribArray(0);
 	    glBindVertexArray(0);
@@ -122,19 +121,9 @@ public class PrimitiveScene implements IScene {
 	}
 	
 	@Override
-	public void release() {
-	    glDisableVertexAttribArray(0);
-
-	    // Delete the VBO
-	    glBindBuffer(GL_ARRAY_BUFFER, 0);
-	    glDeleteBuffers(vboId);
-
-	    // Delete the VAO
-	    glBindVertexArray(0);
-	    glDeleteVertexArrays(vaoId);
-	    
+	public void release() {	    
 		shaderProgram.cleanup();	
-		//mesh.cleanup();
+		mesh.cleanup();
 	}
 	
 

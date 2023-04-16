@@ -1,18 +1,17 @@
 package com.xamlo.core.engine.graphics.primitives;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL21.glEnableVertexAttribArray;
 
 import java.nio.IntBuffer;
 
-import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 public class IndexBufferObject implements IBufferObject {
 
@@ -63,24 +62,31 @@ public class IndexBufferObject implements IBufferObject {
 		}
 		this.isRegistred = true;
 		
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-
-	        IntBuffer indicesBuffer = stack.callocInt(indexData.length);
-	        indicesBuffer.put(0, indexData);
+	    IntBuffer indicesBuffer = MemoryUtil.memAllocInt(indexData.length);
+	    indicesBuffer.put(indexData);
+	    indicesBuffer.flip();
         
-			/**
-			 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
-			 */
-			glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-			/**
-			 * Перемещаем в выбранную область памяти массив из ОЗУ
-			 */
-			glBufferData(GL_ARRAY_BUFFER, indicesBuffer, bufferType);
-			
-            glEnableVertexAttribArray(0);
+	    
+	    String log = new String();
+	    log +=  "create IBO {";
+	    for (int i = 0; i < indexData.length; i++) {
+	    	log += " " + indexData[i] + " ";
+	    }
+	    log += "}";
+	    System.out.println(log);
+	    /**
+		  * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
+		  */
+	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferID);
+		/**
+		 * Перемещаем в выбранную область памяти массив из ОЗУ
+		 */
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, bufferType);
+		
+		glEnableVertexAttribArray(0);
+		
+		MemoryUtil.memFree(indicesBuffer);
 
-	        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-        }
 
 		return true;
 	}

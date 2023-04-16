@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.opengl.GL15.glBufferData;
 
@@ -85,25 +86,48 @@ public class VertexBufferObject implements IBufferObject {
 		}
 		this.isRegistred = true;
 		
-        try (MemoryStack stack = MemoryStack.stackPush()) {
 
-	        FloatBuffer attribBuffer = stack.callocFloat(vertexData.length);
-	        attribBuffer.put(0, vertexData);
-        
-			/**
-			 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
-			 */
-			glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-			/**
-			 * Перемещаем в выбранную область памяти массив из ОЗУ
-			 */
-			glBufferData(GL_ARRAY_BUFFER, attribBuffer, bufferType);
+	    FloatBuffer attribBuffer = MemoryUtil.memAllocFloat(vertexData.length);
+	    attribBuffer.put(vertexData);
+        attribBuffer.flip();
+		/**
+		 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
+		 */
+		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+		/**
+		 * Перемещаем в выбранную область памяти массив из ОЗУ
+		 */
+		glBufferData(GL_ARRAY_BUFFER, attribBuffer, bufferType);
 			
-            glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(0);
 
-	        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-        }
+	    String log = new String();
+	    log +=  "create IBO {";
+	    for (int i = 0; i < vertexData.length; i++) {
+	    	log += " " + vertexData[i] + " ";
+	    }
+	    log += "}";
+	    System.out.println(log);
+	    
+        /**
+          * index: Указывает местоположение, в котором шейдер ожидает эти данные.
+          * 
+          *  size: Задает количество компонентов для каждого атрибута вершины (от 1 до 4). 
+          *  В данном случае мы передаем 3D-координаты, поэтому их должно быть 3.
+          *  
+          *  type: Указывает тип каждого компонента в массиве, в данном случае float.
+          *  
+          *  normalized: Указывает, должны ли значения быть нормализованы или нет.
+          *  
+          *  stride: Задает смещение в байтах между последовательными общими атрибутами вершины. 
+          *  (Мы объясним это позже).
+          *  
+          *  offset: Задает смещение по отношению к первому компоненту в буфере.
+          */
+	    glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
+	    MemoryUtil.memFree(attribBuffer);
+	    
 		return true;
 	}
 	
@@ -116,8 +140,6 @@ public class VertexBufferObject implements IBufferObject {
 		this.isRegistred = false;
 		
 		glDeleteBuffers(bufferID);
-
-		
 		return true;
 	}
 
