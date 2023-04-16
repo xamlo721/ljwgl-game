@@ -1,33 +1,21 @@
 package com.xamlo.core.engine.graphics.primitives;
 
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
-import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import org.lwjgl.system.MemoryStack;
 
-import static org.lwjgl.opengl.GL15.glBufferData;
+public class IndexBufferObject implements IBufferObject {
 
-import static org.lwjgl.opengl.GL15.glDeleteBuffers;
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-
-
-/**
- * Объект вершинного буфера, который может хранить в VRAM
- * данные одного типа об одной или нескольки вершинах
- * Класс является отображением примитивного фрагмента сырой памяти VRAM/
- * хранит указатель и копию памяти VRAM
- * @author Satomi
- *
- */
-public class VertexBufferObject implements IBufferObject {
-	
 	/**
 	 * Флаг, сообщающий о том, что данный буфер уже был размещён в VRAM
 	 * Для такого объекта можно вызвать release, но нельзя вызвать alloc
@@ -44,7 +32,7 @@ public class VertexBufferObject implements IBufferObject {
 	 * Возможно их стоило убрать из озу совсем, но ладно
 	 */
 	
-	public float[] vertexData;
+	public int[] indexData;
 
 	/**
 	 * Тип области памяти, в которой мы хотим разместить буфер.
@@ -57,24 +45,14 @@ public class VertexBufferObject implements IBufferObject {
 	 */
 	private int bufferType;
 	
-	public VertexBufferObject(float[] vertexData) {
-		this(vertexData, GL_STATIC_DRAW);
+	public IndexBufferObject(int[] indexData) {
+		this(indexData, GL_STATIC_DRAW);
 	}
 
-	public VertexBufferObject(float[] vertexData, int memoryType) {
-		this.vertexData = vertexData;
+	public IndexBufferObject(int[] indexData, int memoryType) {
+		this.indexData = indexData;
 		this.bufferType = memoryType;
 		bufferID = glGenBuffers();
-	}
-	
-	@Override
-	public void bind() {
-		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-	}
-
-	@Override
-	public void unbind() {
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	
 	@Override
@@ -87,8 +65,8 @@ public class VertexBufferObject implements IBufferObject {
 		
         try (MemoryStack stack = MemoryStack.stackPush()) {
 
-	        FloatBuffer attribBuffer = stack.callocFloat(vertexData.length);
-	        attribBuffer.put(0, vertexData);
+	        IntBuffer indicesBuffer = stack.callocInt(indexData.length);
+	        indicesBuffer.put(0, indexData);
         
 			/**
 			 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
@@ -97,7 +75,7 @@ public class VertexBufferObject implements IBufferObject {
 			/**
 			 * Перемещаем в выбранную область памяти массив из ОЗУ
 			 */
-			glBufferData(GL_ARRAY_BUFFER, attribBuffer, bufferType);
+			glBufferData(GL_ARRAY_BUFFER, indicesBuffer, bufferType);
 			
             glEnableVertexAttribArray(0);
 
@@ -106,7 +84,17 @@ public class VertexBufferObject implements IBufferObject {
 
 		return true;
 	}
-	
+
+	@Override
+	public void bind() {
+		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+	}
+
+	@Override
+	public void unbind() {
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
 	@Override
 	public boolean releaseMemory() {
 		if (!isRegistred) {
@@ -120,6 +108,5 @@ public class VertexBufferObject implements IBufferObject {
 		
 		return true;
 	}
-
 
 }

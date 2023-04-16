@@ -57,6 +57,7 @@ public class PrimitiveScene implements IScene {
 		     -0.5f, -0.5f, 0.0f,
 		      0.5f, -0.5f, 0.0f
 	};
+	
 	private Mesh mesh;
 
 	// Shaders
@@ -69,9 +70,7 @@ public class PrimitiveScene implements IScene {
 
 	private int vaoId;
 	private int vboId;
-	
-//	private Mesh mesh;
-	
+		
 	@Override
 	public void load() {		
 		
