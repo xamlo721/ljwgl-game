@@ -1,5 +1,6 @@
 package com.xamlo.core.engine.graphics.primitives;
 
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
@@ -122,8 +123,8 @@ public class VertexArrayObject implements IBufferObject {
 		indexBufferObject = new IndexBufferObject(vertexOrder);
 		
 		this.vbos.add(coordsVBuffer);
-		this.vbos.add(normalesVBuffer);
 		this.vbos.add(colorsVBuffer);
+		this.vbos.add(normalesVBuffer);
 		this.vbos.add(textureVBuffer);
 		
 	}
@@ -151,13 +152,16 @@ public class VertexArrayObject implements IBufferObject {
 	public void bind() {
 	    glBindVertexArray(vaoId);
 	    glEnableVertexAttribArray(0);
+	    glEnableVertexAttribArray(1);
 
 	}
 	
 	@Override
 	public void unbind() {
 	    glBindVertexArray(0);
-	    glEnableVertexAttribArray(0);		
+	    glDisableVertexAttribArray(0);	
+	    glDisableVertexAttribArray(1);		
+
 	}
 	
 	@Override
@@ -168,7 +172,6 @@ public class VertexArrayObject implements IBufferObject {
 		}
 		this.isRegistred = false;
 		
-		//TODO: Код регистрации в памяти видеокарты
 		glBindVertexArray(vaoId);
 		indexBufferObject.releaseMemory();
 		for (VertexBufferObject vbo : vbos) {

@@ -74,10 +74,10 @@ public class PrimitiveScene implements IScene {
 
     	Vertex[] vertices = new Vertex[4];
     	int i = 0;
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, 0.0f)); //V1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, 0.0f)); //V2
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, 0.0f)); //V3
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, 0.0f)); //V4
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, 0.0f), new Vec3f(-0.5f,  0.5f, 0.0f)); //V1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, 0.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V2
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, 0.0f), new Vec3f(-0.5f,  0.0f, 1.0f)); //V3
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, 0.0f), new Vec3f(-0.5f,  0.5f, 0.0f)); //V4
 
     	int[] indices = new int[6]; 
     	indices[0] = 0;
@@ -112,9 +112,7 @@ public class PrimitiveScene implements IScene {
 		 * indices: Задает смещение, которое необходимо применить к данным индексов для начала рендеринга.
 		 */
 		glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
-	    // Restore state
-	    glDisableVertexAttribArray(0);
-	    glBindVertexArray(0);
+
 	    
 	    shaderProgram.unbind();
 
