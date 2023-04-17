@@ -20,31 +20,31 @@ public class Vertex {
 	private Vec3f color;
 	private Vec2f textureCoord;
 
-	public Vertex(Vec3f pos, Vec3f color, Vec3f normal) {
+	public Vertex(Vec3f pos, Vec3f color, Vec3f normal, Vec2f textures) {
 		this.pos = pos;
 		this.normal = normal;
 		this.color = color;
+		this.textureCoord = textures;
+		
+	}
+	
+	public Vertex(Vec3f pos, Vec3f color, Vec3f normal) {
+		this(pos, color, normal, new Vec2f(0,0));
 	}
 
 	public Vertex(Vec3f pos, Vec3f color) {
-		this.pos = pos;
-		this.color = color;
-	}
-	
-	public Vertex(){	
+		this(pos, color , new Vec3f(0,0,0));
 	}
 	
 	public Vertex(Vec3f pos) {
-		this.setPos(pos);
-		//TODO:
-		this.setNormal(new Vec3f(0,0,0));
-		//TODO:
-		this.setColor(new Vec3f(0,0,0));
-		//TODO:
-		this.setTextureCoord(new Vec2f(0,0));
+		this(pos, new Vec3f(0,0,0));
 
 	}
-
+	
+	public Vertex() {	
+		this(new Vec3f(0,0,0));
+	}
+	
 	public Vec2f getTextureCoord() {
 		return textureCoord;
 	}
