@@ -7,7 +7,16 @@ import ru.satomi.dc.primitive.Vec3f;
 
 public class PrimitiveCamera implements ICamera {
 
+	private static final float DEFAULT_NEAR_DISTANCE = 0.01f;
 	
+	private static final float DEFAULT_FAR_DISTANCE = 1000.0f;
+	
+	private static final float DEFAULT_FIELD_OF_VIEW = 60.0f;
+	 // пример соотношения сторон 16:9
+	private static final int   DEFAULT_CAMERA_WIDTH = 1920/2;
+
+	private static final int   DEFAULT_CAMERA_HEIGHT = 1080/2;
+
 	/*
 	 * Позиция камеры в мире
 	 * [0] - x Coord
@@ -25,7 +34,7 @@ public class PrimitiveCamera implements ICamera {
 	private Vec3f rotation;
 	
 	/*
-	 * Угол обзора (FOV) в градусах
+	 * Угол обзора (FOV = Field of view) в градусах
 	 */
 	private float fov;
 
@@ -35,9 +44,16 @@ public class PrimitiveCamera implements ICamera {
 	private float aspectRatio;
 
 	/*
-	 * Максимальное расстояние от камеры, до которого будут отображаться объекты
+	 * Максимальное расстояние от камеры, 
+	 * до которого будут отображаться объекты
 	 */
 	private float far;
+	
+	/*
+	 * Минимальное расстояние от камеры, 
+	 * от которого будут отображаться объекты
+	 */
+	private float near;
 	  
 	/*
 	 * Матрица вида для камеры
@@ -50,23 +66,27 @@ public class PrimitiveCamera implements ICamera {
 	    viewMatrix.rotate((float) Math.toRadians(rotation.Z), new Vector3f(0, 0, 1));
 	    viewMatrix.translate(new Vector3f(-position.X, -position.Y, -position.Z));
 	    return viewMatrix;
-	} 
+	}
 	
 	
 	public PrimitiveCamera() {
 		this.position = new Vec3f(0, 0, 0);
 		this.rotation = new Vec3f(0, 0, 0);
-	    this.fov = 60.0f;
-	    this.aspectRatio = 16.0f / 9.0f; // пример соотношения сторон 16:9
+	    this.fov = DEFAULT_FIELD_OF_VIEW;
+	    this.aspectRatio = DEFAULT_CAMERA_WIDTH / DEFAULT_CAMERA_HEIGHT;
+	    this.near = DEFAULT_NEAR_DISTANCE;
+	    this.far = DEFAULT_FAR_DISTANCE;
+	
 	}
 	
 	public PrimitiveCamera(Vec3f pos, Vec3f rotation, float fov, float aspectRatio) {
 		//TODO: Валидация параметров
-		
 		this.position = pos;
 		this.rotation = rotation;
 	    this.fov = fov;
 	    this.aspectRatio = aspectRatio;
+	    this.near = DEFAULT_NEAR_DISTANCE;
+	    this.far = DEFAULT_FAR_DISTANCE;
 	}
 
 	@Override
@@ -89,28 +109,45 @@ public class PrimitiveCamera implements ICamera {
 		return rotation;
 	}
 	
+	@Override
 	public float getFov() {
 		return fov;
 	}
 
+	@Override
 	public void setFov(float fov) {
 		this.fov = fov;
 	}
 
+	@Override
 	public float getAspectRatio() {
 		return aspectRatio;
 	}
 
-	public void setAspectRatio(float aspectRatio) {
-		this.aspectRatio = aspectRatio;
+	@Override
+	public void setAspectRatio(int width, int height) {
+		this.aspectRatio = (float)width / (float)height;
 	}
-	
-	public float getFar() {
+
+	@Override
+	public float getFarDistance() {
 	    return far;
 	}
 
-	public void setFar(float far) {
+	@Override
+	public void setFarDistance(float far) {
 	    this.far = far;
 	}
+
+	@Override
+	public float getNearDistance() {
+		return near;
+	}
+
+	@Override
+	public void setNearDistance(float near) {
+		this.near = near;
+	}
+	
 	
 }

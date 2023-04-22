@@ -1,15 +1,5 @@
 package com.xamlo.core.engine.graphics.components;
 
-import static org.lwjgl.opengl.GL30.glCreateShader;
-import static org.lwjgl.opengl.GL30.glCreateProgram;
-import static org.lwjgl.opengl.GL20.glShaderSource;
-import static org.lwjgl.opengl.GL30.glCompileShader;
-import static org.lwjgl.opengl.GL30.glGetShaderiv;
-import static org.lwjgl.opengl.GL30.glGetShaderInfoLog;
-import static org.lwjgl.opengl.GL30.glAttachShader;
-import static org.lwjgl.opengl.GL30.glLinkProgram;
-import static org.lwjgl.opengl.GL30.glUseProgram;
-
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenBuffers;
@@ -19,6 +9,9 @@ import static org.lwjgl.opengl.GL30.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL30.glBufferData;
 import static org.lwjgl.opengl.GL30.GL_FLOAT;
 import static org.lwjgl.opengl.GL30.glVertexAttribPointer;
+
+import org.joml.Matrix4f;
+
 import static org.lwjgl.opengl.GL30.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL30.glDisableVertexAttribArray;
@@ -27,12 +20,6 @@ import static org.lwjgl.opengl.GL30.glDeleteBuffers;
 import static org.lwjgl.opengl.GL30.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.system.MemoryUtil;
-//import org.lwjglb.engine.graph.Mesh;
 import org.lwjglb.engine.graph.Mesh;
 
 import com.xamlo.core.engine.graphics.primitives.Vertex;
@@ -51,6 +38,9 @@ import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glPolygonMode;
+import static org.lwjgl.opengl.GL20.GL_FRONT_AND_BACK;
+import static org.lwjgl.opengl.GL20.GL_LINE;
 
 public class PrimitiveScene implements IScene {
 	
@@ -63,6 +53,11 @@ public class PrimitiveScene implements IScene {
 	private final String fragmentShaderSource =  ShaderProgram.loadShader("C:/workspace/eclipse/gamedev/engine-graphics/res/shaders/PrimitiveFragmentShader.glsl");
 	
 	private ShaderProgram shaderProgram;
+	
+	private PrimitiveCamera camera;
+	
+    private Matrix4f projectionMatrix;
+
 
 	@Override
 	public void load() {		
@@ -90,10 +85,23 @@ public class PrimitiveScene implements IScene {
     	
         mesh = new Mesh(vertices, indices);
 
+        //Рисовать рамку или заливать цветом - закомментировать, если хотим цвет
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+        
+        //TODO: Разумеется камера не должна находиться внутри сцены
+        camera = new PrimitiveCamera();
+        
+        projectionMatrix = new Matrix4f().perspective(
+        		camera.getFov(), 
+        		camera.getAspectRatio(),
+        	    camera.getNearDistance(), 
+        	    camera.getFarDistance()
+       );
+        
         // clear the framebuffer
         glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 		System.out.println("Primitive scene loaded");
-
 	}
 
 	@Override

@@ -15,7 +15,6 @@ public class RenderThread extends Thread {
     private boolean isInit = false;
     private boolean isWindowed = false;
 
-    
     private boolean isRenderStarted = false;
 	private RenderEngine renderingEngine;
 
@@ -24,6 +23,7 @@ public class RenderThread extends Thread {
         this.setName("LJWGL-Thread");
     }
 
+    @Override
     public void run() {
 
     	while (!renderingEngine.isCloseRequest) {
