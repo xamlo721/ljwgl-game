@@ -62,17 +62,12 @@ public class PrimitiveScene implements IScene {
 	@Override
 	public void load() {		
 		
-		shaderProgram = new ShaderProgram();
-		shaderProgram.addVertexShader(vertexShaderSource);
-		shaderProgram.addFragmentShader(fragmentShaderSource);
-		shaderProgram.compileShader();
-
     	Vertex[] vertices = new Vertex[4];
     	int i = 0;
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, 0.0f), new Vec3f(-0.5f,  0.5f, 0.0f)); //V1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, 0.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V2
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, 0.0f), new Vec3f(-0.5f,  0.0f, 1.0f)); //V3
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, 0.0f), new Vec3f(-0.5f,  0.5f, 0.0f)); //V4
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -1.0f), new Vec3f(-0.5f,  0.1f, 1.0f)); //V1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -1.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V2
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -1.0f), new Vec3f(-0.5f,  0.0f, 1.0f)); //V3
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -1.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V4
 
     	int[] indices = new int[6]; 
     	indices[0] = 0;
@@ -91,13 +86,29 @@ public class PrimitiveScene implements IScene {
         
         //TODO: Разумеется камера не должна находиться внутри сцены
         camera = new PrimitiveCamera();
-        
+        //camera.setAspectRatio(480, 480);
+        camera.setFov((float) Math.toRadians(60.0f));
         projectionMatrix = new Matrix4f().perspective(
-        		camera.getFov(), 
-        		camera.getAspectRatio(),
-        	    camera.getNearDistance(), 
-        	    camera.getFarDistance()
-       );
+   		    camera.getFov(), 
+       		camera.getAspectRatio(),
+       	    camera.getNearDistance(), 
+       	    camera.getFarDistance()
+        		);
+      
+		shaderProgram = new ShaderProgram();
+		shaderProgram.addVertexShader(vertexShaderSource);
+		shaderProgram.addFragmentShader(fragmentShaderSource);
+		shaderProgram.compileShader();
+		shaderProgram.bind();
+		try {
+			shaderProgram.createUniform("projectionMatrix");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+      
+		shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+
+		shaderProgram.unbind();
         
         // clear the framebuffer
         glClearColor(0.0f, 1.0f, 0.0f, 1.0f);

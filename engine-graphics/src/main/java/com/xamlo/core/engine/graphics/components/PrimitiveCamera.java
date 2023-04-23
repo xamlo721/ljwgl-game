@@ -7,15 +7,15 @@ import ru.satomi.dc.primitive.Vec3f;
 
 public class PrimitiveCamera implements ICamera {
 
-	private static final float DEFAULT_NEAR_DISTANCE = 0.01f;
+	private static final float DEFAULT_NEAR_DISTANCE = 1.00f;
 	
 	private static final float DEFAULT_FAR_DISTANCE = 1000.0f;
 	
 	private static final float DEFAULT_FIELD_OF_VIEW = 60.0f;
 	 // пример соотношения сторон 16:9
-	private static final int   DEFAULT_CAMERA_WIDTH = 1920/2;
+	private static final int   DEFAULT_CAMERA_WIDTH = 1920;
 
-	private static final int   DEFAULT_CAMERA_HEIGHT = 1080/2;
+	private static final int   DEFAULT_CAMERA_HEIGHT = 1080;
 
 	/*
 	 * Позиция камеры в мире

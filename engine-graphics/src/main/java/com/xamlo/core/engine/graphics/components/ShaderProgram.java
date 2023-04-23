@@ -2,6 +2,12 @@ package com.xamlo.core.engine.graphics.components;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.nio.FloatBuffer;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.joml.Matrix4f;
+import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.opengl.GL45.*;
 
@@ -26,6 +32,8 @@ public class ShaderProgram {
 	private int tessellationControlShaderID;
 	private int tesselationEvaluationShaderID;
 	private int computeShaderID;
+
+	private final Map<String, Integer> uniforms = new HashMap<>();
 
 	/**
 	 * Статический метод для загрузки с диска файлов с шейдерами
@@ -195,6 +203,51 @@ public class ShaderProgram {
 		
 		System.out.println("Compile Shader program id: " + program);
 
+	}
+	
+
+	public void createUniform(String uniformName) throws Exception {
+	    int uniformLocation = glGetUniformLocation(program, uniformName);
+	    if (uniformLocation < 0) {
+	        throw new Exception("Could not find uniform:" + uniformName);
+	    }
+	    uniforms.put(uniformName, uniformLocation);
+	}
+
+	public void setUniform(String uniformName, Matrix4f value) {
+		
+	    // Dump the matrix into a float buffer
+	    try (MemoryStack stack = MemoryStack.stackPush()) {
+	        FloatBuffer fb = stack.mallocFloat(16);
+	        value.get(fb);
+	        
+			
+//			System.out.println("FloatBuffer matrix " + uniformName);
+//			System.out.println("{" + fb.get(0) + ", " + fb.get(1) + ", " + fb.get(2) + ", " + fb.get(3) + "}");
+//			System.out.println("{" + fb.get(4) + ", " + fb.get(5) + ", " + fb.get(6) + ", " + fb.get(7) + "}");
+//			System.out.println("{" + fb.get(8) + ", " + fb.get(9) + ", " + fb.get(10) + ", " + fb.get(11) + "}");
+//			System.out.println("{" + fb.get(12) + ", " + fb.get(13) + ", " + fb.get(14) + ", " + fb.get(15) + "}");
+
+	        glUniformMatrix4fv(uniforms.get(uniformName), false, fb);
+	        
+//			System.out.println("updating matrix " + uniformName);
+//			System.out.println("{" + value.m00() + ", " + value.m01() + ", " + value.m02() + ", " + value.m03() + "}");
+//			System.out.println("{" + value.m10() + ", " + value.m11() + ", " + value.m12() + ", " + value.m13() + "}");
+//			System.out.println("{" + value.m20() + ", " + value.m21() + ", " + value.m22() + ", " + value.m23() + "}");
+//			System.out.println("{" + value.m30() + ", " + value.m31() + ", " + value.m32() + ", " + value.m33() + "}");
+
+//			float[] arr = new float[16];
+//			glUseProgram(program);
+//			glGetUniformfv(this.program, uniforms.get(uniformName), arr);
+//			
+//			System.out.println("returned matrix " + uniformName);
+//			System.out.println("{" + arr[0] + ", " + arr[1] + ", " + arr[2] + ", " + arr[3] + "}");
+//			System.out.println("{" + arr[4] + ", " + arr[5] + ", " + arr[6] + ", " + arr[7] + "}");
+//			System.out.println("{" + arr[8] + ", " + arr[9] + ", " + arr[10] + ", " + arr[11] + "}");
+//			System.out.println("{" + arr[12] + ", " + arr[13] + ", " + arr[14] + ", " + arr[15] + "}");
+
+	    }
+	    
 	}
 	
 	/**
