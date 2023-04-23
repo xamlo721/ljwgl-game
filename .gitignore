@@ -1,2 +1,4 @@
 .metadata
 *.class
+*/.settings
+engine-graphics/target
