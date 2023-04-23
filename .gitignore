@@ -2,3 +2,7 @@
 *.class
 */.settings
 engine-graphics/target
+*/target
+*/target/
+*/target/*
+org.eclipse.jdt.core.prefs
