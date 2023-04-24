@@ -54,46 +54,83 @@ public class PrimitiveScene implements IScene {
 	
 	private ShaderProgram shaderProgram;
 	
-	private PrimitiveCamera camera;
-	
     private Matrix4f projectionMatrix;
 
+	@Override
+    public void tranformScene(Matrix4f transformMatrix) {
+    	this.projectionMatrix = transformMatrix;
+    }
 
 	@Override
 	public void load() {		
 		
-    	Vertex[] vertices = new Vertex[4];
+    	Vertex[] vertices = new Vertex[8];
     	int i = 0;
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -1.0f), new Vec3f(-0.5f,  0.1f, 1.0f)); //V1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -1.0f), new Vec3f(-0.1f,  0.1f, 1.0f)); //V1
     	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -1.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V2
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -1.0f), new Vec3f(-0.5f,  0.0f, 1.0f)); //V3
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -1.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V4
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -1.0f), new Vec3f(-1.0f,  0.0f, 1.0f)); //V3
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -1.0f), new Vec3f(-1.0f,  1.0f, 1.0f)); //V4
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -2.0f), new Vec3f(-0.1f,  0.1f, 1.0f)); //V1-1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -2.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V2-1
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -2.0f), new Vec3f(-1.0f,  0.0f, 1.0f)); //V3-1
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -2.0f), new Vec3f(-1.0f,  1.0f, 1.0f)); //V4-1
 
-    	int[] indices = new int[6]; 
-    	indices[0] = 0;
-    	indices[1] = 1;
-    	indices[2] = 3;
-    	indices[3] = 3;
-    	indices[4] = 1;
-    	indices[5] = 2;
-
+    	 i = 0;
+    	int[] indices = new int[36]; 
+    	//FACE
+    	indices[i++] = 0;
+    	indices[i++] = 1;
+    	indices[i++] = 3;
     	
+    	indices[i++] = 3;
+    	indices[i++] = 1;
+    	indices[i++] = 2;
+    	//LEFT
+    	indices[i++] = 0;
+    	indices[i++] = 1;
+    	indices[i++] = 5;
+    	
+    	indices[i++] = 0;
+    	indices[i++] = 4;
+    	indices[i++] = 5;
+    	//RIGHT
+    	indices[i++] = 3;
+    	indices[i++] = 2;
+    	indices[i++] = 7;
+    	
+    	indices[i++] = 2;
+    	indices[i++] = 6;
+    	indices[i++] = 7;
+    	//BEHIND
+    	indices[i++] = 4;
+    	indices[i++] = 5;
+    	indices[i++] = 7;
+    	
+    	indices[i++] = 7;
+    	indices[i++] = 5;
+    	indices[i++] = 6;
+    	///TOP
+    	indices[i++] = 0;
+    	indices[i++] = 3;
+    	indices[i++] = 4;
+    	
+    	indices[i++] = 3;
+    	indices[i++] = 7;
+    	indices[i++] = 4;
+    	///BUTTOM
+    	indices[i++] = 1;
+    	indices[i++] = 5;
+    	indices[i++] = 6;
+    	
+    	indices[i++] = 1;
+    	indices[i++] = 2;
+    	indices[i++] = 6;
         mesh = new Mesh(vertices, indices);
 
         //Рисовать рамку или заливать цветом - закомментировать, если хотим цвет
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-        
-        //TODO: Разумеется камера не должна находиться внутри сцены
-        camera = new PrimitiveCamera();
-        //camera.setAspectRatio(480, 480);
-        camera.setFov((float) Math.toRadians(60.0f));
-        projectionMatrix = new Matrix4f().perspective(
-   		    camera.getFov(), 
-       		camera.getAspectRatio(),
-       	    camera.getNearDistance(), 
-       	    camera.getFarDistance()
-        		);
+
       
 		shaderProgram = new ShaderProgram();
 		shaderProgram.addVertexShader(vertexShaderSource);
@@ -106,7 +143,6 @@ public class PrimitiveScene implements IScene {
 			e.printStackTrace();
 		}
       
-		shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
 		shaderProgram.unbind();
         
@@ -123,6 +159,9 @@ public class PrimitiveScene implements IScene {
 
 	    // Draw the vertices
 	    //glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
+		
+		//Теперь матрица преобразования обновляется каждый раз
+		shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
 		/**
 		 * mode: Задает примитивы для рендеринга, в данном случае треугольники. Здесь никаких изменений.
@@ -132,7 +171,6 @@ public class PrimitiveScene implements IScene {
 		 */
 		glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
 
-	    
 	    shaderProgram.unbind();
 
 	}

@@ -15,6 +15,9 @@ import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glFrontFace;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_SRGB;
+
+import org.joml.Matrix4f;
+
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glViewport;
 
@@ -25,6 +28,7 @@ import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
 import com.xamlo.core.engine.graphics.components.IScene;
+import com.xamlo.core.engine.graphics.components.PrimitiveCamera;
 import com.xamlo.core.engine.graphics.components.PrimitiveScene;
 import com.xamlo.core.engine.graphics.components.Window;
 
@@ -44,6 +48,8 @@ public class RenderEngine {
 	
 	private static final long NANOSECOND = 1000000000;
 	private static final long SECOND = 1;
+	private PrimitiveCamera camera;
+    private Matrix4f projectionMatrix;
 
 	public RenderEngine() {
 		this.isCloseRequest = false;
@@ -62,8 +68,21 @@ public class RenderEngine {
 		//Может вызываться перед инициализацией
 		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
+
+        
+        //TODO: Разумеется камера не должна находиться внутри сцены
+        camera = new PrimitiveCamera();
+        //camera.setAspectRatio(480, 480);
+        camera.setFov((float) Math.toRadians(60.0f));
         //camera.setPosition(new Vec3f(0.f, 0f, 0f));
 
+        projectionMatrix = new Matrix4f().perspective(
+       		    camera.getFov(), 
+           		camera.getAspectRatio(),
+           	    camera.getNearDistance(), 
+           	    camera.getFarDistance()
+        );
+          
 	}
 	
 	public void createWindow(int width, int height) {
@@ -185,6 +204,7 @@ public class RenderEngine {
 
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
+        scene.tranformScene(projectionMatrix);
 		// Вся логическая сцена
 		scene.renderFrame();
 		

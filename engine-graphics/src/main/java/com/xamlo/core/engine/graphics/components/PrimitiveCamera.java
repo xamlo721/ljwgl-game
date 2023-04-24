@@ -7,7 +7,7 @@ import ru.satomi.dc.primitive.Vec3f;
 
 public class PrimitiveCamera implements ICamera {
 
-	private static final float DEFAULT_NEAR_DISTANCE = 1.00f;
+	private static final float DEFAULT_NEAR_DISTANCE = 0.001f;
 	
 	private static final float DEFAULT_FAR_DISTANCE = 1000.0f;
 	

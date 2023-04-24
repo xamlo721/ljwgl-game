@@ -1,5 +1,6 @@
 package com.xamlo.core.engine.graphics.components;
 
+import org.joml.Matrix4f;
 
 /*
  * Интерфейс, описывающий правила в заимодействия с понятием "Сцена"
@@ -15,6 +16,8 @@ public interface IScene {
 	void load();
 
 	void renderFrame();
+	
+	void tranformScene(Matrix4f transformMatrix);
 	
 	void release();
 	
