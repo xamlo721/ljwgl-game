@@ -55,4 +55,9 @@ public interface IRenderable {
 	 */
 	public void release();
 	
+	/**
+	 * Самый главный метод - рисования на экране
+	 */
+	public void draw();
+	
 }

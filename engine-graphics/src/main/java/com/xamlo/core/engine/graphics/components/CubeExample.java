@@ -1,5 +1,9 @@
 package com.xamlo.core.engine.graphics.components;
 
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+
 import org.lwjglb.engine.graph.Mesh;
 
 import com.xamlo.core.engine.graphics.primitives.Vertex;
@@ -9,7 +13,7 @@ import ru.satomi.dc.primitive.Vec3f;
 public class CubeExample extends AbstractRenderableObject {
 
 	public CubeExample() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 	
 	@Override
@@ -17,14 +21,14 @@ public class CubeExample extends AbstractRenderableObject {
 
     	Vertex[] vertices = new Vertex[8];
     	int i = 0;
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -1.0f), new Vec3f(-0.1f,  0.1f, 1.0f)); //V1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -1.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V2
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -1.0f), new Vec3f(-1.0f,  0.0f, 1.0f)); //V3
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -1.0f), new Vec3f(-1.0f,  1.0f, 1.0f)); //V4
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -2.0f), new Vec3f(-0.1f,  0.1f, 1.0f)); //V1-1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -2.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V2-1
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -2.0f), new Vec3f(-1.0f,  0.0f, 1.0f)); //V3-1
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -2.0f), new Vec3f(-1.0f,  1.0f, 1.0f)); //V4-1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -1.0f), new Vec3f(0.1f,  0.1f, 1.0f)); //V1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -1.0f), new Vec3f(0.5f,  0.0f, 1.0f)); //V2
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -1.0f), new Vec3f(1.0f,  0.0f, 1.0f)); //V3
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -1.0f), new Vec3f(1.0f,  1.0f, 1.0f)); //V4
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -2.0f), new Vec3f(0.1f,  0.1f, 1.0f)); //V1-1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -2.0f), new Vec3f(0.5f,  1.0f, 1.0f)); //V2-1
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -2.0f), new Vec3f(1.0f,  0.0f, 1.0f)); //V3-1
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -2.0f), new Vec3f(1.0f,  1.0f, 1.0f)); //V4-1
 
     	i = 0;
     	int[] indices = new int[36]; 
@@ -83,8 +87,27 @@ public class CubeExample extends AbstractRenderableObject {
 	@Override
 	public void init() {
 		this.loadMesh();
-	}
 
+	}
+	
+	@Override
+	public void draw() {
+		this.mesh.bind();
+		
+	    // Draw the vertices
+	    //glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
+		
+
+		/**
+		 * mode: Задает примитивы для рендеринга, в данном случае треугольники. Здесь никаких изменений.
+		 * count: Указывает количество элементов, которые должны быть отрисованы.
+		 * type: Указывает тип значения в данных индексов. В данном случае мы используем целые числа.
+		 * indices: Задает смещение, которое необходимо применить к данным индексов для начала рендеринга.
+		 */
+		glDrawElements(GL_TRIANGLES, this.mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
+
+		
+	}
 	@Override
 	public void release() {
 		this.mesh.cleanup();
