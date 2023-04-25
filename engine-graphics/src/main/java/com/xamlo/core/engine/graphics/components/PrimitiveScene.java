@@ -9,6 +9,9 @@ import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_LINE;
 import static org.lwjgl.opengl.GL11.glPolygonMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PrimitiveScene implements IScene {
 	
 
@@ -20,7 +23,7 @@ public class PrimitiveScene implements IScene {
 	
 	private ShaderProgram shaderProgram;
 	    
-    private CubeExample cube;
+    private List<CubeExample> cubes;
 
     private Matrix4f projectionMatrix;
 
@@ -33,7 +36,7 @@ public class PrimitiveScene implements IScene {
 	public void load() {		
 		
         //Рисовать рамку или заливать цветом - закомментировать, если хотим цвет
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		shaderProgram = new ShaderProgram();
 		shaderProgram.addVertexShader(vertexShaderSource);
@@ -47,11 +50,23 @@ public class PrimitiveScene implements IScene {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		cube = new CubeExample();
+		cubes = new ArrayList<CubeExample>();
+		for (int i = 0; i < 100000; i++) {
+			CubeExample cube = new CubeExample();
+			cube.init();
+			cube.setPosition(new Vec3f(
+					((float)Math.random() - 0.5f) * 5, 
+					((float)Math.random() - 0.5f) * 5, 
+				   -((float)Math.random() % 100.0f + 5))
+			);
+			//cube.setPosition(new Vec3f( 0.1f,  0.1f, -1.0f));
+			cube.setScale(0.05f);
+			cubes.add(cube);
+		}
+
 		
-		cube.init();
-		cube.move(new Vec3f(0.0000f, 0.000f, -5.0f));
-		cube.setScale(0.25f);
+		
+		
 		shaderProgram.unbind();
         
         // clear the framebuffer
@@ -64,15 +79,20 @@ public class PrimitiveScene implements IScene {
         
 		shaderProgram.bind();
 		
-		//Теперь матрица преобразования обновляется каждый раз
-		shaderProgram.setUniform("worldMatrix", cube.getWorldMatrix());
-		
 		shaderProgram.setUniform("projectionMatrix", this.projectionMatrix);
 
-		cube.draw();
-		cube.rotate(new Vec3f(0.5f, 0.0f, 0.5f));
-		cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
-		cube.scale(0.999f);
+		
+
+		for (CubeExample cube : cubes) {
+			//Теперь матрица преобразования обновляется каждый раз
+			shaderProgram.setUniform("worldMatrix", cube.getWorldMatrix());
+			
+			cube.draw();
+			cube.rotate(new Vec3f((float)Math.random(), 0.0f, ((float)Math.random())));
+			//cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
+			//cube.scale(0.999f);
+		}
+
 		
 	    shaderProgram.unbind();
 
@@ -81,7 +101,9 @@ public class PrimitiveScene implements IScene {
 	@Override
 	public void release() {	    
 		shaderProgram.cleanup();	
-		cube.release();
+		for (CubeExample cube : cubes) {
+			cube.release();
+		}
 	}
 	
 
