@@ -21,14 +21,14 @@ public class CubeExample extends AbstractRenderableObject {
 
     	Vertex[] vertices = new Vertex[8];
     	int i = 0;
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -1.0f), new Vec3f(0.1f,  0.1f, 1.0f)); //V1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -1.0f), new Vec3f(0.5f,  0.0f, 1.0f)); //V2
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -1.0f), new Vec3f(1.0f,  0.0f, 1.0f)); //V3
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -1.0f), new Vec3f(1.0f,  1.0f, 1.0f)); //V4
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -2.0f), new Vec3f(0.1f,  0.1f, 1.0f)); //V1-1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -2.0f), new Vec3f(0.5f,  1.0f, 1.0f)); //V2-1
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -2.0f), new Vec3f(1.0f,  0.0f, 1.0f)); //V3-1
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -2.0f), new Vec3f(1.0f,  1.0f, 1.0f)); //V4-1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, 1.0f), new Vec3f(0.1f,  0.1f, 1.0f)); //V1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, 1.0f), new Vec3f(0.5f,  0.0f, 1.0f)); //V2
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, 1.0f), new Vec3f(1.0f,  0.0f, 1.0f)); //V3
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, 1.0f), new Vec3f(1.0f,  1.0f, 1.0f)); //V4
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -1.0f), new Vec3f(0.1f,  0.1f, 1.0f)); //V1-1
+    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -1.0f), new Vec3f(0.5f,  1.0f, 1.0f)); //V2-1
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -1.0f), new Vec3f(1.0f,  0.0f, 1.0f)); //V3-1
+    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -1.0f), new Vec3f(1.0f,  1.0f, 1.0f)); //V4-1
 
     	i = 0;
     	int[] indices = new int[36]; 
