@@ -44,7 +44,6 @@ import static org.lwjgl.opengl.GL20.GL_LINE;
 
 public class PrimitiveScene implements IScene {
 	
-	private Mesh mesh;
 
 	// Shaders
 	
@@ -55,6 +54,8 @@ public class PrimitiveScene implements IScene {
 	private ShaderProgram shaderProgram;
 	
     private Matrix4f projectionMatrix;
+    
+    private CubeExample cube;
 
 	@Override
     public void tranformScene(Matrix4f transformMatrix) {
@@ -64,74 +65,9 @@ public class PrimitiveScene implements IScene {
 	@Override
 	public void load() {		
 		
-    	Vertex[] vertices = new Vertex[8];
-    	int i = 0;
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -1.0f), new Vec3f(-0.1f,  0.1f, 1.0f)); //V1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -1.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V2
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -1.0f), new Vec3f(-1.0f,  0.0f, 1.0f)); //V3
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -1.0f), new Vec3f(-1.0f,  1.0f, 1.0f)); //V4
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -2.0f), new Vec3f(-0.1f,  0.1f, 1.0f)); //V1-1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -2.0f), new Vec3f(-0.5f,  0.0f, 0.0f)); //V2-1
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -2.0f), new Vec3f(-1.0f,  0.0f, 1.0f)); //V3-1
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -2.0f), new Vec3f(-1.0f,  1.0f, 1.0f)); //V4-1
-
-    	 i = 0;
-    	int[] indices = new int[36]; 
-    	//FACE
-    	indices[i++] = 0;
-    	indices[i++] = 1;
-    	indices[i++] = 3;
-    	
-    	indices[i++] = 3;
-    	indices[i++] = 1;
-    	indices[i++] = 2;
-    	//LEFT
-    	indices[i++] = 0;
-    	indices[i++] = 1;
-    	indices[i++] = 5;
-    	
-    	indices[i++] = 0;
-    	indices[i++] = 4;
-    	indices[i++] = 5;
-    	//RIGHT
-    	indices[i++] = 3;
-    	indices[i++] = 2;
-    	indices[i++] = 7;
-    	
-    	indices[i++] = 2;
-    	indices[i++] = 6;
-    	indices[i++] = 7;
-    	//BEHIND
-    	indices[i++] = 4;
-    	indices[i++] = 5;
-    	indices[i++] = 7;
-    	
-    	indices[i++] = 7;
-    	indices[i++] = 5;
-    	indices[i++] = 6;
-    	///TOP
-    	indices[i++] = 0;
-    	indices[i++] = 3;
-    	indices[i++] = 4;
-    	
-    	indices[i++] = 3;
-    	indices[i++] = 7;
-    	indices[i++] = 4;
-    	///BUTTOM
-    	indices[i++] = 1;
-    	indices[i++] = 5;
-    	indices[i++] = 6;
-    	
-    	indices[i++] = 1;
-    	indices[i++] = 2;
-    	indices[i++] = 6;
-        mesh = new Mesh(vertices, indices);
-
         //Рисовать рамку или заливать цветом - закомментировать, если хотим цвет
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-
-      
 		shaderProgram = new ShaderProgram();
 		shaderProgram.addVertexShader(vertexShaderSource);
 		shaderProgram.addFragmentShader(fragmentShaderSource);
@@ -142,8 +78,12 @@ public class PrimitiveScene implements IScene {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-      
-
+		cube = new CubeExample();
+		
+		cube.init();
+		
+		
+		
 		shaderProgram.unbind();
         
         // clear the framebuffer
@@ -155,7 +95,7 @@ public class PrimitiveScene implements IScene {
 	public void renderFrame() {
         
 		shaderProgram.bind();
-		mesh.bind();
+		cube.getMesh().bind();
 
 	    // Draw the vertices
 	    //glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
@@ -169,7 +109,7 @@ public class PrimitiveScene implements IScene {
 		 * type: Указывает тип значения в данных индексов. В данном случае мы используем целые числа.
 		 * indices: Задает смещение, которое необходимо применить к данным индексов для начала рендеринга.
 		 */
-		glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, cube.getMesh().getNumVertices(), GL_UNSIGNED_INT, 0);
 
 	    shaderProgram.unbind();
 
@@ -178,7 +118,7 @@ public class PrimitiveScene implements IScene {
 	@Override
 	public void release() {	    
 		shaderProgram.cleanup();	
-		mesh.cleanup();
+		cube.release();
 	}
 	
 
