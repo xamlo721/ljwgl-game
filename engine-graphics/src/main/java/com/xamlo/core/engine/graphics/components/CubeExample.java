@@ -12,6 +12,11 @@ import ru.satomi.dc.primitive.Vec3f;
 
 public class CubeExample extends AbstractRenderableObject {
 
+	/**
+	 * Сетка точек, описывающая объект
+	 */
+	protected static Mesh mesh;
+	
 	public CubeExample() {
 		super();
 	}
@@ -83,10 +88,17 @@ public class CubeExample extends AbstractRenderableObject {
         mesh = new Mesh(vertices, indices);
         
 	}
-
+	
+	@Override
+	public Mesh getMesh() {
+		return this.mesh;
+	}
+	
 	@Override
 	public void init() {
-		this.loadMesh();
+		if (mesh == null) {
+			this.loadMesh();
+		}
 
 	}
 	

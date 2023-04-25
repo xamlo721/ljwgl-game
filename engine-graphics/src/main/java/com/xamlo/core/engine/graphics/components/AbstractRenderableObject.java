@@ -45,10 +45,7 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 */
 	protected float scale;
 	
-	/**
-	 * Сетка точек, описывающая объект
-	 */
-	protected Mesh mesh;
+
 	
 	
 	public AbstractRenderableObject() {
@@ -107,9 +104,7 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 * Метод получения сетки объекта
 	 * @return Mesh объекта
 	 */
-	public Mesh getMesh() {
-		return this.mesh;
-	}
+	public abstract Mesh getMesh();
 	
 	public abstract void loadMesh();
 

@@ -51,7 +51,7 @@ public class PrimitiveScene implements IScene {
 			e.printStackTrace();
 		}
 		cubes = new ArrayList<CubeExample>();
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 100_000_000; i++) {
 			CubeExample cube = new CubeExample();
 			cube.init();
 			cube.setPosition(new Vec3f(
