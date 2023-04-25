@@ -70,7 +70,7 @@ public abstract class AbstractRenderableObject implements IRenderable {
 
 	@Override
 	public void scale(float scaleIndex) {
-		this.scale = scaleIndex;
+		this.scale = scale*scaleIndex;
 	}
 
 	@Override

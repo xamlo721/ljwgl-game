@@ -73,6 +73,7 @@ public class PrimitiveScene implements IScene {
 		
 		cube.rotate(new Vec3f(0.5f, 0.5f, 0.5f));
 		cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
+		cube.scale(0.95f);
 	    shaderProgram.unbind();
 
 	}
