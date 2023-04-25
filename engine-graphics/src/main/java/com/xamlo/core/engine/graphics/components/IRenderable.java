@@ -11,6 +11,7 @@ public interface IRenderable {
 	
 	/**
 	 * Подвинуть объект на вектор
+	 * относительно текущего расположения
 	 * [0] - x Coord
 	 * [1] - y Coord
 	 * [2] - z Coord
@@ -18,7 +19,8 @@ public interface IRenderable {
 	public void move(Vec3f vector);
 	
 	/**
-	 * Повернуть объект на вектор 
+	 * Повернуть объект на вектор
+	 * относительно текущего положения
 	 * [0] - yaw
 	 * [1] - pitch
 	 * [2] - roll
@@ -29,6 +31,28 @@ public interface IRenderable {
 	 * Изменить размер объекта в scale раз
 	 */
 	public void scale(float scaleIndex);
+	
+	/**
+	 * Установить объект на позицию
+	 * [0] - x Coord
+	 * [1] - y Coord
+	 * [2] - z Coord
+	 */
+	public void setPosition(Vec3f pos);
+	
+	/**
+	 * Установить положение объекта согласно вектору 
+	 * [0] - yaw
+	 * [1] - pitch
+	 * [2] - roll
+	 */
+	public void setRotation(Vec3f rot);
+
+	/**
+	 * Установить размер объекта
+	 */
+	public void setScale(float scaleIndex);
+	
 	
 	/**
 	 * Получение текущей позиции камеры

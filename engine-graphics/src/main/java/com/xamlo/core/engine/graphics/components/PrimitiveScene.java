@@ -51,7 +51,7 @@ public class PrimitiveScene implements IScene {
 		
 		cube.init();
 		cube.move(new Vec3f(0.0000f, 0.000f, -5.0f));
-
+		cube.setScale(0.25f);
 		shaderProgram.unbind();
         
         // clear the framebuffer
@@ -70,10 +70,10 @@ public class PrimitiveScene implements IScene {
 		shaderProgram.setUniform("projectionMatrix", this.projectionMatrix);
 
 		cube.draw();
-		
-		cube.rotate(new Vec3f(0.5f, 0.5f, 0.5f));
+		cube.rotate(new Vec3f(0.5f, 0.0f, 0.5f));
 		cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
-		cube.scale(0.95f);
+		cube.scale(0.999f);
+		
 	    shaderProgram.unbind();
 
 	}

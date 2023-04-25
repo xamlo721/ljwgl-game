@@ -72,6 +72,21 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	public void scale(float scaleIndex) {
 		this.scale = scale*scaleIndex;
 	}
+	
+	@Override
+	public void setPosition(Vec3f pos) {
+		this.position = pos;
+	}
+
+	@Override
+	public void setRotation(Vec3f rot) {
+		this.rotation = rot;
+	}
+
+	@Override
+	public void setScale(float scaleIndex) {
+		this.scale = scaleIndex;
+	}
 
 	@Override
 	public Vec3f getPosition() {
