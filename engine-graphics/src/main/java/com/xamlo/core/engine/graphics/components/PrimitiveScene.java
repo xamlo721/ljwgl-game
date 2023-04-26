@@ -35,7 +35,7 @@ public class PrimitiveScene implements IScene {
 	public void load() {		
 		
         //Рисовать рамку или заливать цветом - закомментировать, если хотим цвет
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		shaderProgram = new ShaderProgram();
 		shaderProgram.addVertexShader(vertexShaderSource);
@@ -50,7 +50,7 @@ public class PrimitiveScene implements IScene {
 			e.printStackTrace();
 		}
 		cubes = new ArrayList<AbstractRenderableObject>();
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 0; i++) {
 			CubeExample cube = new CubeExample();
 			cube.init();
 			cube.setPosition(new Vector3f(
@@ -62,9 +62,19 @@ public class PrimitiveScene implements IScene {
 			cube.setScale(0.05f);
 			cubes.add(cube);
 		}
-
 		
-		
+		for (int i = 0; i < 1_000_000; i++) {
+			BigCubeExample big = new BigCubeExample();
+			big.init();
+			big.setPosition(new Vector3f(
+					((float)Math.random() - 0.5f) * 25, 
+					((float)Math.random() - 0.5f) * 25, 
+				   -((float)Math.random() % 100.0f + 35))
+			);
+			//cube.setPosition(new Vec3f( 0.1f,  0.1f, -1.0f));
+			big.setScale(0.25f);
+			cubes.add(big);
+		}
 		
 		shaderProgram.unbind();
         
@@ -89,7 +99,7 @@ public class PrimitiveScene implements IScene {
 			cube.draw();
 			cube.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
 			//cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
-			//cube.scale(0.999f);
+			cube.scale(0.999f);
 		}
 
 		
