@@ -1,6 +1,6 @@
 package ru.satomi.dc.primitive;
 
-public class TriandgleMesh extends Mesh {
+public class TriandgleMesh extends PhysicalMesh {
 	
 	public Face3i faces[];
 	

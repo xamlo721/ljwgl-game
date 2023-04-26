@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 
 import org.joml.Vector3f;
-import org.lwjglb.engine.graph.Mesh;
+import org.lwjglb.engine.graph.GraphicalMesh;
 
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 
@@ -14,7 +14,7 @@ public class CubeExample extends AbstractRenderableObject {
 	/**
 	 * Сетка точек, описывающая объект
 	 */
-	protected static Mesh mesh;
+	protected static GraphicalMesh mesh;
 	
 	public CubeExample() {
 		super();
@@ -84,12 +84,12 @@ public class CubeExample extends AbstractRenderableObject {
     	indices[i++] = 1;
     	indices[i++] = 2;
     	indices[i++] = 6;
-        mesh = new Mesh(vertices, indices);
+        mesh = new GraphicalMesh(vertices, indices);
         
 	}
 	
 	@Override
-	public Mesh getMesh() {
+	public GraphicalMesh getMesh() {
 		return this.mesh;
 	}
 	

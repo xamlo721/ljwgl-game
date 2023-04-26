@@ -2,7 +2,7 @@ package com.xamlo.core.engine.graphics.components;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjglb.engine.graph.Mesh;
+import org.lwjglb.engine.graph.GraphicalMesh;
 
 
 public abstract class AbstractRenderableObject implements IRenderable {
@@ -102,7 +102,7 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 * Метод получения сетки объекта
 	 * @return Mesh объекта
 	 */
-	public abstract Mesh getMesh();
+	public abstract GraphicalMesh getMesh();
 	
 	public abstract void loadMesh();
 

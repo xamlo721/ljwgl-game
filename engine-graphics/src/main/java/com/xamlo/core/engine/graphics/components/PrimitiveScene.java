@@ -22,7 +22,7 @@ public class PrimitiveScene implements IScene {
 	
 	private ShaderProgram shaderProgram;
 	    
-    private List<CubeExample> cubes;
+    private List<AbstractRenderableObject> cubes;
 
     private Matrix4f projectionMatrix;
 
@@ -49,8 +49,8 @@ public class PrimitiveScene implements IScene {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		cubes = new ArrayList<CubeExample>();
-		for (int i = 0; i < 1_000_000; i++) {
+		cubes = new ArrayList<AbstractRenderableObject>();
+		for (int i = 0; i < 1; i++) {
 			CubeExample cube = new CubeExample();
 			cube.init();
 			cube.setPosition(new Vector3f(
@@ -82,7 +82,7 @@ public class PrimitiveScene implements IScene {
 
 		
 
-		for (CubeExample cube : cubes) {
+		for (AbstractRenderableObject cube : cubes) {
 			//Теперь матрица преобразования обновляется каждый раз
 			shaderProgram.setUniform("worldMatrix", cube.getWorldMatrix());
 			
@@ -100,7 +100,7 @@ public class PrimitiveScene implements IScene {
 	@Override
 	public void release() {	    
 		shaderProgram.cleanup();	
-		for (CubeExample cube : cubes) {
+		for (AbstractRenderableObject cube : cubes) {
 			cube.release();
 		}
 	}

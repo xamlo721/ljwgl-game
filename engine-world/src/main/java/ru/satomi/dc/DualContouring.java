@@ -54,7 +54,7 @@ public class DualContouring {
 				    double v1 = value[i][j][k];
 				    double v2 = value[i][j][k+1];
 				    
-				    //Если 2 красные точки соединены, мы рисуем красную линию
+				    //пїЅпїЅпїЅпїЅ 2 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 				    if(v1 * v2 < 0) {
 				    	
 						double x1 = minP.x + k*iX;
@@ -195,7 +195,7 @@ public class DualContouring {
 						    continue;
 				    	}
 						
-						//Нормировать
+						//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 						faceNormale.x = (double)(faceNormale.x/len);
 						faceNormale.y = (double)(faceNormale.y/len);
 						faceNormale.z = (double)(faceNormale.z/len);
@@ -231,7 +231,7 @@ public class DualContouring {
 		    }
 		}
 		
-		//Станная процедура
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		for(int i=0; i < mesh.vertexs.size(); i++) {
 			
 		    if(mesh.degree[i] == 0) {
@@ -309,10 +309,10 @@ public class DualContouring {
 		fN *= 2;
 	
 		// creates a mesh of triangles for output: ply2, povray, stl
-		TriandgleMesh t_mesh = new TriandgleMesh(mesh.vertex_N);
+		TriandgleMesh t_mesh = new TriandgleMesh(mesh.verticesCount);
 		t_mesh.setFaceN(fN);
 		
-		for(i=0;i<mesh.vertex_N;i++){
+		for(i=0;i<mesh.verticesCount;i++){
 		    t_mesh.vertexs.add(i, mesh.vertexs.get(i));
 		}
 		

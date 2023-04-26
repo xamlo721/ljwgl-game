@@ -3,31 +3,31 @@ package org.lwjglb.engine.graph;
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexArrayObject;
 
-public class Mesh {
+import ru.satomi.dc.primitive.PhysicalMesh;
+
+public class GraphicalMesh extends PhysicalMesh {
 	
-	///Количество вершин в Меше
-    private int numVertices;
-    
+
     //Объект, хранящий в себе копию памяти VRAM
     //И правильные способы работы с ней
     private VertexArrayObject vao;
     
-    public Mesh(Vertex[] vertices) {
+    public GraphicalMesh(Vertex[] vertices) {
+    	super(vertices.length);
     	vao = new VertexArrayObject(vertices);
     	vao.allocMemory(0);
-        this.numVertices = vertices.length;
     }
     
-    public Mesh(Vertex[] vertices, int[] indices) {
+    public GraphicalMesh(Vertex[] vertices, int[] indices) {
+    	super(vertices.length);
     	vao = new VertexArrayObject(vertices, indices);
     	vao.allocMemory(0);
-        this.numVertices = indices.length;
+        this.verticesCount = indices.length;
     }
     
     public void bind() {
     	vao.bind();
     }
-
     
     public void unbind() {
     	vao.unbind();
@@ -38,7 +38,7 @@ public class Mesh {
     }
 
     public int getNumVertices() {
-        return numVertices;
+        return this.verticesCount;
     }
 
 }
