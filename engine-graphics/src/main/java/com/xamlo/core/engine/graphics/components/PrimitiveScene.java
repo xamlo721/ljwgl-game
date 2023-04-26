@@ -1,8 +1,7 @@
 package com.xamlo.core.engine.graphics.components;
 
 import org.joml.Matrix4f;
-
-import ru.satomi.dc.primitive.Vec3f;
+import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
@@ -51,10 +50,10 @@ public class PrimitiveScene implements IScene {
 			e.printStackTrace();
 		}
 		cubes = new ArrayList<CubeExample>();
-		for (int i = 0; i < 100_000_000; i++) {
+		for (int i = 0; i < 1_000_000; i++) {
 			CubeExample cube = new CubeExample();
 			cube.init();
-			cube.setPosition(new Vec3f(
+			cube.setPosition(new Vector3f(
 					((float)Math.random() - 0.5f) * 5, 
 					((float)Math.random() - 0.5f) * 5, 
 				   -((float)Math.random() % 100.0f + 5))
@@ -88,7 +87,7 @@ public class PrimitiveScene implements IScene {
 			shaderProgram.setUniform("worldMatrix", cube.getWorldMatrix());
 			
 			cube.draw();
-			cube.rotate(new Vec3f((float)Math.random(), 0.0f, ((float)Math.random())));
+			cube.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
 			//cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
 			//cube.scale(0.999f);
 		}

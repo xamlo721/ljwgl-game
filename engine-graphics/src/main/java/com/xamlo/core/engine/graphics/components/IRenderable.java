@@ -1,6 +1,6 @@
 package com.xamlo.core.engine.graphics.components;
 
-import ru.satomi.dc.primitive.Vec3f;
+import org.joml.Vector3f;
 
 public interface IRenderable {
 
@@ -16,7 +16,7 @@ public interface IRenderable {
 	 * [1] - y Coord
 	 * [2] - z Coord
 	 */
-	public void move(Vec3f vector);
+	public void move(Vector3f vector);
 	
 	/**
 	 * Повернуть объект на вектор
@@ -25,7 +25,7 @@ public interface IRenderable {
 	 * [1] - pitch
 	 * [2] - roll
 	 */
-	public void rotate(Vec3f vector);
+	public void rotate(Vector3f vector);
 
 	/**
 	 * Изменить размер объекта в scale раз
@@ -38,7 +38,7 @@ public interface IRenderable {
 	 * [1] - y Coord
 	 * [2] - z Coord
 	 */
-	public void setPosition(Vec3f pos);
+	public void setPosition(Vector3f pos);
 	
 	/**
 	 * Установить положение объекта согласно вектору 
@@ -46,7 +46,7 @@ public interface IRenderable {
 	 * [1] - pitch
 	 * [2] - roll
 	 */
-	public void setRotation(Vec3f rot);
+	public void setRotation(Vector3f rot);
 
 	/**
 	 * Установить размер объекта
@@ -60,14 +60,14 @@ public interface IRenderable {
 	 * [1] - y Coord
 	 * [2] - z Coord
 	 */
-	public Vec3f getPosition();
+	public Vector3f getPosition();
 	/**
 	 * Получение текущего угла поворота камеры
 	 * [0] - yaw
 	 * [1] - pitch
 	 * [2] - roll
 	 */
-	public Vec3f getRotation();
+	public Vector3f getRotation();
 	
 	/**
 	 * Получить текущий масштаб

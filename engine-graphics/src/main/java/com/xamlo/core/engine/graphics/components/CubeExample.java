@@ -4,11 +4,10 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 
+import org.joml.Vector3f;
 import org.lwjglb.engine.graph.Mesh;
 
 import com.xamlo.core.engine.graphics.primitives.Vertex;
-
-import ru.satomi.dc.primitive.Vec3f;
 
 public class CubeExample extends AbstractRenderableObject {
 
@@ -26,14 +25,14 @@ public class CubeExample extends AbstractRenderableObject {
 
     	Vertex[] vertices = new Vertex[8];
     	int i = 0;
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, 1.0f), new Vec3f(0.1f,  0.1f, 1.0f)); //V1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, 1.0f), new Vec3f(0.5f,  0.0f, 1.0f)); //V2
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, 1.0f), new Vec3f(1.0f,  0.0f, 1.0f)); //V3
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, 1.0f), new Vec3f(1.0f,  1.0f, 1.0f)); //V4
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f,  0.5f, -1.0f), new Vec3f(0.1f,  0.1f, 1.0f)); //V1-1
-    	vertices[i++] = new Vertex(new Vec3f(-0.5f, -0.5f, -1.0f), new Vec3f(0.5f,  1.0f, 1.0f)); //V2-1
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f, -0.5f, -1.0f), new Vec3f(1.0f,  0.0f, 1.0f)); //V3-1
-    	vertices[i++] = new Vertex(new Vec3f( 0.5f,  0.5f, -1.0f), new Vec3f(1.0f,  1.0f, 1.0f)); //V4-1
+    	vertices[i++] = new Vertex(new Vector3f(-0.5f,  0.5f, 1.0f), new Vector3f(0.1f,  0.1f, 1.0f)); //V1
+    	vertices[i++] = new Vertex(new Vector3f(-0.5f, -0.5f, 1.0f), new Vector3f(0.5f,  0.0f, 1.0f)); //V2
+    	vertices[i++] = new Vertex(new Vector3f( 0.5f, -0.5f, 1.0f), new Vector3f(1.0f,  0.0f, 1.0f)); //V3
+    	vertices[i++] = new Vertex(new Vector3f( 0.5f,  0.5f, 1.0f), new Vector3f(1.0f,  1.0f, 1.0f)); //V4
+    	vertices[i++] = new Vertex(new Vector3f(-0.5f,  0.5f, -1.0f), new Vector3f(0.1f,  0.1f, 1.0f)); //V1-1
+    	vertices[i++] = new Vertex(new Vector3f(-0.5f, -0.5f, -1.0f), new Vector3f(0.5f,  1.0f, 1.0f)); //V2-1
+    	vertices[i++] = new Vertex(new Vector3f( 0.5f, -0.5f, -1.0f), new Vector3f(1.0f,  0.0f, 1.0f)); //V3-1
+    	vertices[i++] = new Vertex(new Vector3f( 0.5f,  0.5f, -1.0f), new Vector3f(1.0f,  1.0f, 1.0f)); //V4-1
 
     	i = 0;
     	int[] indices = new int[36]; 

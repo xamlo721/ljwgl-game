@@ -58,20 +58,20 @@ public class VertexArrayObject implements IBufferObject {
 		
 		for (int i = 0; i < vertices.length; i++) {
 			Vertex v  = vertices[i];
-			coordsData[i*3 + 0] = v.getPos().X; //FIXME: Magic number
-			coordsData[i*3 + 1] = v.getPos().Y; //FIXME: Magic number
-			coordsData[i*3 + 2] = v.getPos().Z; //FIXME: Magic number
+			coordsData[i*3 + 0] = v.getPos().x; //FIXME: Magic number
+			coordsData[i*3 + 1] = v.getPos().y; //FIXME: Magic number
+			coordsData[i*3 + 2] = v.getPos().z; //FIXME: Magic number
 			
-			normalesData[i*3 + 0] = v.getNormal().X; //FIXME: Magic number
-			normalesData[i*3 + 1] = v.getNormal().Y; //FIXME: Magic number
-			normalesData[i*3 + 2] = v.getNormal().Z; //FIXME: Magic number
+			normalesData[i*3 + 0] = v.getNormal().x; //FIXME: Magic number
+			normalesData[i*3 + 1] = v.getNormal().y; //FIXME: Magic number
+			normalesData[i*3 + 2] = v.getNormal().z; //FIXME: Magic number
 			
-			colorsData[i*3 + 0] = v.getColor().X; //FIXME: Magic number
-			colorsData[i*3 + 1] = v.getColor().Y; //FIXME: Magic number
-			colorsData[i*3 + 2] = v.getColor().Z; //FIXME: Magic number
+			colorsData[i*3 + 0] = v.getColor().x; //FIXME: Magic number
+			colorsData[i*3 + 1] = v.getColor().y; //FIXME: Magic number
+			colorsData[i*3 + 2] = v.getColor().z; //FIXME: Magic number
 			
-			textureData[i*2 + 0] = v.getTextureCoord().X; //FIXME: Magic number
-			textureData[i*2 + 1] = v.getTextureCoord().Y; //FIXME: Magic number
+			textureData[i*2 + 0] = v.getTextureCoord().x; //FIXME: Magic number
+			textureData[i*2 + 1] = v.getTextureCoord().y; //FIXME: Magic number
 		}
         
 		coordsVBuffer = new VertexBufferObject(coordsData);
@@ -100,20 +100,20 @@ public class VertexArrayObject implements IBufferObject {
 
 		for (int i = 0; i < vertices.length; i++) {
 			Vertex v  = vertices[i];
-			coordsData[i*3 + 0] = v.getPos().X; //FIXME: Magic number
-			coordsData[i*3 + 1] = v.getPos().Y; //FIXME: Magic number
-			coordsData[i*3 + 2] = v.getPos().Z; //FIXME: Magic number
+			coordsData[i*3 + 0] = v.getPos().x; //FIXME: Magic number
+			coordsData[i*3 + 1] = v.getPos().y; //FIXME: Magic number
+			coordsData[i*3 + 2] = v.getPos().z; //FIXME: Magic number
 			
-			normalesData[i*3 + 0] = v.getNormal().X; //FIXME: Magic number
-			normalesData[i*3 + 1] = v.getNormal().Y; //FIXME: Magic number
-			normalesData[i*3 + 2] = v.getNormal().Z; //FIXME: Magic number
+			normalesData[i*3 + 0] = v.getNormal().x; //FIXME: Magic number
+			normalesData[i*3 + 1] = v.getNormal().y; //FIXME: Magic number
+			normalesData[i*3 + 2] = v.getNormal().z; //FIXME: Magic number
 			
-			colorsData[i*3 + 0] = v.getColor().X; //FIXME: Magic number
-			colorsData[i*3 + 1] = v.getColor().Y; //FIXME: Magic number
-			colorsData[i*3 + 2] = v.getColor().Z; //FIXME: Magic number
+			colorsData[i*3 + 0] = v.getColor().x; //FIXME: Magic number
+			colorsData[i*3 + 1] = v.getColor().y; //FIXME: Magic number
+			colorsData[i*3 + 2] = v.getColor().z; //FIXME: Magic number
 			
-			textureData[i*2 + 0] = v.getTextureCoord().X; //FIXME: Magic number
-			textureData[i*2 + 1] = v.getTextureCoord().Y; //FIXME: Magic number
+			textureData[i*2 + 0] = v.getTextureCoord().x; //FIXME: Magic number
+			textureData[i*2 + 1] = v.getTextureCoord().y; //FIXME: Magic number
 		}
         
 		coordsVBuffer = new VertexBufferObject(coordsData);

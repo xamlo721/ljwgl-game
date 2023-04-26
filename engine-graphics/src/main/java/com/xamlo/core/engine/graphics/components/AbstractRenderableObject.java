@@ -2,10 +2,8 @@ package com.xamlo.core.engine.graphics.components;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 import org.lwjglb.engine.graph.Mesh;
 
-import ru.satomi.dc.primitive.Vec3f;
 
 public abstract class AbstractRenderableObject implements IRenderable {
 	
@@ -30,7 +28,7 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 * [1] - y Coord
 	 * [2] - z Coord
 	 */
-    protected Vec3f position;
+    protected Vector3f position;
 	
 	/*
 	 * Поворот камеры в мире
@@ -38,7 +36,7 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 * [1] - pitch
 	 * [2] - roll
 	 */
-	protected Vec3f rotation;
+	protected Vector3f rotation;
 	
 	/**
 	 * Масштаб объекта
@@ -49,18 +47,18 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	
 	
 	public AbstractRenderableObject() {
-		this.position = new Vec3f(0.0f, 0.0f, 0.0f);
-		this.rotation = new Vec3f(0.0f, 0.0f, 0.0f);
+		this.position = new Vector3f(0.0f, 0.0f, 0.0f);
+		this.rotation = new Vector3f(0.0f, 0.0f, 0.0f);
 		this.scale = 1.0f;
 	}
 
 	@Override
-	public void move(Vec3f vector) {
+	public void move(Vector3f vector) {
 		this.position = this.position.add(vector);		
 	}
 	
 	@Override
-	public void rotate(Vec3f vector) {
+	public void rotate(Vector3f vector) {
 		this.rotation = this.rotation.add(vector);
 
 	}
@@ -71,12 +69,12 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	}
 	
 	@Override
-	public void setPosition(Vec3f pos) {
+	public void setPosition(Vector3f pos) {
 		this.position = pos;
 	}
 
 	@Override
-	public void setRotation(Vec3f rot) {
+	public void setRotation(Vector3f rot) {
 		this.rotation = rot;
 	}
 
@@ -86,12 +84,12 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	}
 
 	@Override
-	public Vec3f getPosition() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
 	@Override
-	public Vec3f getRotation() {
+	public Vector3f getRotation() {
 		return rotation;
 	}
 
@@ -115,11 +113,11 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 * @param scale - масштаб объекта
 	 * @return Матрица преобразования объекта в мировые координаты
 	 */
-    public Matrix4f getWorldMatrix(Vec3f offset, Vec3f rotation, float scale) {
-        worldMatrix.identity().translate(new Vector3f(offset.X, offset.Y, offset.Z)).
-                rotateX((float)Math.toRadians(rotation.X)).
-                rotateY((float)Math.toRadians(rotation.Y)).
-                rotateZ((float)Math.toRadians(rotation.Z)).
+    public Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, float scale) {
+        worldMatrix.identity().translate(offset).
+                rotateX((float)Math.toRadians(rotation.x)).
+                rotateY((float)Math.toRadians(rotation.y)).
+                rotateZ((float)Math.toRadians(rotation.z)).
                 scale(scale);
         return worldMatrix;
     }
@@ -131,10 +129,10 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 * @return Матрица преобразования объекта в мировые координаты
 	 */
     public Matrix4f getWorldMatrix() {
-        worldMatrix.identity().translate(new Vector3f(this.position.X, this.position.Y, this.position.Z)).
-                rotateX((float)Math.toRadians(rotation.X)).
-                rotateY((float)Math.toRadians(rotation.Y)).
-                rotateZ((float)Math.toRadians(rotation.Z)).
+        worldMatrix.identity().translate(position).
+                rotateX((float)Math.toRadians(rotation.x)).
+                rotateY((float)Math.toRadians(rotation.y)).
+                rotateZ((float)Math.toRadians(rotation.z)).
                 scale(scale);
         
 //		System.out.println("updating world matrix for rot" + this.rotation.X + ", " + this.rotation.Y + ", " + this.rotation.Z);

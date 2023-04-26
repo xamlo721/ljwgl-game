@@ -1,5 +1,6 @@
 package ru.satomi.dc.primitive;
 
+import org.joml.Vector3f;
 
 public class Quaternion {
 
@@ -15,10 +16,10 @@ public class Quaternion {
 		this.setW(w);
 	}
 	
-	public Quaternion(Vec3f v, float w){
-		this.setX(v.getX());
-		this.setY(v.getY());
-		this.setZ(v.getZ());
+	public Quaternion(Vector3f v, float w){
+		this.setX(v.x);
+		this.setY(v.y);
+		this.setZ(v.z);
 		this.setW(w);
 	}
 	
@@ -46,20 +47,20 @@ public class Quaternion {
 	
 	public Quaternion mul(Quaternion r)
 	{
-		float w_ = w * r.getW() - x * r.getX() - y * r.getY() - z * r.getZ();
-		float x_ = x * r.getW() + w * r.getX() + y * r.getZ() - z * r.getY();
-		float y_ = y * r.getW() + w * r.getY() + z * r.getX() - x * r.getZ();
-		float z_ = z * r.getW() + w * r.getZ() + x * r.getY() - y * r.getX();
+		float w_ = w * r.getW() - x * r.x - y * r.y - z * r.z;
+		float x_ = x * r.getW() + w * r.x + y * r.z - z * r.y;
+		float y_ = y * r.getW() + w * r.y + z * r.x - x * r.z;
+		float z_ = z * r.getW() + w * r.z + x * r.y - y * r.x;
 
 		return new Quaternion(x_, y_, z_, w_);
 	}
 
-	public Quaternion mul(Vec3f r)
+	public Quaternion mul(Vector3f r)
 	{
-		float w_ = -x * r.getX() - y * r.getY() - z * r.getZ();
-		float x_ =  w * r.getX() + y * r.getZ() - z * r.getY();
-		float y_ =  w * r.getY() + z * r.getX() - x * r.getZ();
-		float z_ =  w * r.getZ() + x * r.getY() - y * r.getX();
+		float w_ = -x * r.x - y * r.y - z * r.z;
+		float x_ =  w * r.x + y * r.z - z * r.y;
+		float y_ =  w * r.y + z * r.x - x * r.z;
+		float z_ =  w * r.z + x * r.y - y * r.x;
 
 		return new Quaternion(x_, y_, z_, w_);
 	}
@@ -85,23 +86,23 @@ public class Quaternion {
 	public Quaternion sub(Quaternion r)
 	{
 		float w_ = w - r.getW();
-		float x_ = x - r.getX();
-		float y_ = y - r.getY();
-		float z_ = z - r.getZ();
+		float x_ = x - r.x;
+		float y_ = y - r.y;
+		float z_ = z - r.z;
 		return new Quaternion(x_, y_, z_, w_);
 	}
 	
 	public Quaternion add(Quaternion r)
 	{
 		float w_ = w + r.getW();
-		float x_ = x + r.getX();
-		float y_ = y + r.getY();
-		float z_ = z + r.getZ();
+		float x_ = x + r.x;
+		float y_ = y + r.y;
+		float z_ = z + r.z;
 		return new Quaternion(x_, y_, z_, w_);
 	}
 	
-	public Vec3f xyz(){
-		return new Vec3f(x,y,z);
+	public Vector3f xyz(){
+		return new Vector3f(x,y,z);
 	}
 	
 	public String toString()

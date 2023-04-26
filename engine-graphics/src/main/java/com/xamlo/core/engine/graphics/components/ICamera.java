@@ -1,6 +1,6 @@
 package com.xamlo.core.engine.graphics.components;
 
-import ru.satomi.dc.primitive.Vec3f;
+import org.joml.Vector3f;
 
 /*
  * Интерфейс для описания камер
@@ -15,7 +15,7 @@ public interface ICamera {
 	 * [1] - pitch
 	 * [2] - roll
 	 */
-	public void rotate(Vec3f vector);
+	public void rotate(Vector3f vector);
 	
 	/**
 	 * Подвинуть камеру
@@ -23,7 +23,7 @@ public interface ICamera {
 	 * [1] - y Coord
 	 * [2] - z Coord
 	 */
-	public void move(Vec3f vector);
+	public void move(Vector3f vector);
 	
 	/**
 	 * Получение текущей позиции камеры
@@ -31,14 +31,14 @@ public interface ICamera {
 	 * [1] - y Coord
 	 * [2] - z Coord
 	 */
-	public Vec3f getPosition();
+	public Vector3f getPosition();
 	/**
 	 * Получение текущего угла поворота камеры
 	 * [0] - yaw
 	 * [1] - pitch
 	 * [2] - roll
 	 */
-	public Vec3f getRotation();
+	public Vector3f getRotation();
 	
 	/**
 	 * Получение угла обора (Fiel Of Vief) в градусах

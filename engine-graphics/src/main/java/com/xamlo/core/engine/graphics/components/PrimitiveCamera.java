@@ -1,9 +1,7 @@
 package com.xamlo.core.engine.graphics.components;
 
+import org.joml.Vector3f;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
-import ru.satomi.dc.primitive.Vec3f;
 
 public class PrimitiveCamera implements ICamera {
 
@@ -23,7 +21,7 @@ public class PrimitiveCamera implements ICamera {
 	 * [1] - y Coord
 	 * [2] - z Coord
 	 */
-	private Vec3f position;
+	private Vector3f position;
 	
 	/*
 	 * Поворот камеры в мире
@@ -31,7 +29,7 @@ public class PrimitiveCamera implements ICamera {
 	 * [1] - pitch
 	 * [2] - roll
 	 */
-	private Vec3f rotation;
+	private Vector3f rotation;
 	
 	/*
 	 * Угол обзора (FOV = Field of view) в градусах
@@ -61,17 +59,17 @@ public class PrimitiveCamera implements ICamera {
 	public Matrix4f getViewMatrix() {
 	    Matrix4f viewMatrix = new Matrix4f();
 	    viewMatrix.setIdentity();
-	    viewMatrix.rotate((float) Math.toRadians(rotation.X), new Vector3f(1, 0, 0));
-	    viewMatrix.rotate((float) Math.toRadians(rotation.Y), new Vector3f(0, 1, 0));
-	    viewMatrix.rotate((float) Math.toRadians(rotation.Z), new Vector3f(0, 0, 1));
-	    viewMatrix.translate(new Vector3f(-position.X, -position.Y, -position.Z));
+	    viewMatrix.rotate((float) Math.toRadians(rotation.x), new org.lwjgl.util.vector.Vector3f(1, 0, 0));
+	    viewMatrix.rotate((float) Math.toRadians(rotation.y), new org.lwjgl.util.vector.Vector3f(0, 1, 0));
+	    viewMatrix.rotate((float) Math.toRadians(rotation.z), new org.lwjgl.util.vector.Vector3f(0, 0, 1));
+	    viewMatrix.translate(new org.lwjgl.util.vector.Vector3f(-position.x, -position.y, -position.z));
 	    return viewMatrix;
 	}
 	
 	
 	public PrimitiveCamera() {
-		this.position = new Vec3f(0, 0, 0);
-		this.rotation = new Vec3f(0, 0, 0);
+		this.position = new Vector3f(0, 0, 0);
+		this.rotation = new Vector3f(0, 0, 0);
 	    this.fov = DEFAULT_FIELD_OF_VIEW;
 	    this.aspectRatio = DEFAULT_CAMERA_WIDTH / DEFAULT_CAMERA_HEIGHT;
 	    this.near = DEFAULT_NEAR_DISTANCE;
@@ -79,7 +77,7 @@ public class PrimitiveCamera implements ICamera {
 	
 	}
 	
-	public PrimitiveCamera(Vec3f pos, Vec3f rotation, float fov, float aspectRatio) {
+	public PrimitiveCamera(Vector3f pos, Vector3f rotation, float fov, float aspectRatio) {
 		//TODO: Валидация параметров
 		this.position = pos;
 		this.rotation = rotation;
@@ -90,22 +88,22 @@ public class PrimitiveCamera implements ICamera {
 	}
 
 	@Override
-	public void rotate(Vec3f vector) {
+	public void rotate(Vector3f vector) {
 		this.rotation.add(vector);
 	}
 
 	@Override
-	public void move(Vec3f vector) {
-		this.position.add(vector);		
+	public void move(Vector3f vector) {
+		this.position.add(vector.x, vector.y, vector.z);		
 	}
 
 	@Override
-	public Vec3f getPosition() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
 	@Override
-	public Vec3f getRotation() {
+	public Vector3f getRotation() {
 		return rotation;
 	}
 	

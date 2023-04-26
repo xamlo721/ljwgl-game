@@ -32,8 +32,6 @@ import com.xamlo.core.engine.graphics.components.PrimitiveCamera;
 import com.xamlo.core.engine.graphics.components.PrimitiveScene;
 import com.xamlo.core.engine.graphics.components.Window;
 
-import ru.satomi.dc.primitive.Vec3f;
-
 
 public class RenderEngine {
 	
