@@ -1,5 +1,7 @@
 package org.lwjglb.engine.graph;
 
+import com.xamlo.core.engine.graphics.components.Texture;//FIXME: Я уверен, что это не должно здесь находится
+
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexArrayObject;
 
@@ -21,6 +23,13 @@ public class GraphicalMesh extends PhysicalMesh {
     public GraphicalMesh(Vertex[] vertices, int[] indices) {
     	super(vertices.length);
     	vao = new VertexArrayObject(vertices, indices);
+    	vao.allocMemory(0);
+        this.verticesCount = indices.length;
+    }
+    
+    public GraphicalMesh(Vertex[] vertices, int[] indices, Texture texture) {
+    	super(vertices.length);
+    	vao = new VertexArrayObject(vertices, indices, texture);
     	vao.allocMemory(0);
         this.verticesCount = indices.length;
     }

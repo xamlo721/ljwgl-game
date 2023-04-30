@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.components;
+package com.xamlo.core.engine.graphics.api.components;
 
 /*
  * Очень важный слой абстракции, связанный с более гибким взаимодействием

@@ -13,6 +13,8 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.system.MemoryUtil;
 
+import com.xamlo.core.engine.graphics.api.primitives.IBufferObject;
+
 public class IndexBufferObject implements IBufferObject {
 
 	/**

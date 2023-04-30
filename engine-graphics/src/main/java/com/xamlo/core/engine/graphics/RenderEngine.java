@@ -27,7 +27,7 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
-import com.xamlo.core.engine.graphics.components.IScene;
+import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.components.PrimitiveCamera;
 import com.xamlo.core.engine.graphics.components.PrimitiveScene;
 import com.xamlo.core.engine.graphics.components.Window;
@@ -96,7 +96,15 @@ public class RenderEngine {
 		glFrontFace(GL_CW);				
 //		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
-		glEnable(GL_DEPTH_TEST);     	
+		//Настройка OpenGL для того,
+		//чтобы она не рисовала обратную сторону 
+		//модели, которую мы не видим
+		glEnable(GL_DEPTH_TEST);
+		//Настройка OpenGL для того,
+		//чтобы она могла работать с текстурами
+		//Но, если верить туториалам
+		//эта настройка не обязательна, если мы рендерим
+		//с помощью шейдеров glsl
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_FRAMEBUFFER_SRGB);
 		

@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.components;
+package com.xamlo.core.engine.graphics.api.components;
 
 import org.joml.Vector3f;
 

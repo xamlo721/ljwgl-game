@@ -8,6 +8,10 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 import java.util.ArrayList;
 
+import com.xamlo.core.engine.graphics.api.primitives.IBufferObject;
+import com.xamlo.core.engine.graphics.components.Texture;
+import com.xamlo.core.engine.graphics.primitives.VertexBufferObject.EnumMemoryType;
+
 /**
  * Согласно документации Opengl, под VAO понимают список VBO
  * Причём такой список, который относится к одному объекту
@@ -119,7 +123,7 @@ public class VertexArrayObject implements IBufferObject {
 		coordsVBuffer = new VertexBufferObject(coordsData);
 		normalesVBuffer = new VertexBufferObject(normalesData);
 		colorsVBuffer = new VertexBufferObject(colorsData);
-		textureVBuffer = new VertexBufferObject(textureData);
+		textureVBuffer = new VertexBufferObject(textureData, EnumMemoryType.STATIC, 2);
 		indexBufferObject = new IndexBufferObject(vertexOrder);
 		
 		this.vbos.add(coordsVBuffer);
@@ -127,6 +131,11 @@ public class VertexArrayObject implements IBufferObject {
 		this.vbos.add(normalesVBuffer);
 		this.vbos.add(textureVBuffer);
 		
+	}
+
+	public VertexArrayObject(Vertex[] vertices, int[] vertexOrder, Texture texture) {
+		this(vertices, vertexOrder);
+		//TODO: Что-то сделать с текстурой?
 	}
 
 	@Override
@@ -153,6 +162,8 @@ public class VertexArrayObject implements IBufferObject {
 	    glBindVertexArray(vaoId);
 	    glEnableVertexAttribArray(0);
 	    glEnableVertexAttribArray(1);
+	    glEnableVertexAttribArray(2);
+	    glEnableVertexAttribArray(3);
 
 	}
 	
@@ -161,6 +172,8 @@ public class VertexArrayObject implements IBufferObject {
 	    glBindVertexArray(0);
 	    glDisableVertexAttribArray(0);	
 	    glDisableVertexAttribArray(1);		
+	    glDisableVertexAttribArray(2);		
+	    glDisableVertexAttribArray(3);		
 
 	}
 	

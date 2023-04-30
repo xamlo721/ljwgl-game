@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.components;
+package com.xamlo.core.engine.graphics.components.example;
 
 import ru.satomi.dc.primitive.Point3d;
 import ru.satomi.dc.primitive.Point4d;

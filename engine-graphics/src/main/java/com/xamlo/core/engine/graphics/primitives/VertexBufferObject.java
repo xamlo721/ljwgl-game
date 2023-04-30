@@ -7,8 +7,9 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
 
-import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+
+import com.xamlo.core.engine.graphics.api.primitives.IBufferObject;
 
 import static org.lwjgl.opengl.GL15.glBufferData;
 
@@ -17,6 +18,8 @@ import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
+import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 
 
 /**
@@ -56,15 +59,46 @@ public class VertexBufferObject implements IBufferObject {
 	 * 		GL_STREAM_DRAW: данные будут меняться при каждой отрисовке.	 
 	 * 
 	 */
-	private int bufferType;
+	public enum EnumMemoryType {
+		STATIC  (GL_STATIC_DRAW),
+		DYNAMIC (GL_DYNAMIC_DRAW),
+		STREAM  (GL_STREAM_DRAW);
+		
+		private final int openGLValue;
+
+		private EnumMemoryType(int levelCode) {
+			this.openGLValue = levelCode;
+		}
+		
+	}	
+	
+	private EnumMemoryType bufferType;
+
+	
+	/**
+	 * Размерность пространства, координаты которого мы запоминаем в буфере.
+	 * 		Для 2D - 2
+	 * 		Для 3D - 3 
+	 * и т.д
+	 */
+	private int dimensionSize;
 	
 	public VertexBufferObject(float[] vertexData) {
-		this(vertexData, GL_STATIC_DRAW);
+		this(vertexData, EnumMemoryType.STATIC);
 	}
 
-	public VertexBufferObject(float[] vertexData, int memoryType) {
+	public VertexBufferObject(float[] vertexData, EnumMemoryType memoryType) {
+		this(vertexData, memoryType, 3);
+	}
+	
+	public VertexBufferObject(float[] vertexData, int dimensionSize) {
+		this(vertexData, EnumMemoryType.STATIC, 3);
+	}
+	
+	public VertexBufferObject(float[] vertexData, EnumMemoryType memoryType, int dimensionSize) {
 		this.vertexData = vertexData;
 		this.bufferType = memoryType;
+		this.dimensionSize = dimensionSize;
 		bufferID = glGenBuffers();
 	}
 	
@@ -97,7 +131,7 @@ public class VertexBufferObject implements IBufferObject {
 		/**
 		 * Перемещаем в выбранную область памяти массив из ОЗУ
 		 */
-		glBufferData(GL_ARRAY_BUFFER, attribBuffer, bufferType);
+		glBufferData(GL_ARRAY_BUFFER, attribBuffer, bufferType.openGLValue);
 			
         glEnableVertexAttribArray(0);
 
@@ -124,7 +158,7 @@ public class VertexBufferObject implements IBufferObject {
           *  
           *  offset: Задает смещение по отношению к первому компоненту в буфере.
           */
-	    glVertexAttribPointer(indexVBO, 3, GL_FLOAT, false, 0, 0);
+	    glVertexAttribPointer(indexVBO, dimensionSize, GL_FLOAT, false, 0, 0);
 
 	    MemoryUtil.memFree(attribBuffer);
 	    

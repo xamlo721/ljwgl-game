@@ -6,8 +6,8 @@
   
   <properties>
 	<lwjgl.version>3.2.3</lwjgl.version>
-	  <joml.version>1.9.9</joml.version>
-	  <pngdecoder.version>1.0</pngdecoder.version>
+	<joml.version>1.9.9</joml.version>
+	<pngdecoder.version>1.0</pngdecoder.version>
   </properties>
 
   <dependencies>
@@ -16,6 +16,11 @@
 		<artifactId>engine-common</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
 	  </dependency>
+	  <dependency>
+	    <groupId>org.l33tlabs.twl</groupId>
+	    <artifactId>pngdecoder</artifactId>
+	    <version>${pngdecoder.version}</version>
+	</dependency>
 	  <dependency>
 		  <groupId>org.lwjgl</groupId>
 		  <artifactId>lwjgl-opencl</artifactId>

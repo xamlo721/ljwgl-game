@@ -3,10 +3,19 @@ package com.xamlo.core.engine.graphics.components;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import com.xamlo.core.engine.graphics.api.components.IScene;
+import com.xamlo.core.engine.graphics.components.example.BigCubeExample;
+import com.xamlo.core.engine.graphics.components.example.CubeExample;
+
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_LINE;
 import static org.lwjgl.opengl.GL11.glPolygonMode;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL15.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL15.glActiveTexture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +34,7 @@ public class PrimitiveScene implements IScene {
     private List<AbstractRenderableObject> cubes;
 
     private Matrix4f projectionMatrix;
+    private Texture smile;
 
 	@Override
     public void tranformScene(Matrix4f transformMatrix) {
@@ -35,7 +45,8 @@ public class PrimitiveScene implements IScene {
 	public void load() {		
 		
         //Рисовать рамку или заливать цветом - закомментировать, если хотим цвет
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glEnable(GL_DEPTH_TEST);
 
 		shaderProgram = new ShaderProgram();
 		shaderProgram.addVertexShader(vertexShaderSource);
@@ -45,13 +56,15 @@ public class PrimitiveScene implements IScene {
 		try {
 			shaderProgram.createUniform("projectionMatrix");
 			shaderProgram.createUniform("worldMatrix");
+			shaderProgram.createUniform("texture_sampler");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		smile = new Texture("C:/workspace/eclipse/gamedev/engine-graphics/res/textures/example/smile.png");
 		cubes = new ArrayList<AbstractRenderableObject>();
-		for (int i = 0; i < 0; i++) {
-			CubeExample cube = new CubeExample();
+		for (int i = 0; i < 5; i++) {
+			CubeExample cube = new CubeExample(smile);
 			cube.init();
 			cube.setPosition(new Vector3f(
 					((float)Math.random() - 0.5f) * 5, 
@@ -59,11 +72,11 @@ public class PrimitiveScene implements IScene {
 				   -((float)Math.random() % 100.0f + 5))
 			);
 			//cube.setPosition(new Vec3f( 0.1f,  0.1f, -1.0f));
-			cube.setScale(0.05f);
+			cube.setScale(0.5f);
 			cubes.add(cube);
 		}
 		
-		for (int i = 0; i < 1_000_000; i++) {
+		for (int i = 0; i < 0; i++) {
 			BigCubeExample big = new BigCubeExample();
 			big.init();
 			big.setPosition(new Vector3f(
@@ -72,7 +85,7 @@ public class PrimitiveScene implements IScene {
 				   -((float)Math.random() % 100.0f + 35))
 			);
 			//cube.setPosition(new Vec3f( 0.1f,  0.1f, -1.0f));
-			big.setScale(0.25f);
+			//big.setScale(0.25f);
 			cubes.add(big);
 		}
 		
@@ -89,6 +102,7 @@ public class PrimitiveScene implements IScene {
 		shaderProgram.bind();
 		
 		shaderProgram.setUniform("projectionMatrix", this.projectionMatrix);
+		shaderProgram.setUniform("texture_sampler", 0);
 
 		
 
@@ -96,6 +110,10 @@ public class PrimitiveScene implements IScene {
 			//Теперь матрица преобразования обновляется каждый раз
 			shaderProgram.setUniform("worldMatrix", cube.getWorldMatrix());
 			
+			glActiveTexture(GL_TEXTURE0);
+			
+			smile.bind();
+
 			cube.draw();
 			cube.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
 			//cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));

@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.components;
+package com.xamlo.core.engine.graphics.components.example;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
@@ -10,9 +10,8 @@ import org.joml.Vector3f;
 import org.lwjglb.engine.graph.GraphicalMesh;
 
 import com.xamlo.core.engine.graphics.primitives.Vertex;
-
-import com.xamlo.core.engine.graphics.components.DualContouring;
-import com.xamlo.core.engine.graphics.components.Model;
+import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
+import com.xamlo.core.engine.graphics.components.example.DualContouring;
 
 import ru.satomi.dc.primitive.Face3i;
 import ru.satomi.dc.primitive.Point3d;
@@ -57,7 +56,9 @@ public class BigCubeExample extends AbstractRenderableObject {
     	int[] indices = new int[triangles.faces.length * 3]; 
 
     	for (Point3d point : triangles.vertexs) {
-    		vertices[i++] = new Vertex(new Vector3f((float)point.x, (float)point.y, (float)point.z));
+    		vertices[i++] = new Vertex(
+    				new Vector3f((float)point.x, (float)point.y, (float)point.z), 
+    				new Vector3f((float)Math.random(),  (float)Math.random(), (float)Math.random()));
     	}
     	i = 0;
     	for (Face3i triangle : triangles.faces) {
@@ -66,7 +67,7 @@ public class BigCubeExample extends AbstractRenderableObject {
     		indices[i++] = triangle.vertexIndex3;
     	}
 		
-    	System.out.println("Loading big Cube... " + i + " vertex loaded.");
+    	System.out.println("Loading big Cube... " + triangles.faces.length + " poligons loaded.");
         mesh = new GraphicalMesh(vertices, indices);
 
 	}

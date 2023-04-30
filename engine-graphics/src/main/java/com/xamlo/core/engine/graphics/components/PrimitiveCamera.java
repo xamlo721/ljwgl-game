@@ -3,6 +3,8 @@ package com.xamlo.core.engine.graphics.components;
 import org.joml.Vector3f;
 import org.lwjgl.util.vector.Matrix4f;
 
+import com.xamlo.core.engine.graphics.api.components.ICamera;
+
 public class PrimitiveCamera implements ICamera {
 
 	private static final float DEFAULT_NEAR_DISTANCE = 0.001f;
