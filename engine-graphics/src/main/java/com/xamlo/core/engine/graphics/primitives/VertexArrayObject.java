@@ -127,9 +127,10 @@ public class VertexArrayObject implements IBufferObject {
 		indexBufferObject = new IndexBufferObject(vertexOrder);
 		
 		this.vbos.add(coordsVBuffer);
+		this.vbos.add(textureVBuffer);
+
 		this.vbos.add(colorsVBuffer);
 		this.vbos.add(normalesVBuffer);
-		this.vbos.add(textureVBuffer);
 		
 	}
 
