@@ -1,9 +1,10 @@
 package com.xamlo.core.engine.graphics.components.example;
 
+import org.joml.Vector3d;
+import org.joml.Vector4d;
+
 import ru.satomi.dc.primitive.Face3i;
 import ru.satomi.dc.primitive.Face4i;
-import ru.satomi.dc.primitive.Point3d;
-import ru.satomi.dc.primitive.Point4d;
 import ru.satomi.dc.primitive.QuadMesh;
 import ru.satomi.dc.primitive.TriandgleMesh;
 
@@ -13,10 +14,10 @@ public class DualContouring {
     public int gY;
     public int gZ;
     
-    public Point3d minP;
-    public Point3d maxP;
+    public Vector3d minP;
+    public Vector3d maxP;
     
-    public DualContouring(int x, int y, int z, Point3d min, Point3d max) {
+    public DualContouring(int x, int y, int z, Vector3d min, Vector3d max) {
     	this.gX = x + 2;
     	this.gY = y + 2;
     	this.gZ = z + 2;
@@ -62,8 +63,8 @@ public class DualContouring {
 			
 						//point
 
-						Point3d redPoint = DCUtils.root(f, new Point4d(x1, y, z, v1), new Point4d(x2, y, z, v2), minP, maxP);
-						Point3d normaleOfRedPoint =  DCUtils.grad(f, redPoint, minP, maxP);
+						Vector3d redPoint = DCUtils.root(f, new Vector4d(x1, y, z, v1), new Vector4d(x2, y, z, v2), minP, maxP);
+						Vector3d normaleOfRedPoint =  DCUtils.grad(f, redPoint, minP, maxP);
 						
 						double len = Math.sqrt(normaleOfRedPoint.x*normaleOfRedPoint.x + normaleOfRedPoint.y*normaleOfRedPoint.y + normaleOfRedPoint.z*normaleOfRedPoint.z);    
 						
@@ -95,10 +96,10 @@ public class DualContouring {
 						mesh.degree[i3]++;
 						mesh.degree[i4]++;
 			            
-						mesh.vertexs.get(i1).append(redPoint);
-						mesh.vertexs.get(i2).append(redPoint);
-						mesh.vertexs.get(i3).append(redPoint);
-						mesh.vertexs.get(i4).append(redPoint);
+						mesh.vertexs.get(i1).add(redPoint);
+						mesh.vertexs.get(i2).add(redPoint);
+						mesh.vertexs.get(i3).add(redPoint);
+						mesh.vertexs.get(i4).add(redPoint);
 
 				    }
 				}
@@ -125,8 +126,8 @@ public class DualContouring {
 						double y2 = minP.y + (k+1)*iY;
 			            
 						
-						Point3d redPoint = DCUtils.root(f, new Point4d(x, y1, z, v1), new Point4d(x, y2, z, v2), minP, maxP);
-						Point3d normaleOfRedPoint = DCUtils.grad(f, redPoint, minP, maxP);
+						Vector3d redPoint = DCUtils.root(f, new Vector4d(x, y1, z, v1), new Vector4d(x, y2, z, v2), minP, maxP);
+						Vector3d normaleOfRedPoint = DCUtils.grad(f, redPoint, minP, maxP);
 						
 						double len = Math.sqrt(normaleOfRedPoint.x*normaleOfRedPoint.x + normaleOfRedPoint.y*normaleOfRedPoint.y + normaleOfRedPoint.z*normaleOfRedPoint.z);
 						
@@ -158,10 +159,10 @@ public class DualContouring {
 						mesh.degree[i3]++;
 						mesh.degree[i4]++;
 			            
-						mesh.vertexs.get(i1).append(redPoint);
-						mesh.vertexs.get(i2).append(redPoint);
-						mesh.vertexs.get(i3).append(redPoint);
-						mesh.vertexs.get(i4).append(redPoint);
+						mesh.vertexs.get(i1).add(redPoint);
+						mesh.vertexs.get(i2).add(redPoint);
+						mesh.vertexs.get(i3).add(redPoint);
+						mesh.vertexs.get(i4).add(redPoint);
 				    }
 				}
 		    }
@@ -187,8 +188,8 @@ public class DualContouring {
 						double z2 = minP.z + (k+1)*iZ;
 			            
 
-						Point3d redPoint = DCUtils.root(f, new Point4d(x, y, z1, v1), new Point4d( x, y, z2, v2), minP, maxP);
-						Point3d faceNormale = DCUtils.grad(f, redPoint, minP, maxP);
+						Vector3d redPoint = DCUtils.root(f, new Vector4d(x, y, z1, v1), new Vector4d( x, y, z2, v2), minP, maxP);
+						Vector3d faceNormale = DCUtils.grad(f, redPoint, minP, maxP);
 						double len = Math.sqrt(faceNormale.x*faceNormale.x + faceNormale.y*faceNormale.y + faceNormale.z*faceNormale.z);
 						
 						if((double)len == 0) {
@@ -222,10 +223,10 @@ public class DualContouring {
 						mesh.degree[i3]++;
 						mesh.degree[i4]++;
 			            
-						mesh.vertexs.get(i1).append(redPoint);
-						mesh.vertexs.get(i2).append(redPoint);
-						mesh.vertexs.get(i3).append(redPoint);
-						mesh.vertexs.get(i4).append(redPoint);
+						mesh.vertexs.get(i1).add(redPoint);
+						mesh.vertexs.get(i2).add(redPoint);
+						mesh.vertexs.get(i3).add(redPoint);
+						mesh.vertexs.get(i4).add(redPoint);
 				    }
 				}
 		    }

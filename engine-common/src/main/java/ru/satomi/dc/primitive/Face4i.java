@@ -1,9 +1,11 @@
 package ru.satomi.dc.primitive;
 
+import org.joml.Vector3d;
+
 /*
  * 
- * Класс хранит в себе индексы образующих Face вершин
- * Для квадратного фейса это 4 версшины, для треугольного 3
+ * пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Face пїЅпїЅпїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ 4 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 3
  */
 public class Face4i {
 	
@@ -12,10 +14,10 @@ public class Face4i {
 	public int vertexIndex3;
 	public int vertexIndex4;
 	
-	public Point3d faceNormale;//normale_f
+	public Vector3d faceNormale;//normale_f
 
 	
-	public Face4i(int vertexIndex1, int vertexIndex2, int vertexIndex3, int vertexIndex4, Point3d faceNormale) {
+	public Face4i(int vertexIndex1, int vertexIndex2, int vertexIndex3, int vertexIndex4, Vector3d faceNormale) {
 		this.vertexIndex1 = vertexIndex1;
 		this.vertexIndex2 = vertexIndex2;
 		this.vertexIndex3 = vertexIndex3;

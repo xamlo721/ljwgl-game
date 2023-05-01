@@ -76,7 +76,7 @@ public class PrimitiveScene implements IScene {
 			cubes.add(cube);
 		}
 		
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < 1; i++) {
 			BigCubeExample big = new BigCubeExample();
 			big.init();
 			big.setPosition(new Vector3f(

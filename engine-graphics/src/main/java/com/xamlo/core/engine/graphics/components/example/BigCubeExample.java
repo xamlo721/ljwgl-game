@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.glDrawElements;
 
 import java.awt.Point;
 
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.lwjglb.engine.graph.GraphicalMesh;
 
@@ -14,7 +15,6 @@ import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 import com.xamlo.core.engine.graphics.components.example.DualContouring;
 
 import ru.satomi.dc.primitive.Face3i;
-import ru.satomi.dc.primitive.Point3d;
 import ru.satomi.dc.primitive.QuadMesh;
 import ru.satomi.dc.primitive.TriandgleMesh;
 
@@ -42,7 +42,7 @@ public class BigCubeExample extends AbstractRenderableObject {
 		// create the test object
 		Model model = new Model();
 		
-		DualContouring dc = new DualContouring(16, 16, 16, new Point3d(-2, -2, -2), new Point3d(12, 12, 12));
+		DualContouring dc = new DualContouring(16, 16, 16, new Vector3d(-2, -2, -2), new Vector3d(12, 12, 12));
 		
 		double value[][][] = dc.sample(model);
 		
@@ -55,7 +55,7 @@ public class BigCubeExample extends AbstractRenderableObject {
     	Vertex[] vertices = new Vertex[triangles.vertexs.size()];
     	int[] indices = new int[triangles.faces.length * 3]; 
 
-    	for (Point3d point : triangles.vertexs) {
+    	for (Vector3d point : triangles.vertexs) {
     		vertices[i++] = new Vertex(
     				new Vector3f((float)point.x, (float)point.y, (float)point.z), 
     				new Vector3f((float)Math.random(),  (float)Math.random(), (float)Math.random()));

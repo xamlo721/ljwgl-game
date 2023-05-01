@@ -1,12 +1,12 @@
 package com.xamlo.core.engine.graphics.components.example;
 
-import ru.satomi.dc.primitive.Point3d;
-import ru.satomi.dc.primitive.Point4d;
+import org.joml.Vector3d;
+import org.joml.Vector4d;
 
 public class DCUtils {
 
 	
-    public static double[][][] sample(Function f, Point3d min, Point3d max, int gX, int gY, int gZ) {
+    public static double[][][] sample(Function f, Vector3d min, Vector3d max, int gX, int gY, int gZ) {
 		double stepX, stepY, stepZ;
 		double x, y, z;
 	     
@@ -66,10 +66,10 @@ public class DCUtils {
 	}
 
 
-    public static Point3d grad(Function function,  Point3d redPoint, Point3d min, Point3d max) {
+    public static Vector3d grad(Function function,  Vector3d redPoint, Vector3d min, Vector3d max) {
     	
 		double value = function.evaluate(redPoint.x, redPoint.y, redPoint.z);
-		Point3d point = new Point3d();
+		Vector3d point = new Vector3d();
 		
 		double diagonal = max.distance(min);
 		double h = 0.1f * diagonal; //��� ��� �����?
@@ -81,9 +81,9 @@ public class DCUtils {
 		return point;
 	}
     
-	public static Point3d root(Function function, Point4d pos1, Point4d pos2, Point3d min, Point3d max) {
+	public static Vector3d root(Function function, Vector4d pos1, Vector4d pos2, Vector3d min, Vector3d max) {
 		
-		Point3d point = new Point3d();
+		Vector3d point = new Vector3d();
 		double value;
 		
 		int i;
@@ -100,12 +100,12 @@ public class DCUtils {
 	
 		for(i = 0; i < IMAX; i++) {
 			
-		    double w1 = Math.abs(pos2.v);
-		    double w2 = Math.abs(pos1.v);
+		    double w1 = Math.abs(pos2.w);
+		    double w2 = Math.abs(pos1.w);
 		    double w = w1 + w2;
 		    
 		    if(w == 0) {
-		    	point.update(pos1.x, pos1.y, pos1.z);
+		    	point.set(pos1.x, pos1.y, pos1.z);
 		    	value = 0;
 				break;
 		    }
@@ -113,7 +113,7 @@ public class DCUtils {
 		    w1 /= w;
 		    w2 /= w;
 	      
-	    	point.update(w1*pos1.x + w2*pos2.x, w1*pos1.y + w2*pos2.y, w1*pos1.z + w2*pos2.z);
+	    	point.set(w1*pos1.x + w2*pos2.x, w1*pos1.y + w2*pos2.y, w1*pos1.z + w2*pos2.z);
 	    	value = function.evaluate(point.x, point.y, point.z);
 	      
 		    //�������� �����������
@@ -121,10 +121,10 @@ public class DCUtils {
 		    	break;
 		    }
 		    
-		    if(pos1.v * value > 0) {
-		    	pos1.update(point.x, point.y, point.z, value);
+		    if(pos1.w * value > 0) {
+		    	pos1.set(point.x, point.y, point.z, value);
 		    }  else{
-		    	pos2.update(point.x, point.y, point.z, value);
+		    	pos2.set(point.x, point.y, point.z, value);
 		    }
 		}
 		
@@ -133,7 +133,7 @@ public class DCUtils {
 			
 		    for(int j = 0; j < 2*IMAX; j++) {
 		    	//���������� ����� �������� ���������
-		    	point.update(0.5f*(pos1.x + pos2.x), 0.5f*(pos1.y + pos2.y), 0.5f*(pos1.z + pos2.z));
+		    	point.set(0.5f*(pos1.x + pos2.x), 0.5f*(pos1.y + pos2.y), 0.5f*(pos1.z + pos2.z));
 		        
 		    	value = function.evaluate(point.x, point.y, point.z);
 		        
@@ -141,10 +141,10 @@ public class DCUtils {
 			    	break;
 			    }
 			    
-				if(pos1.v * value > 0){
-			    	pos1.update(point.x, point.y, point.z, value);
+				if(pos1.w * value > 0){
+			    	pos1.set(point.x, point.y, point.z, value);
 				} else {
-			    	pos2.update(point.x, point.y, point.z, value);
+			    	pos2.set(point.x, point.y, point.z, value);
 				}
 		    }
 		}
@@ -152,7 +152,7 @@ public class DCUtils {
 		return point;
     }
 
-	public static double angle(Point3d p0, Point3d p1, Point3d p2) {
+	public static double angle(Vector3d p0, Vector3d p1, Vector3d p2) {
 		
 		//����� �������
 		double v1[] = new double[] {p1.x-p0.x, p1.y-p0.y, p1.z-p0.z};   //Vec p0 -> p1

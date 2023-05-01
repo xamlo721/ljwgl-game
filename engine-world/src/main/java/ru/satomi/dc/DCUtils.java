@@ -1,12 +1,12 @@
 package ru.satomi.dc;
 
-import ru.satomi.dc.primitive.Point3d;
-import ru.satomi.dc.primitive.Point4d;
+import org.joml.Vector3d;
+import org.joml.Vector4d;
 
 public class DCUtils {
 
 	
-    public static double[][][] sample(Function f, Point3d min, Point3d max, int gX, int gY, int gZ) {
+    public static double[][][] sample(Function f, Vector3d min, Vector3d max, int gX, int gY, int gZ) {
 		double stepX, stepY, stepZ;
 		double x, y, z;
 	     
@@ -66,13 +66,13 @@ public class DCUtils {
 	}
 
 
-    public static Point3d grad(Function function,  Point3d redPoint, Point3d min, Point3d max) {
+    public static Vector3d grad(Function function,  Vector3d redPoint, Vector3d min, Vector3d max) {
     	
 		double value = function.evaluate(redPoint.x, redPoint.y, redPoint.z);
-		Point3d point = new Point3d();
+		Vector3d point = new Vector3d();
 		
 		double diagonal = max.distance(min);
-		double h = 0.1f * diagonal; //что это такое?
+		double h = 0.1f * diagonal; //пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ?
 		
 		point.x = (function.evaluate(redPoint.x+h, redPoint.y,   redPoint.z)   - value)/h;
 		point.y = (function.evaluate(redPoint.x,   redPoint.y+h, redPoint.z)   - value)/h;
@@ -81,9 +81,9 @@ public class DCUtils {
 		return point;
 	}
     
-	public static Point3d root(Function function, Point4d pos1, Point4d pos2, Point3d min, Point3d max) {
+	public static Vector3d root(Function function, Vector4d pos1, Vector4d pos2, Vector3d min, Vector3d max) {
 		
-		Point3d point = new Point3d();
+		Vector3d point = new Vector3d();
 		double value;
 		
 		int i;
@@ -92,20 +92,20 @@ public class DCUtils {
 		
 		double eps;
 		
-		//Диагональ сетки (огромного куба)
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ)
 		double diagonal = min.distance(max);
 		
-		//погрешность вычисления
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		eps = 0.0001f * diagonal;
 	
 		for(i = 0; i < IMAX; i++) {
 			
-		    double w1 = Math.abs(pos2.v);
-		    double w2 = Math.abs(pos1.v);
+		    double w1 = Math.abs(pos2.w);
+		    double w2 = Math.abs(pos1.w);
 		    double w = w1 + w2;
 		    
 		    if(w == 0) {
-		    	point.update(pos1.x, pos1.y, pos1.z);
+		    	point.set(pos1.x, pos1.y, pos1.z);
 		    	value = 0;
 				break;
 		    }
@@ -113,18 +113,18 @@ public class DCUtils {
 		    w1 /= w;
 		    w2 /= w;
 	      
-	    	point.update(w1*pos1.x + w2*pos2.x, w1*pos1.y + w2*pos2.y, w1*pos1.z + w2*pos2.z);
+	    	point.set(w1*pos1.x + w2*pos2.x, w1*pos1.y + w2*pos2.y, w1*pos1.z + w2*pos2.z);
 	    	value = function.evaluate(point.x, point.y, point.z);
 	      
-		    //отброить погрешности
+		    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		    if(Math.abs(value) < eps) {
 		    	break;
 		    }
 		    
-		    if(pos1.v * value > 0) {
-		    	pos1.update(point.x, point.y, point.z, value);
+		    if(pos1.w * value > 0) {
+		    	pos1.set(point.x, point.y, point.z, value);
 		    }  else{
-		    	pos2.update(point.x, point.y, point.z, value);
+		    	pos2.set(point.x, point.y, point.z, value);
 		    }
 		}
 		
@@ -132,8 +132,8 @@ public class DCUtils {
 		if(i == IMAX) {
 			
 		    for(int j = 0; j < 2*IMAX; j++) {
-		    	//Координаты точки середины плоскости
-		    	point.update(0.5f*(pos1.x + pos2.x), 0.5f*(pos1.y + pos2.y), 0.5f*(pos1.z + pos2.z));
+		    	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		    	point.set(0.5f*(pos1.x + pos2.x), 0.5f*(pos1.y + pos2.y), 0.5f*(pos1.z + pos2.z));
 		        
 		    	value = function.evaluate(point.x, point.y, point.z);
 		        
@@ -141,10 +141,10 @@ public class DCUtils {
 			    	break;
 			    }
 			    
-				if(pos1.v * value > 0){
-			    	pos1.update(point.x, point.y, point.z, value);
+				if(pos1.w * value > 0){
+			    	pos1.set(point.x, point.y, point.z, value);
 				} else {
-			    	pos2.update(point.x, point.y, point.z, value);
+			    	pos2.set(point.x, point.y, point.z, value);
 				}
 		    }
 		}
@@ -152,14 +152,14 @@ public class DCUtils {
 		return point;
     }
 
-	public static double angle(Point3d p0, Point3d p1, Point3d p2) {
+	public static double angle(Vector3d p0, Vector3d p1, Vector3d p2) {
 		
-		//Найти вектора
+		//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		double v1[] = new double[] {p1.x-p0.x, p1.y-p0.y, p1.z-p0.z};   //Vec p0 -> p1
 		double v2[] = new double[] {p2.x-p0.x, p2.y-p0.y, p2.z-p0.z};   //Vec p0 -> p2
 		double v3[] = new double[] {p2.x-p1.x, p2.y-p1.y, p2.z-p1.z};	  //Vec p1 ->p2
 		
-		//найти точки
+		//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		double dot1 =   v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
 		double dot2 = -(v1[0]*v3[0] + v1[1]*v3[1] + v1[2]*v3[2]);
 		double dot3 =   v3[0]*v2[0] + v3[1]*v2[1] + v3[2]*v2[2];
