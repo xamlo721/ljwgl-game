@@ -6,10 +6,10 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.xamlo.core.engine.graphics.api.primitives.IBufferObject;
-import com.xamlo.core.engine.graphics.components.Texture;
 import com.xamlo.core.engine.graphics.primitives.VertexBufferObject.EnumMemoryType;
 
 /**
@@ -36,107 +36,24 @@ public class VertexArrayObject implements IBufferObject {
 	/**
 	 * Список VBO, сходящих в состав VAO
 	 */
-	private ArrayList<VertexBufferObject> vbos;
-	
-	
-	private VertexBufferObject coordsVBuffer;
-	private VertexBufferObject normalesVBuffer;
-	private VertexBufferObject colorsVBuffer;
-	private VertexBufferObject textureVBuffer;
+	private Map<Integer, VertexBufferObject> vbos;
+
 	private IndexBufferObject indexBufferObject;
-
-	public VertexArrayObject(Vertex[] vertices) {
+	public VertexArrayObject()  {
 		vaoId = glGenVertexArrays();
 
-		int[] vertexOrder = new int[vertices.length];
-		for (int i = 0; i < vertices.length; i++) {
-			vertexOrder[i] = i;
-		}
+		vbos = new HashMap<Integer, VertexBufferObject>();
 		
-		vbos = new ArrayList<VertexBufferObject>();
-		
-		float[] coordsData = new float[vertices.length * 3]; //FIXME: Magic number
-		float[] normalesData= new float[vertices.length * 3]; //FIXME: Magic number
-		float[] colorsData = new float[vertices.length * 3]; //FIXME: Magic number
-		float[] textureData = new float[vertices.length * 2]; //FIXME: Magic number
-		
-		for (int i = 0; i < vertices.length; i++) {
-			Vertex v  = vertices[i];
-			coordsData[i*3 + 0] = v.getPos().x; //FIXME: Magic number
-			coordsData[i*3 + 1] = v.getPos().y; //FIXME: Magic number
-			coordsData[i*3 + 2] = v.getPos().z; //FIXME: Magic number
-			
-			normalesData[i*3 + 0] = v.getNormal().x; //FIXME: Magic number
-			normalesData[i*3 + 1] = v.getNormal().y; //FIXME: Magic number
-			normalesData[i*3 + 2] = v.getNormal().z; //FIXME: Magic number
-			
-			colorsData[i*3 + 0] = v.getColor().x; //FIXME: Magic number
-			colorsData[i*3 + 1] = v.getColor().y; //FIXME: Magic number
-			colorsData[i*3 + 2] = v.getColor().z; //FIXME: Magic number
-			
-			textureData[i*2 + 0] = v.getTextureCoord().x; //FIXME: Magic number
-			textureData[i*2 + 1] = v.getTextureCoord().y; //FIXME: Magic number
-		}
-        
-		coordsVBuffer = new VertexBufferObject(coordsData);
-		normalesVBuffer = new VertexBufferObject(normalesData);
-		colorsVBuffer = new VertexBufferObject(colorsData);
-		textureVBuffer = new VertexBufferObject(textureData);
-		indexBufferObject = new IndexBufferObject(vertexOrder);
-		
-		this.vbos.add(coordsVBuffer);
-		this.vbos.add(normalesVBuffer);
-		this.vbos.add(colorsVBuffer);
-		this.vbos.add(textureVBuffer);
-		
-
 	}
 	
-	public VertexArrayObject(Vertex[] vertices, int[] vertexOrder)  {
-		vaoId = glGenVertexArrays();
-
-		vbos = new ArrayList<VertexBufferObject>();
-		
-		float[] coordsData = new float[vertices.length * 3]; //FIXME: Magic number
-		float[] normalesData= new float[vertices.length * 3]; //FIXME: Magic number
-		float[] colorsData = new float[vertices.length * 3]; //FIXME: Magic number
-		float[] textureData = new float[vertices.length * 2]; //FIXME: Magic number
-
-		for (int i = 0; i < vertices.length; i++) {
-			Vertex v  = vertices[i];
-			coordsData[i*3 + 0] = v.getPos().x; //FIXME: Magic number
-			coordsData[i*3 + 1] = v.getPos().y; //FIXME: Magic number
-			coordsData[i*3 + 2] = v.getPos().z; //FIXME: Magic number
-			
-			normalesData[i*3 + 0] = v.getNormal().x; //FIXME: Magic number
-			normalesData[i*3 + 1] = v.getNormal().y; //FIXME: Magic number
-			normalesData[i*3 + 2] = v.getNormal().z; //FIXME: Magic number
-			
-			colorsData[i*3 + 0] = v.getColor().x; //FIXME: Magic number
-			colorsData[i*3 + 1] = v.getColor().y; //FIXME: Magic number
-			colorsData[i*3 + 2] = v.getColor().z; //FIXME: Magic number
-			
-			textureData[i*2 + 0] = v.getTextureCoord().x; //FIXME: Magic number
-			textureData[i*2 + 1] = v.getTextureCoord().y; //FIXME: Magic number
-		}
-        
-		coordsVBuffer = new VertexBufferObject(coordsData);
-		normalesVBuffer = new VertexBufferObject(normalesData);
-		colorsVBuffer = new VertexBufferObject(colorsData);
-		textureVBuffer = new VertexBufferObject(textureData, EnumMemoryType.STATIC, 2);
-		indexBufferObject = new IndexBufferObject(vertexOrder);
-		
-		this.vbos.add(coordsVBuffer);
-		this.vbos.add(textureVBuffer);
-
-		this.vbos.add(colorsVBuffer);
-		this.vbos.add(normalesVBuffer);
-		
+	public void addVertexData(int bufferLocation, float[] buffer, EnumMemoryType memoryType, int dataDimension) {
+		this.vbos.put(bufferLocation, new VertexBufferObject(buffer, memoryType, dataDimension));
 	}
-
-	public VertexArrayObject(Vertex[] vertices, int[] vertexOrder, Texture texture) {
-		this(vertices, vertexOrder);
-		//TODO: Что-то сделать с текстурой?
+	public void addVertexData(float[] buffer, EnumMemoryType memoryType, int dataDimension) {
+		this.vbos.put(vbos.size(), new VertexBufferObject(buffer, memoryType, dataDimension));
+	}
+	public void setVertexOrder(int[] vertexOrder) {
+		indexBufferObject = new IndexBufferObject(vertexOrder);
 	}
 
 	@Override
@@ -149,9 +66,9 @@ public class VertexArrayObject implements IBufferObject {
 		///
         glBindVertexArray(vaoId);
 		indexBufferObject.allocMemory(0);
-		int i = 0;
-		for (VertexBufferObject vbo : vbos) {
-			vbo.allocMemory(i++);
+		for (int i = 0; i < vbos.size(); i ++) {
+			VertexBufferObject vbo = vbos.get(i);
+			vbo.allocMemory(i);
 		}
 		glBindVertexArray(0);
 
@@ -161,20 +78,18 @@ public class VertexArrayObject implements IBufferObject {
 	@Override
 	public void bind() {
 	    glBindVertexArray(vaoId);
-	    glEnableVertexAttribArray(0);
-	    glEnableVertexAttribArray(1);
-	    glEnableVertexAttribArray(2);
-	    glEnableVertexAttribArray(3);
+		for (int i = 0; i < vbos.size(); i++) {
+		    glEnableVertexAttribArray(i);
+		}
 
 	}
 	
 	@Override
 	public void unbind() {
 	    glBindVertexArray(0);
-	    glDisableVertexAttribArray(0);	
-	    glDisableVertexAttribArray(1);		
-	    glDisableVertexAttribArray(2);		
-	    glDisableVertexAttribArray(3);		
+		for (int i = 0; i < vbos.size(); i++) {
+			glDisableVertexAttribArray(i);
+		}	
 
 	}
 	
@@ -188,7 +103,7 @@ public class VertexArrayObject implements IBufferObject {
 		
 		glBindVertexArray(vaoId);
 		indexBufferObject.releaseMemory();
-		for (VertexBufferObject vbo : vbos) {
+		for (VertexBufferObject vbo : vbos.values()) {
 			vbo.releaseMemory();
 		}
 		glDeleteVertexArrays(vaoId);

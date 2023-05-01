@@ -136,7 +136,7 @@ public class VertexBufferObject implements IBufferObject {
         glEnableVertexAttribArray(0);
 
 	    String log = new String();
-	    log +=  "create IBO {";
+	    log +=  "create VBO {";
 	    for (int i = 0; i < vertexData.length; i++) {
 	    	log += " " + vertexData[i] + " ";
 	    }
