@@ -52,7 +52,7 @@ public class GraphicalMesh extends PhysicalMesh {
     	//vao.addVertexData("colors", colorsData, EnumMemoryType.STATIC, 3);
     	//vao.addVertexData("normales", normalesData, EnumMemoryType.STATIC, 3);
     	vao.addVertexData(1, textureData, EnumMemoryType.STATIC, 2);
-
+    			
     	vao.setVertexOrder(indices);
     	vao.allocMemory(0);
         this.verticesCount = indices.length;

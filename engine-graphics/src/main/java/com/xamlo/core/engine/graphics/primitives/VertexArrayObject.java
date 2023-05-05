@@ -39,6 +39,7 @@ public class VertexArrayObject implements IBufferObject {
 	private Map<Integer, VertexBufferObject> vbos;
 
 	private IndexBufferObject indexBufferObject;
+	
 	public VertexArrayObject()  {
 		vaoId = glGenVertexArrays();
 
