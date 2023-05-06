@@ -1,10 +1,18 @@
 package org.lwjglb.engine.graph;
 
-import com.xamlo.core.engine.graphics.components.Texture;//FIXME: Я уверен, что это не должно здесь находится
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.lwjgl.system.MemoryUtil;
+
+import com.xamlo.core.engine.graphics.api.primitives.IVertexAttribute;
+import com.xamlo.core.engine.graphics.components.Texture;//FIXME: Я уверен, что это не должно здесь находится
+import com.xamlo.core.engine.graphics.primitives.EnumMemoryType;
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexArrayObject;
-import com.xamlo.core.engine.graphics.primitives.VertexBufferObject.EnumMemoryType;
+import com.xamlo.core.engine.graphics.primitives.VertexAttributeDataOrder;
+import com.xamlo.core.engine.graphics.primitives.VertexBufferObject;
 
 import ru.satomi.dc.primitive.PhysicalMesh;
 
@@ -24,38 +32,39 @@ public class GraphicalMesh extends PhysicalMesh {
     public GraphicalMesh(Vertex[] vertices, int[] indices) {
     	super(vertices.length);
     	
-		float[] coordsData = new float[vertices.length * 3]; //FIXME: Magic number
-		float[] normalesData= new float[vertices.length * 3]; //FIXME: Magic number
-		float[] colorsData = new float[vertices.length * 3]; //FIXME: Magic number
-		float[] textureData = new float[vertices.length * 2]; //FIXME: Magic number
+    	if (vertices.length == 0) {
+    		//TODO: Охх я вам как дааам!
+    		return;
+    	}
+    	
+	    FloatBuffer vertexBuffer = MemoryUtil.memAllocFloat(vertices.length * vertices[0].getVertexStride());
 
 		for (int i = 0; i < vertices.length; i++) {
-			Vertex v  = vertices[i];
-			coordsData[i*3 + 0] = v.getPos().x; //FIXME: Magic number
-			coordsData[i*3 + 1] = v.getPos().y; //FIXME: Magic number
-			coordsData[i*3 + 2] = v.getPos().z; //FIXME: Magic number
-			
-			normalesData[i*3 + 0] = v.getNormal().x; //FIXME: Magic number
-			normalesData[i*3 + 1] = v.getNormal().y; //FIXME: Magic number
-			normalesData[i*3 + 2] = v.getNormal().z; //FIXME: Magic number
-			
-			colorsData[i*3 + 0] = v.getColor().x; //FIXME: Magic number
-			colorsData[i*3 + 1] = v.getColor().y; //FIXME: Magic number
-			colorsData[i*3 + 2] = v.getColor().z; //FIXME: Magic number
-			
-			textureData[i*2 + 0] = v.getTextureCoord().x; //FIXME: Magic number
-			textureData[i*2 + 1] = v.getTextureCoord().y; //FIXME: Magic number
+			Vertex v = vertices[i];
+			vertexBuffer.put(v.getVertexBuffer());
 		}
+		VertexBufferObject vbo = new VertexBufferObject(vertexBuffer, EnumMemoryType.STATIC, 3);
+		
+		List<VertexAttributeDataOrder> dataOrders = new ArrayList<VertexAttributeDataOrder>(); 
+		
+		Vertex v = vertices[0];
+		
+		int i = 1;
+		for (IVertexAttribute attr : v.getAttributes()) {
+			VertexAttributeDataOrder order = new VertexAttributeDataOrder(i++, attr.getSize(), attr.getType(), attr.isNormalized(), attr.getStride());
+			dataOrders.add(order);
+		}
+
+		vbo.setDataStricture(dataOrders);
 		
     	vao = new VertexArrayObject();
-    	vao.addVertexData(0, coordsData, EnumMemoryType.STATIC, 3);
-    	//vao.addVertexData("colors", colorsData, EnumMemoryType.STATIC, 3);
-    	//vao.addVertexData("normales", normalesData, EnumMemoryType.STATIC, 3);
-    	vao.addVertexData(1, textureData, EnumMemoryType.STATIC, 2);
-    			
+    	vao.addVertexData(vbo);
     	vao.setVertexOrder(indices);
     	vao.allocMemory(0);
-        this.verticesCount = indices.length;
+    	
+	    MemoryUtil.memFree(vertexBuffer);
+	    
+    	this.verticesCount = indices.length;
     }
     
     public GraphicalMesh(Vertex[] vertices, int[] indices, Texture texture) {

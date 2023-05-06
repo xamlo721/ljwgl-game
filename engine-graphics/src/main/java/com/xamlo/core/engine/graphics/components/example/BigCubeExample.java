@@ -12,6 +12,8 @@ import org.lwjglb.engine.graph.GraphicalMesh;
 
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
+import com.xamlo.core.engine.graphics.components.attribs.ColorAttribute;
+import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
 import com.xamlo.core.engine.graphics.components.example.DualContouring;
 
 import ru.satomi.dc.primitive.Face3i;
@@ -56,9 +58,10 @@ public class BigCubeExample extends AbstractRenderableObject {
     	int[] indices = new int[triangles.faces.length * 3]; 
 
     	for (Vector3d point : triangles.vertexs) {
-    		vertices[i++] = new Vertex(
-    				new Vector3f((float)point.x, (float)point.y, (float)point.z), 
-    				new Vector3f((float)Math.random(),  (float)Math.random(), (float)Math.random()));
+    		vertices[i] = new Vertex();
+    		vertices[i].addAttribute(new PositionAttribute((float)point.x, (float)point.y, (float)point.z));
+    		vertices[i].addAttribute(new ColorAttribute((float)Math.random(),  (float)Math.random(), (float)Math.random()));
+    		i++;
     	}
     	i = 0;
     	for (Face3i triangle : triangles.faces) {

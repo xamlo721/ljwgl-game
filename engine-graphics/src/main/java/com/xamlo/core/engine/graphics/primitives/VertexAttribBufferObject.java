@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
-import java.util.List;
 
 import org.lwjgl.system.MemoryUtil;
 
@@ -31,7 +30,7 @@ import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
  * @author Satomi
  *
  */
-public class VertexBufferObject implements IBufferObject {
+public class VertexAttribBufferObject implements IBufferObject {
 	
 	/**
 	 * Флаг, сообщающий о том, что данный буфер уже был размещён в VRAM
@@ -49,9 +48,10 @@ public class VertexBufferObject implements IBufferObject {
 	 * Возможно их стоило убрать из озу совсем, но ладно
 	 */
 	
-	private FloatBuffer vertexData;
-	private List<VertexAttributeDataOrder> dataOrder;
+	public float[] vertexData;
+	
 	private EnumMemoryType bufferType;
+
 	
 	/**
 	 * Размерность пространства, координаты которого мы запоминаем в буфере.
@@ -61,29 +61,25 @@ public class VertexBufferObject implements IBufferObject {
 	 */
 	private int dimensionSize;
 	
-	public VertexBufferObject(FloatBuffer vertexData) {
+	public VertexAttribBufferObject(float[] vertexData) {
 		this(vertexData, EnumMemoryType.STATIC);
 	}
 
-	public VertexBufferObject(FloatBuffer vertexData, EnumMemoryType memoryType) {
+	public VertexAttribBufferObject(float[] vertexData, EnumMemoryType memoryType) {
 		this(vertexData, memoryType, 3);
 	}
 	
-	public VertexBufferObject(FloatBuffer vertexData, int dimensionSize) {
+	public VertexAttribBufferObject(float[] vertexData, int dimensionSize) {
 		this(vertexData, EnumMemoryType.STATIC, 3);
 	}
 	
-	public VertexBufferObject(FloatBuffer vertexData, EnumMemoryType memoryType, int dimensionSize) {
+	public VertexAttribBufferObject(float[] vertexData, EnumMemoryType memoryType, int dimensionSize) {
 		this.vertexData = vertexData;
 		this.bufferType = memoryType;
 		this.dimensionSize = dimensionSize;
 		bufferID = glGenBuffers();
 	}
-	
-	public void setDataStricture(List<VertexAttributeDataOrder> dataOrder) {
-		this.dataOrder = dataOrder;
-	}
-	
+
 	@Override
 	public void bind() {
 		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
@@ -102,6 +98,10 @@ public class VertexBufferObject implements IBufferObject {
 		}
 		this.isRegistred = true;
 		
+	    FloatBuffer vertexBuffer = MemoryUtil.memAllocFloat(vertexData.length);
+	    vertexBuffer.put(vertexData);
+	    vertexBuffer.flip();
+
 		/**
 		 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
 		 */
@@ -124,18 +124,14 @@ public class VertexBufferObject implements IBufferObject {
           *  normalized: Указывает, должны ли значения быть нормализованы или нет.
           *  
           *  stride: Задает смещение в байтах между последовательными общими атрибутами вершины. 
+          *  (Мы объясним это позже).
           *  
           *  offset: Задает смещение по отношению к первому компоненту в буфере.
           */
 	    glVertexAttribPointer(indexVBO, dimensionSize, GL_FLOAT, false, 0, 0);
 
-	    int offset = 0;
-	    for (VertexAttributeDataOrder attr : dataOrder) {
-			glEnableVertexAttribArray(attr.getChannel());
-			glVertexAttribPointer(attr.getChannel(), attr.getDimensionSize(), attr.getType().getOpenGLValue(), attr.isNormalised(), attr.getStride(), offset);
-			offset += attr.getStride();
-		}
-
+	    MemoryUtil.memFree(vertexBuffer);
+	    
 		return true;
 	}
 	
@@ -148,7 +144,6 @@ public class VertexBufferObject implements IBufferObject {
 		this.isRegistred = false;
 		
 		glDeleteBuffers(bufferID);
-	    MemoryUtil.memFree(vertexData);
 		return true;
 	}
 

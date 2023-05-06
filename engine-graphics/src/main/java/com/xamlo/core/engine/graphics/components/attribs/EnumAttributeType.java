@@ -44,11 +44,11 @@ public enum EnumAttributeType {
 		this.openGLValue = levelCode;
 	}
 	
-	int getOpenGLValue() {
+	public int getOpenGLValue() {
 		return this.openGLValue;
 	}
 	
-	int getTypeSize() {
+	public int getTypeSize() {
 		
 		int size = 0;
 		

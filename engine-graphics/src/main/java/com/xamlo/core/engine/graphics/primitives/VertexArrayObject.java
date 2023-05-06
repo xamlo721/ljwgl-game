@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.xamlo.core.engine.graphics.api.primitives.IBufferObject;
-import com.xamlo.core.engine.graphics.primitives.VertexBufferObject.EnumMemoryType;
 
 /**
  * Согласно документации Opengl, под VAO понимают список VBO
@@ -36,22 +35,28 @@ public class VertexArrayObject implements IBufferObject {
 	/**
 	 * Список VBO, сходящих в состав VAO
 	 */
-	private Map<Integer, VertexBufferObject> vbos;
+	private Map<Integer, IBufferObject> vbos;
 
 	private IndexBufferObject indexBufferObject;
 	
 	public VertexArrayObject()  {
 		vaoId = glGenVertexArrays();
 
-		vbos = new HashMap<Integer, VertexBufferObject>();
+		vbos = new HashMap<Integer, IBufferObject>();
 		
 	}
 	
+	public void addVertexData(int bufferLocation, IBufferObject buffer) {
+		this.vbos.put(bufferLocation, buffer);
+	}
+	public void addVertexData(IBufferObject buffer) {
+		this.vbos.put(vbos.size(), buffer);
+	}
 	public void addVertexData(int bufferLocation, float[] buffer, EnumMemoryType memoryType, int dataDimension) {
-		this.vbos.put(bufferLocation, new VertexBufferObject(buffer, memoryType, dataDimension));
+		this.vbos.put(bufferLocation, new VertexAttribBufferObject(buffer, memoryType, dataDimension));
 	}
 	public void addVertexData(float[] buffer, EnumMemoryType memoryType, int dataDimension) {
-		this.vbos.put(vbos.size(), new VertexBufferObject(buffer, memoryType, dataDimension));
+		this.vbos.put(vbos.size(), new VertexAttribBufferObject(buffer, memoryType, dataDimension));
 	}
 	public void setVertexOrder(int[] vertexOrder) {
 		indexBufferObject = new IndexBufferObject(vertexOrder);
@@ -68,7 +73,7 @@ public class VertexArrayObject implements IBufferObject {
         glBindVertexArray(vaoId);
 		indexBufferObject.allocMemory(0);
 		for (int i = 0; i < vbos.size(); i ++) {
-			VertexBufferObject vbo = vbos.get(i);
+			IBufferObject vbo = vbos.get(i);
 			vbo.allocMemory(i);
 		}
 		glBindVertexArray(0);
@@ -104,7 +109,7 @@ public class VertexArrayObject implements IBufferObject {
 		
 		glBindVertexArray(vaoId);
 		indexBufferObject.releaseMemory();
-		for (VertexBufferObject vbo : vbos.values()) {
+		for (IBufferObject vbo : vbos.values()) {
 			vbo.releaseMemory();
 		}
 		glDeleteVertexArrays(vaoId);
