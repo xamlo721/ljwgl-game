@@ -8,10 +8,11 @@ import com.xamlo.core.engine.graphics.components.attribs.EnumAttributeType;
 public interface IVertexAttribute {
 
 	/**
-	 * Получает размер атрибута в байтах.
+	 * Получает размерность атрибута в байтах.
+	 * (количество переменных в атрибуте)
 	 * @return размер атрибута типа int 
 	 */ 
-	int getSize();
+	int getDimensionSize();
 	
 	/** 
 	 * Получает тип атрибута. 
@@ -25,18 +26,13 @@ public interface IVertexAttribute {
 	 * @return флаг, указывающий на нормализацию типа boolean 
 	*/ 
 	boolean isNormalized();
-	
-	/** 
-	 * Получает шаг между атрибутами вершины в байтах. 
-	 * @return шаг между атрибутами вершины типа int 
-	 */ 
-	int getStride();
+
 	
 	/** 
 	 * Получает смещение (offset) атрибута от начала массива вершинных данных в байтах. 
 	 * @return смещение атрибута типа long 
 	 */ 
-	long getOffset();
+	int getOffset();
 	
 	/** 
 	 * Получает данные вершины в виде массива типа float. 

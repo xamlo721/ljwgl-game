@@ -14,7 +14,7 @@ public abstract class AbstractAttribute implements IVertexAttribute  {
 	}
 	
 	@Override
-	public int getSize() {
+	public int getDimensionSize() {
 		return attribSize;
 	}
 
@@ -24,7 +24,7 @@ public abstract class AbstractAttribute implements IVertexAttribute  {
 	}
 	
 	@Override
-	public long getOffset() {
+	public int getOffset() {
 		return attribSize * attribType.getTypeSize();
 	}
 	
@@ -32,7 +32,5 @@ public abstract class AbstractAttribute implements IVertexAttribute  {
 	public float[]  getVertexData() {
 		return attribBuffer;
 	}
-	
-	
 
 }

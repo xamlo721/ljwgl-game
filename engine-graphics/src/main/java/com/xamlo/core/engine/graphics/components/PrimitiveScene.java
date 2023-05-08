@@ -82,7 +82,7 @@ public class PrimitiveScene implements IScene {
 			big.setPosition(new Vector3f(
 					((float)Math.random() - 0.5f) * 25, 
 					((float)Math.random() - 0.5f) * 25, 
-				   -((float)Math.random() % 100.0f + 35))
+				   -((float)Math.random() % 100.0f + 25))
 			);
 			//cube.setPosition(new Vec3f( 0.1f,  0.1f, -1.0f));
 			//big.setScale(0.25f);

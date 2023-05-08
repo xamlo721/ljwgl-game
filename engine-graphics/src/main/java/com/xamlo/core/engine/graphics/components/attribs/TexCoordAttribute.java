@@ -9,7 +9,7 @@ public class TexCoordAttribute extends AbstractAttribute {
 
 	public TexCoordAttribute(float u, float v) {
 		super(attribSize, attribType);
-		attribBuffer = new float[this.getSize()];
+		attribBuffer = new float[this.getDimensionSize()];
 		attribBuffer[0] = u;
 	    attribBuffer[1] = v;
 	}
@@ -22,10 +22,5 @@ public class TexCoordAttribute extends AbstractAttribute {
 		return false;
 	}
 
-	@Override
-	public int getStride() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 }

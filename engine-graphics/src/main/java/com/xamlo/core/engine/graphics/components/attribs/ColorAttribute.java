@@ -9,7 +9,7 @@ public class ColorAttribute extends AbstractAttribute {
 
 	public ColorAttribute(float red, float green, float blue) {
 		super(attribSize, attribType);
-		attribBuffer = new float[this.getSize()];
+		attribBuffer = new float[this.getDimensionSize()];
 		attribBuffer[0] = red;
 	    attribBuffer[1] = green;
 	    attribBuffer[2] = blue;
@@ -22,12 +22,6 @@ public class ColorAttribute extends AbstractAttribute {
 	@Override
 	public boolean isNormalized() {
 		return false;
-	}
-
-	@Override
-	public int getStride() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 }

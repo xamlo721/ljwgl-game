@@ -6,21 +6,17 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
-import java.util.List;
 
 import org.lwjgl.system.MemoryUtil;
 
 import com.xamlo.core.engine.graphics.api.primitives.IBufferObject;
+import com.xamlo.core.engine.graphics.api.primitives.IVertexAttribute;
 
 import static org.lwjgl.opengl.GL15.glBufferData;
 
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
+import static org.lwjgl.opengl.GL15.GL_FLOAT;
 
 
 /**
@@ -49,39 +45,22 @@ public class VertexBufferObject implements IBufferObject {
 	 * Возможно их стоило убрать из озу совсем, но ладно
 	 */
 	
-	private FloatBuffer vertexData;
-	private List<VertexAttributeDataOrder> dataOrder;
+	private Vertex[] vertices;
 	private EnumMemoryType bufferType;
 	
-	/**
-	 * Размерность пространства, координаты которого мы запоминаем в буфере.
-	 * 		Для 2D - 2
-	 * 		Для 3D - 3 
-	 * и т.д
-	 */
-	private int dimensionSize;
-	
-	public VertexBufferObject(FloatBuffer vertexData) {
-		this(vertexData, EnumMemoryType.STATIC);
-	}
+	public VertexBufferObject(Vertex[] vertices, EnumMemoryType memoryType) {
+		
+    	
+    	if (vertices.length == 0) {
+    		//TODO: Охх я вам как дааам!
+    		return;
+    	}
+		System.out.println("create VBO with " + vertices.length + " vertices");
 
-	public VertexBufferObject(FloatBuffer vertexData, EnumMemoryType memoryType) {
-		this(vertexData, memoryType, 3);
-	}
-	
-	public VertexBufferObject(FloatBuffer vertexData, int dimensionSize) {
-		this(vertexData, EnumMemoryType.STATIC, 3);
-	}
-	
-	public VertexBufferObject(FloatBuffer vertexData, EnumMemoryType memoryType, int dimensionSize) {
-		this.vertexData = vertexData;
+    	
+		this.vertices = vertices;
 		this.bufferType = memoryType;
-		this.dimensionSize = dimensionSize;
 		bufferID = glGenBuffers();
-	}
-	
-	public void setDataStricture(List<VertexAttributeDataOrder> dataOrder) {
-		this.dataOrder = dataOrder;
 	}
 	
 	@Override
@@ -101,7 +80,22 @@ public class VertexBufferObject implements IBufferObject {
 			return false;
 		}
 		this.isRegistred = true;
-		
+	    FloatBuffer vertexData = MemoryUtil.memAllocFloat(vertices.length * vertices[0].getVertexSize());
+
+		for (int i = 0; i < vertices.length; i++) {
+			Vertex v = vertices[i];
+			vertexData.put(v.getVertexBuffer());
+			
+		}
+		vertexData.flip();
+		String elementsLog = "{ ";
+		FloatBuffer copy = vertexData.duplicate();
+		for (int i = 0; i < copy.capacity(); i ++) {
+			elementsLog = elementsLog + copy.get() +" ";
+		}
+		elementsLog += "}";
+		System.out.println("VertexData: " + elementsLog);
+
 		/**
 		 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
 		 */
@@ -111,29 +105,44 @@ public class VertexBufferObject implements IBufferObject {
 		 */
 		glBufferData(GL_ARRAY_BUFFER, vertexData, bufferType.getOpenGLValue());
 			
-        glEnableVertexAttribArray(0);
-	    
-        /**
-          *  index: Указывает местоположение, в котором шейдер ожидает эти данные.
-          * 
-          *  size: Задает количество компонентов для каждого атрибута вершины (от 1 до 4). 
-          *  В данном случае мы передаем 3D-координаты, поэтому их должно быть 3.
-          *  
-          *  type: Указывает тип каждого компонента в массиве, в данном случае float.
-          *  
-          *  normalized: Указывает, должны ли значения быть нормализованы или нет.
-          *  
-          *  stride: Задает смещение в байтах между последовательными общими атрибутами вершины. 
-          *  
-          *  offset: Задает смещение по отношению к первому компоненту в буфере.
-          */
-	    glVertexAttribPointer(indexVBO, dimensionSize, GL_FLOAT, false, 0, 0);
+	    MemoryUtil.memFree(vertexData);
 
+	    
+//		glEnableVertexAttribArray(0);
+//		glVertexAttribPointer(0, 3, GL_FLOAT, false, 20, 0);
+//		glEnableVertexAttribArray(1);
+//		glVertexAttribPointer(1, 2, GL_FLOAT, false, 20, 12);
+
+		Vertex v = vertices[0];
+		int i = 0;
 	    int offset = 0;
-	    for (VertexAttributeDataOrder attr : dataOrder) {
-			glEnableVertexAttribArray(attr.getChannel());
-			glVertexAttribPointer(attr.getChannel(), attr.getDimensionSize(), attr.getType().getOpenGLValue(), attr.isNormalised(), attr.getStride(), offset);
-			offset += attr.getStride();
+	    for (IVertexAttribute attr : v.getAttributes()) {
+			glEnableVertexAttribArray(i);
+	        /**
+	          *  index: Указывает местоположение, в котором шейдер ожидает эти данные.
+	          * 
+	          *  size: Задает количество компонентов для каждого атрибута вершины (от 1 до 4). 
+	          *  В данном случае мы передаем 3D-координаты, поэтому их должно быть 3.
+	          *  
+	          *  type: Указывает тип каждого компонента в массиве, в данном случае float.
+	          *  
+	          *  normalized: Указывает, должны ли значения быть нормализованы или нет.
+	          *  
+	          *  stride: Задает смещение в байтах между последовательными общими атрибутами вершины. 
+	          *  
+	          *  offset: Задает смещение по отношению к первому компоненту в буфере.
+	          */
+			glVertexAttribPointer(i, attr.getDimensionSize(), attr.getType().getOpenGLValue(), attr.isNormalized(), v.getVertexStride(), offset);
+			
+			System.out.println("create VBO with attribs: "
+					+ " VBOIndex " + indexVBO
+					+ " dimension " + attr.getDimensionSize()
+					+ " gl type " + attr.getType().getOpenGLValue()
+					+ " normal " + attr.isNormalized()
+					+ " stride " + v.getVertexStride()
+					+ " offset " + offset);
+			offset += attr.getOffset();
+			i++;
 		}
 
 		return true;
@@ -148,7 +157,7 @@ public class VertexBufferObject implements IBufferObject {
 		this.isRegistred = false;
 		
 		glDeleteBuffers(bufferID);
-	    MemoryUtil.memFree(vertexData);
+
 		return true;
 	}
 

@@ -37,7 +37,15 @@ public class Vertex {
     public int getVertexStride() {
     	int stride = 0;
     	for (IVertexAttribute iVertexAttribute : attributes) {
-			stride += iVertexAttribute.getSize();
+			stride += iVertexAttribute.getOffset();
+		}
+		return stride;
+    }
+    
+    public int getVertexSize() {
+    	int stride = 0;
+    	for (IVertexAttribute iVertexAttribute : attributes) {
+			stride += iVertexAttribute.getDimensionSize();
 		}
 		return stride;
     }
@@ -50,6 +58,14 @@ public class Vertex {
 	    FloatBuffer attribBuffer = MemoryUtil.memAllocFloat(getVertexStride());
     	for (IVertexAttribute iVertexAttribute : attributes) {
     	    attribBuffer.put(iVertexAttribute.getVertexData());
+    	    String logmsg = "VertexAttribute { ";
+    	    
+    	    for (float f : iVertexAttribute.getVertexData()) {
+    	    	logmsg += f + ", ";
+    	    }
+    	    
+    	    logmsg += " };";
+    	    System.out.println(logmsg);
 		}
 		return attribBuffer.flip();
     	
