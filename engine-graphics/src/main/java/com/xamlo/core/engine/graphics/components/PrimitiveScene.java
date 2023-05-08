@@ -104,8 +104,6 @@ public class PrimitiveScene implements IScene {
 		shaderProgram.setUniform("projectionMatrix", this.projectionMatrix);
 		shaderProgram.setUniform("texture_sampler", 0);
 
-		
-
 		for (AbstractRenderableObject cube : cubes) {
 			//Теперь матрица преобразования обновляется каждый раз
 			shaderProgram.setUniform("worldMatrix", cube.getWorldMatrix());

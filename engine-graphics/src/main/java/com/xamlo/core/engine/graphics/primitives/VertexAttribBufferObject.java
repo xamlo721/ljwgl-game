@@ -9,17 +9,12 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.system.MemoryUtil;
 
-import com.xamlo.core.engine.graphics.api.primitives.IBufferObject;
 
 import static org.lwjgl.opengl.GL15.glBufferData;
 
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 
 
 /**
@@ -30,7 +25,7 @@ import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
  * @author Satomi
  *
  */
-public class VertexAttribBufferObject implements IBufferObject {
+public class VertexAttribBufferObject extends AbstractVertexBuffer {
 	
 	/**
 	 * Флаг, сообщающий о том, что данный буфер уже был размещён в VRAM
@@ -79,16 +74,6 @@ public class VertexAttribBufferObject implements IBufferObject {
 		this.dimensionSize = dimensionSize;
 		bufferID = glGenBuffers();
 	}
-
-	@Override
-	public void bind() {
-		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-	}
-
-	@Override
-	public void unbind() {
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
 	
 	@Override
 	public boolean allocMemory(int indexVBO) {
@@ -105,11 +90,11 @@ public class VertexAttribBufferObject implements IBufferObject {
 		/**
 		 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
 		 */
-		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+		glBindBuffer(EnumBufferType.VertexBuffer.getOpenGLValue(), bufferID);
 		/**
 		 * Перемещаем в выбранную область памяти массив из ОЗУ
 		 */
-		glBufferData(GL_ARRAY_BUFFER, vertexData, bufferType.getOpenGLValue());
+		glBufferData(EnumBufferType.VertexBuffer.getOpenGLValue(), vertexData, bufferType.getOpenGLValue());
 			
         glEnableVertexAttribArray(0);
 	    

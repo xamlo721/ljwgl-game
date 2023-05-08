@@ -41,9 +41,7 @@ public class VertexArrayObject implements IBufferObject {
 	
 	public VertexArrayObject()  {
 		vaoId = glGenVertexArrays();
-
 		vbos = new HashMap<Integer, IBufferObject>();
-		
 	}
 	
 	public void addVertexData(int bufferLocation, IBufferObject buffer) {

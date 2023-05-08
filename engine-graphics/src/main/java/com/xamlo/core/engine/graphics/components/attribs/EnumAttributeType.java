@@ -37,7 +37,6 @@ public enum EnumAttributeType {
 	
 	Double (GL_DOUBLE);
 
-
 	private final int openGLValue;
 
 	private EnumAttributeType(int levelCode) {
@@ -49,59 +48,20 @@ public enum EnumAttributeType {
 	}
 	
 	public int getTypeSize() {
-		
 		int size = 0;
-		
 		switch (this) {
-		
-		case Byte: {
-			size =  1;
-			break;
-		}
-		case UnsignedByte: {
-			size =  1;
-			break;
-		}
-		case Short: {
-			size =  2;
-			break;
-		}
-		case UnsignedShort: {
-			size =  2;
-			break;
-		}
-		case Int: {
-			size =  4;
-			break;
-		}
-		case UnsignedInt: {
-			size =  1;
-			break;
-		}
-		case Float: {
-			size =  4;
-			break;
-		}
-		case Bytes2: {
-			size =  2;
-			break;
-		}
-		case Bytes3: {
-			size =  3;
-			break;
-		}
-		case Bytes4: {
-			size =  4;
-			break;
-		}
-		case Double: {
-			size =  8;
-			break;
-		}
-		
-		default:
-			break;
-			
+			case Byte: 			size =  1; break;
+			case UnsignedByte:  size =  1; break; 
+			case Short:  		size =  2; break;
+			case UnsignedShort: size =  2; break;
+			case Int:  			size =  4; break;
+			case UnsignedInt:   size =  1; break;
+			case Float: 		size =  4; break;
+			case Bytes2:  		size =  2; break;
+			case Bytes3: 		size =  3; break;
+			case Bytes4: 		size =  4; break;
+			case Double: 		size =  8; break;
+			default: size = 0; break;
 		}
 		return size;
 

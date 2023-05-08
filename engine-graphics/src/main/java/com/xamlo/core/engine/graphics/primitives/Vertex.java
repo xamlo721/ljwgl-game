@@ -45,7 +45,7 @@ public class Vertex {
     public int getVertexSize() {
     	int stride = 0;
     	for (IVertexAttribute iVertexAttribute : attributes) {
-			stride += iVertexAttribute.getDimensionSize();
+			stride += iVertexAttribute.getDimensionSize().value();
 		}
 		return stride;
     }

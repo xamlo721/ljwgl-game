@@ -1,20 +1,21 @@
 package com.xamlo.core.engine.graphics.components.attribs;
 
 import com.xamlo.core.engine.graphics.api.primitives.IVertexAttribute;
+import com.xamlo.core.engine.graphics.primitives.EnumDimestionSize;
 
 public abstract class AbstractAttribute implements IVertexAttribute  {
 
-	protected final int attribSize;	
+	protected final EnumDimestionSize attribSize;	
 	protected final EnumAttributeType attribType;
 	protected float[] attribBuffer;
 
-	public AbstractAttribute(int attribSize, EnumAttributeType attribType) {
+	public AbstractAttribute(EnumDimestionSize attribSize, EnumAttributeType attribType) {
 		this.attribSize = attribSize;
 		this.attribType = attribType;
 	}
 	
 	@Override
-	public int getDimensionSize() {
+	public EnumDimestionSize getDimensionSize() {
 		return attribSize;
 	}
 
@@ -25,7 +26,7 @@ public abstract class AbstractAttribute implements IVertexAttribute  {
 	
 	@Override
 	public int getOffset() {
-		return attribSize * attribType.getTypeSize();
+		return attribSize.value() * attribType.getTypeSize();
 	}
 	
 	@Override

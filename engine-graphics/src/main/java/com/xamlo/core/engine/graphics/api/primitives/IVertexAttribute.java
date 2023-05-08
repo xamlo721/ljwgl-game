@@ -1,6 +1,7 @@
 package com.xamlo.core.engine.graphics.api.primitives;
 
 import com.xamlo.core.engine.graphics.components.attribs.EnumAttributeType;
+import com.xamlo.core.engine.graphics.primitives.EnumDimestionSize;
 
 /** 
  * Определяет общие методы для атрибутов вершин.
@@ -12,7 +13,7 @@ public interface IVertexAttribute {
 	 * (количество переменных в атрибуте)
 	 * @return размер атрибута типа int 
 	 */ 
-	int getDimensionSize();
+	EnumDimestionSize getDimensionSize();
 	
 	/** 
 	 * Получает тип атрибута. 
