@@ -14,7 +14,6 @@ import static org.lwjgl.opengl.GL15.glBufferData;
 
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 
 
 /**
@@ -28,51 +27,36 @@ import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 public class VertexAttribBufferObject extends AbstractVertexBuffer {
 	
 	/**
-	 * Флаг, сообщающий о том, что данный буфер уже был размещён в VRAM
-	 * Для такого объекта можно вызвать release, но нельзя вызвать alloc
-	 */
-	private boolean isRegistred;
-	
-	/**
-	 * Целочисленный ID области памяти (буфера) в VRAM видеокарты
-	 * Устанавливается какое-то значение методом glBindBuffer
-	 */
-	public int bufferID;
-	/**
 	 * Копия данных, которые должны быть положены в VRAM
 	 * Возможно их стоило убрать из озу совсем, но ладно
 	 */
-	
 	public float[] vertexData;
-	
-	private EnumMemoryType bufferType;
 
-	
 	/**
 	 * Размерность пространства, координаты которого мы запоминаем в буфере.
 	 * 		Для 2D - 2
 	 * 		Для 3D - 3 
 	 * и т.д
 	 */
-	private int dimensionSize;
+	private EnumDimestionSize dimensionSize;
 	
 	public VertexAttribBufferObject(float[] vertexData) {
 		this(vertexData, EnumMemoryType.STATIC);
 	}
 
 	public VertexAttribBufferObject(float[] vertexData, EnumMemoryType memoryType) {
-		this(vertexData, memoryType, 3);
+		this(vertexData, memoryType, EnumDimestionSize._3D);
 	}
 	
-	public VertexAttribBufferObject(float[] vertexData, int dimensionSize) {
-		this(vertexData, EnumMemoryType.STATIC, 3);
+	public VertexAttribBufferObject(float[] vertexData, EnumDimestionSize dimensionSize) {
+		this(vertexData, EnumMemoryType.STATIC, EnumDimestionSize._3D);
 	}
 	
-	public VertexAttribBufferObject(float[] vertexData, EnumMemoryType memoryType, int dimensionSize) {
+	public VertexAttribBufferObject(float[] vertexData, EnumMemoryType memoryType, EnumDimestionSize dimensionSize) {
 		this.vertexData = vertexData;
 		this.bufferType = memoryType;
 		this.dimensionSize = dimensionSize;
-		bufferID = glGenBuffers();
+		this.bufferID = glGenBuffers();
 	}
 	
 	@Override
@@ -95,8 +79,19 @@ public class VertexAttribBufferObject extends AbstractVertexBuffer {
 		 * Перемещаем в выбранную область памяти массив из ОЗУ
 		 */
 		glBufferData(EnumBufferType.VertexBuffer.getOpenGLValue(), vertexData, bufferType.getOpenGLValue());
-			
-        glEnableVertexAttribArray(0);
+		/**
+		 * Чистим за собой память. Она НЕ почистится gc, так как расположена не на стеке
+		 */
+	    MemoryUtil.memFree(vertexBuffer);
+
+		/**
+		 * Для того, чтобы не мешать другим буферам, устанавливаем глобальный для VAO индекс аттрибута
+		 * Т.к мы не единственный VBO в входящий в VAO, то нужно учитывать индекс последнего помеченного аттрибута
+		 * Контроль за этим возложен на VAO. Сюда должен приехать актуальный индекс
+		 */
+		this.attribArrayIndex = indexVBO;
+		
+        glEnableVertexAttribArray(this.attribArrayIndex);
 	    
         /**
           *  index: Указывает местоположение, в котором шейдер ожидает эти данные.
@@ -109,13 +104,22 @@ public class VertexAttribBufferObject extends AbstractVertexBuffer {
           *  normalized: Указывает, должны ли значения быть нормализованы или нет.
           *  
           *  stride: Задает смещение в байтах между последовательными общими атрибутами вершины. 
-          *  (Мы объясним это позже).
           *  
           *  offset: Задает смещение по отношению к первому компоненту в буфере.
           */
-	    glVertexAttribPointer(indexVBO, dimensionSize, GL_FLOAT, false, 0, 0);
-
-	    MemoryUtil.memFree(vertexBuffer);
+	    glVertexAttribPointer(this.attribArrayIndex, dimensionSize.value(), GL_FLOAT, false, 0, this.offset);
+	    
+		/**
+		 * Учитываем смещение данных в байтах для следующего аттрибута
+		 */
+		//TODO: Кажется нужно передавать этот оффсет между VBO, так как этотоже глобальное смещение. Оттестировать.
+	    //TODO: Здесь даже не знаю как оффсет инкрементировать, так как мы не можем знать размерность врешины. Но да, её можно передавать сюда
+		//offset += attr.getOffset();
+		/**
+		 * Обновляем счётчик количества активных вершин
+		 */
+		attribArrayIndex++;
+		
 	    
 		return true;
 	}

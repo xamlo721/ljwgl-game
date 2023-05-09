@@ -20,7 +20,7 @@ import com.xamlo.core.engine.graphics.api.primitives.IBufferObject;
  * @author Satomi
  *
  */
-public class VertexArrayObject implements IBufferObject {
+public class VertexArrayObject extends AbstractVertexBuffer {
 	/**
 	 * Флаг, сообщающий о том, что данный буфер уже был размещён в VRAM
 	 * Для такого объекта можно вызвать release, но нельзя вызвать bind
@@ -35,27 +35,31 @@ public class VertexArrayObject implements IBufferObject {
 	/**
 	 * Список VBO, сходящих в состав VAO
 	 */
-	private Map<Integer, IBufferObject> vbos;
+	private Map<Integer, AbstractVertexBuffer> vbos;
 
 	private IndexBufferObject indexBufferObject;
 	
 	public VertexArrayObject()  {
 		vaoId = glGenVertexArrays();
-		vbos = new HashMap<Integer, IBufferObject>();
+		vbos = new HashMap<Integer, AbstractVertexBuffer>();
 	}
 	
-	public void addVertexData(int bufferLocation, IBufferObject buffer) {
+	public void addVertexData(int bufferLocation, AbstractVertexBuffer buffer) {
 		this.vbos.put(bufferLocation, buffer);
 	}
-	public void addVertexData(IBufferObject buffer) {
+	
+	public void addVertexData(AbstractVertexBuffer buffer) {
 		this.vbos.put(vbos.size(), buffer);
 	}
-	public void addVertexData(int bufferLocation, float[] buffer, EnumMemoryType memoryType, int dataDimension) {
+	
+	public void addVertexData(int bufferLocation, float[] buffer, EnumMemoryType memoryType, EnumDimestionSize dataDimension) {
 		this.vbos.put(bufferLocation, new VertexAttribBufferObject(buffer, memoryType, dataDimension));
 	}
-	public void addVertexData(float[] buffer, EnumMemoryType memoryType, int dataDimension) {
+	
+	public void addVertexData(float[] buffer, EnumMemoryType memoryType, EnumDimestionSize dataDimension) {
 		this.vbos.put(vbos.size(), new VertexAttribBufferObject(buffer, memoryType, dataDimension));
 	}
+	
 	public void setVertexOrder(int[] vertexOrder) {
 		indexBufferObject = new IndexBufferObject(vertexOrder);
 	}
@@ -70,9 +74,12 @@ public class VertexArrayObject implements IBufferObject {
 		///
         glBindVertexArray(vaoId);
 		indexBufferObject.allocMemory(0);
+		
+	    //FIME: Эти индексы не соответсвуют реальному расположению буферов на видеокарте
 		for (int i = 0; i < vbos.size(); i ++) {
-			IBufferObject vbo = vbos.get(i);
-			vbo.allocMemory(i);
+			AbstractVertexBuffer vbo = vbos.get(i);
+			vbo.allocMemory(this.attribArrayIndex);
+			this.attribArrayIndex += vbo.getAttribsCount();
 		}
 		glBindVertexArray(0);
 
@@ -82,19 +89,17 @@ public class VertexArrayObject implements IBufferObject {
 	@Override
 	public void bind() {
 	    glBindVertexArray(vaoId);
-		for (int i = 0; i < vbos.size(); i++) {
+		for (int i = 0; i < this.attribArrayIndex; i++) {
 		    glEnableVertexAttribArray(i);
 		}
-
 	}
 	
 	@Override
 	public void unbind() {
-	    glBindVertexArray(0);
-		for (int i = 0; i < vbos.size(); i++) {
+		for (int i = 0; i < this.attribArrayIndex; i++) {
 			glDisableVertexAttribArray(i);
 		}	
-
+	    glBindVertexArray(0);
 	}
 	
 	@Override
@@ -111,6 +116,7 @@ public class VertexArrayObject implements IBufferObject {
 			vbo.releaseMemory();
 		}
 		glDeleteVertexArrays(vaoId);
+		this.attribArrayIndex = 0;
 		return true;
 	}
 

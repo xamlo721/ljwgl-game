@@ -38,14 +38,7 @@ public class IndexBufferObject extends AbstractVertexBuffer {
 	    IntBuffer indicesBuffer = MemoryUtil.memAllocInt(indexData.length);
 	    indicesBuffer.put(indexData);
 	    indicesBuffer.flip();
-	    
-//	    String log = new String();
-//	    log +=  "create IBO {";
-//	    for (int i = 0; i < indexData.length; i++) {
-//	    	log += " " + indexData[i] + " ";
-//	    }
-//	    log += "}";
-//	    System.out.println(log);
+
 	    /**
 		  * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
 		  */

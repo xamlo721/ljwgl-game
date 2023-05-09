@@ -36,9 +36,6 @@ public class VertexBufferObject extends AbstractVertexBuffer {
     		//TODO: Охх я вам как дааам!
     		return;
     	}
-		System.out.println("create VBO with " + vertices.length + " vertices");
-
-    	
 		this.vertices = vertices;
 		this.bufferType = memoryType;
 		bufferID = glGenBuffers();
@@ -50,7 +47,7 @@ public class VertexBufferObject extends AbstractVertexBuffer {
 			//FIXME: Наверное лучше кинуть своё исключение
 			return false;
 		}
-		this.isRegistred = true;
+		
 	    FloatBuffer vertexData = MemoryUtil.memAllocFloat(vertices.length * vertices[0].getVertexSize());
 
 		for (int i = 0; i < vertices.length; i++) {
@@ -60,21 +57,33 @@ public class VertexBufferObject extends AbstractVertexBuffer {
 		}
 		vertexData.flip();
 		/**
-		 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID
+		 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID для дальнейшего заполнения
 		 */
 		glBindBuffer(EnumBufferType.VertexBuffer.getOpenGLValue(), bufferID);
 		/**
 		 * Перемещаем в выбранную область памяти массив из ОЗУ
 		 */
 		glBufferData(EnumBufferType.VertexBuffer.getOpenGLValue(), vertexData, bufferType.getOpenGLValue());
-			
+		
+		/**
+		 * Чистим за собой память. Она НЕ почистится gc, так как расположена не на стеке
+		 */
 	    MemoryUtil.memFree(vertexData);
-	    
+	    //Какой-то костыль, для доставания структуры данных из ... первой вершины?
 		Vertex v = vertices[0];
-		int i = 0;
-	    int offset = 0;
+
+		/**
+		 * Для того, чтобы не мешать другим буферам, устанавливаем глобальный для VAO индекс аттрибута
+		 * Т.к мы не единственный VBO в входящий в VAO, то нужно учитывать индекс последнего помеченного аттрибута
+		 * Контроль за этим возложен на VAO. Сюда должен приехать актуальный индекс
+		 */
+		this.attribArrayIndex = indexVBO;
+		//Разметим для каждого аттрибута
 	    for (IVertexAttribute attr : v.getAttributes()) {
-			glEnableVertexAttribArray(i);
+	    	/**
+	    	 * Помечаем для OpenGL, что мы собираемся работать с аттрибутом №attribArrayIndex по счёту
+	    	 */
+			glEnableVertexAttribArray(attribArrayIndex);
 	        /**
 	          *  index: Указывает местоположение, в котором шейдер ожидает эти данные.
 	          * 
@@ -89,15 +98,20 @@ public class VertexBufferObject extends AbstractVertexBuffer {
 	          *  
 	          *  offset: Задает смещение по отношению к первому компоненту в буфере.
 	          */
-			glVertexAttribPointer(i, attr.getDimensionSize().value(), attr.getType().getOpenGLValue(), attr.isNormalized(), v.getVertexStride(), offset);
-			
+			glVertexAttribPointer(attribArrayIndex, attr.getDimensionSize().value(), attr.getType().getOpenGLValue(), attr.isNormalized(), v.getVertexStride(), offset);
+			/**
+			 * Учитываем смещение данных в байтах для следующего аттрибута
+			 */
+			//TODO: Кажется нужно передавать этот оффсет между VBO, так как этотоже глобальное смещение. Оттестировать.
 			offset += attr.getOffset();
-			i++;
+			/**
+			 * Обновляем счётчик количества активных вершин
+			 */
+			attribArrayIndex++;
 		}
+		this.isRegistred = true;
 
 		return true;
 	}
 	
-
-
 }

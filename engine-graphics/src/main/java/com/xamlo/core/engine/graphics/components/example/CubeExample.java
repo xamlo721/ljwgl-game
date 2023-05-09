@@ -4,8 +4,6 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 import org.lwjglb.engine.graph.GraphicalMesh;
 
 import com.xamlo.core.engine.graphics.components.AbstractModel;

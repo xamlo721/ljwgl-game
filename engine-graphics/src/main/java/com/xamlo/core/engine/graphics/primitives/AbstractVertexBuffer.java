@@ -1,6 +1,5 @@
 package com.xamlo.core.engine.graphics.primitives;
 
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 
@@ -31,14 +30,44 @@ public abstract class AbstractVertexBuffer  implements IBufferObject {
 	 */
 	protected EnumMemoryType bufferType;
 	
+	/**
+	 * Переменная offset задаёт смещение, для укладки элементов
+	 * через выхов функции glVertexAttribPointer.
+	 * 
+	 * Данное смещение показывает, на сколько байт (шт) должны 
+	 * быть смещены записываемые текущим вызовом байты.
+	 * Изначально смещения нет, но для VBO с несколькими аттрибутами
+	 * это смещение должно быть учтено как offset += <Размер атрибута в байтах>
+	 */
+	protected int offset = 0;
+	
+	/**
+	 * Индекс списка аттрибута показывает, какой по счёту
+	 * атрибут используется буфером VBO-VAO 
+	 * glEnableVertexAttribArray(attribArrayIndex);
+	 * 
+	 * Для каждого VAO нельзя нарушать порядок этих индексов,
+	 * а так как VBO могут описывать произвольное количество
+	 * аттрибутов вершин, то VAO должен вести учёт этих индексов
+	 * 
+	 */
+	protected int attribArrayIndex = 0;
+	
+	/**
+	 * Возвращает количество активных вершин буфера
+	 */
+	public int getAttribsCount() {
+		return attribArrayIndex;
+	}
+	
 	@Override
 	public void bind() {
-		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+		glBindBuffer(EnumBufferType.VertexBuffer.getOpenGLValue(), bufferID);
 	}
 
 	@Override
 	public void unbind() {
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(EnumBufferType.VertexBuffer.getOpenGLValue(), 0);
 	}
 	
 	@Override
@@ -48,7 +77,7 @@ public abstract class AbstractVertexBuffer  implements IBufferObject {
 			return false;
 		}
 		this.isRegistred = false;
-		
+		this.attribArrayIndex = 0;
 		glDeleteBuffers(bufferID);
 
 		return true;
