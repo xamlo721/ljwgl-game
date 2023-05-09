@@ -1,66 +1,80 @@
 package com.xamlo.core.engine.graphics.primitives;
 
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.system.MemoryUtil;
 
-import com.xamlo.core.engine.graphics.api.primitives.IVertexAttribute;
+import com.xamlo.core.engine.graphics.api.primitives.IVertex;
 
 /**
- * Класс Vertex Описывает продвинутый случай 
- * расположения в VRAM информации о точке.
+ * Класс Vertex хранит данные о вершине,
+ * которую он описывает в виде буфера в куче.
  * 
- * Вершина может содержать сколько угодно 
- * атррибутов любого типа.
+ * В классе умышленно нет проверок на размерность буфера vertexData
+ * Если упадёт, то упадёт - вина программиста
  * @author Satomi
- *
  */
-public class Vertex {
+public class Vertex implements IVertex {
 	
-	private List<IVertexAttribute> attributes;
+	private final static int defaultSize = 3;
+	
+	private FloatBuffer vertexData;
 	
 	public Vertex() {
-		this.attributes = new ArrayList<IVertexAttribute>();
+	    this(defaultSize);
 	}
-
-    public Vertex(List<IVertexAttribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    public Vertex addAttribute(IVertexAttribute attrib) {
-    	this.attributes.add(attrib);
-		return this;
-    }
+	
+	public Vertex(int size) {
+	    vertexData = MemoryUtil.memAllocFloat(size);
+	}
     
-    public int getVertexStride() {
-    	int stride = 0;
-    	for (IVertexAttribute iVertexAttribute : attributes) {
-			stride += iVertexAttribute.getOffset();
-		}
-		return stride;
-    }
-    
-    public int getVertexSize() {
-    	int stride = 0;
-    	for (IVertexAttribute attr : attributes) {
-			stride += attr.getDimensionSize().value();
-		}
-		return stride;
-    }
-    
-    public List<IVertexAttribute> getAttributes() {
-        return attributes;
-    }
-    
-    public FloatBuffer getVertexBuffer() {
-	    FloatBuffer attribBuffer = MemoryUtil.memAllocFloat(getVertexStride());
-    	for (IVertexAttribute attr : attributes) {
-    	    attribBuffer.put(attr.getVertexData());
-		}
-		return attribBuffer.flip();
+	@Override
+    public FloatBuffer getVertexData() {
+		return vertexData.duplicate().flip();
     	
     }
+	
+	@Override
+	public IVertex append(Vector2f vec) {
+		vertexData.put(vec.x);
+		vertexData.put(vec.y);
+		return this;
+	}
+
+	@Override
+	public IVertex append(Vector3f vec) {
+		vertexData.put(vec.x);
+		vertexData.put(vec.y);
+		vertexData.put(vec.z);	
+		return this;	
+	}
+
+	@Override
+	public IVertex append(Vector4f vec) {
+		vertexData.put(vec.x);
+		vertexData.put(vec.y);
+		vertexData.put(vec.z);
+		vertexData.put(vec.w);
+		return this;
+	}
+	
+	@Override
+	public IVertex append(FloatBuffer data) {
+		vertexData.put(data);
+		return this;
+	}
+
+	@Override
+	public IVertex append(float[] data) {
+		vertexData.put(data);	
+		return this;	
+	}
+	
+	@Override
+	public void release() {
+	    MemoryUtil.memFree(vertexData);
+	}
 	
 }

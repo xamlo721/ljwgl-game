@@ -7,9 +7,8 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
 
-import org.lwjgl.system.MemoryUtil;
-
 import com.xamlo.core.engine.graphics.api.primitives.IVertexAttribute;
+import com.xamlo.core.engine.graphics.api.primitives.IVertexStructure;
 
 import static org.lwjgl.opengl.GL15.glBufferData;
 
@@ -28,17 +27,21 @@ public class VertexBufferObject extends AbstractVertexBuffer {
 	 * Копия данных, которые должны быть положены в VRAM
 	 * Возможно их стоило убрать из озу совсем, но ладно
 	 */
-	private Vertex[] vertices;
+	private FloatBuffer vertices;
 	
-	public VertexBufferObject(Vertex[] vertices, EnumMemoryType memoryType) {
+	private IVertexStructure structure;
+	
+	public VertexBufferObject(FloatBuffer vertices, IVertexStructure struct, EnumMemoryType memoryType) {
 		
-    	if (vertices.length == 0) {
+    	if (vertices.capacity() == 0) {
     		//TODO: Охх я вам как дааам!
     		return;
     	}
 		this.vertices = vertices;
+		this.structure = struct;
 		this.bufferType = memoryType;
 		bufferID = glGenBuffers();
+		
 	}
 	
 	@Override
@@ -47,15 +50,7 @@ public class VertexBufferObject extends AbstractVertexBuffer {
 			//FIXME: Наверное лучше кинуть своё исключение
 			return false;
 		}
-		
-	    FloatBuffer vertexData = MemoryUtil.memAllocFloat(vertices.length * vertices[0].getVertexSize());
 
-		for (int i = 0; i < vertices.length; i++) {
-			Vertex v = vertices[i];
-			vertexData.put(v.getVertexBuffer());
-			
-		}
-		vertexData.flip();
 		/**
 		 * Указываем OpenGL, что нужно переключиться на область памяти с индексом bufferID для дальнейшего заполнения
 		 */
@@ -63,14 +58,8 @@ public class VertexBufferObject extends AbstractVertexBuffer {
 		/**
 		 * Перемещаем в выбранную область памяти массив из ОЗУ
 		 */
-		glBufferData(EnumBufferType.VertexBuffer.getOpenGLValue(), vertexData, bufferType.getOpenGLValue());
+		glBufferData(EnumBufferType.VertexBuffer.getOpenGLValue(), vertices, bufferType.getOpenGLValue());
 		
-		/**
-		 * Чистим за собой память. Она НЕ почистится gc, так как расположена не на стеке
-		 */
-	    MemoryUtil.memFree(vertexData);
-	    //Какой-то костыль, для доставания структуры данных из ... первой вершины?
-		Vertex v = vertices[0];
 
 		/**
 		 * Для того, чтобы не мешать другим буферам, устанавливаем глобальный для VAO индекс аттрибута
@@ -79,7 +68,7 @@ public class VertexBufferObject extends AbstractVertexBuffer {
 		 */
 		this.attribArrayIndex = indexVBO;
 		//Разметим для каждого аттрибута
-	    for (IVertexAttribute attr : v.getAttributes()) {
+	    for (IVertexAttribute attr : structure.getAttributes()) {
 	    	/**
 	    	 * Помечаем для OpenGL, что мы собираемся работать с аттрибутом №attribArrayIndex по счёту
 	    	 */
@@ -98,7 +87,8 @@ public class VertexBufferObject extends AbstractVertexBuffer {
 	          *  
 	          *  offset: Задает смещение по отношению к первому компоненту в буфере.
 	          */
-			glVertexAttribPointer(attribArrayIndex, attr.getDimensionSize().value(), attr.getType().getOpenGLValue(), attr.isNormalized(), v.getVertexStride(), offset);
+			glVertexAttribPointer(attribArrayIndex, attr.getDimensionSize().value(), attr.getType().getOpenGLValue(), attr.isNormalized(), structure.getVertexStride(), offset);
+			System.out.println("Register VOBAttib : " + attribArrayIndex + " " + attr.getDimensionSize().value() + " " + attr.getType().getOpenGLValue() + " " + attr.isNormalized() + " " + structure.getVertexStride() + " " + offset);
 			/**
 			 * Учитываем смещение данных в байтах для следующего аттрибута
 			 */

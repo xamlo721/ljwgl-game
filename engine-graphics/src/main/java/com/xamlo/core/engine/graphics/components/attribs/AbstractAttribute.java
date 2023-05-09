@@ -7,7 +7,6 @@ public abstract class AbstractAttribute implements IVertexAttribute  {
 
 	protected final EnumDimestionSize attribSize;	
 	protected final EnumAttributeType attribType;
-	protected float[] attribBuffer;
 
 	public AbstractAttribute(EnumDimestionSize attribSize, EnumAttributeType attribType) {
 		this.attribSize = attribSize;
@@ -27,11 +26,6 @@ public abstract class AbstractAttribute implements IVertexAttribute  {
 	@Override
 	public int getOffset() {
 		return attribSize.value() * attribType.getTypeSize();
-	}
-	
-	@Override
-	public float[]  getVertexData() {
-		return attribBuffer;
 	}
 
 }

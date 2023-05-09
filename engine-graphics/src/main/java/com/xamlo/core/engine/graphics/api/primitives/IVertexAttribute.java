@@ -27,18 +27,11 @@ public interface IVertexAttribute {
 	 * @return флаг, указывающий на нормализацию типа boolean 
 	*/ 
 	boolean isNormalized();
-
 	
 	/** 
 	 * Получает смещение (offset) атрибута от начала массива вершинных данных в байтах. 
 	 * @return смещение атрибута типа long 
 	 */ 
 	int getOffset();
-	
-	/** 
-	 * Получает данные вершины в виде массива типа float. 
-	 * @return массив данных вершины типа float[] 
-	 */ 
-	float[] getVertexData();
 	
 }

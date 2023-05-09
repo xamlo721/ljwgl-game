@@ -4,17 +4,15 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 
-import java.awt.Point;
-
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.lwjglb.engine.graph.GraphicalMesh;
 
 import com.xamlo.core.engine.graphics.primitives.Vertex;
+import com.xamlo.core.engine.graphics.primitives.VertexStructure;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 import com.xamlo.core.engine.graphics.components.attribs.ColorAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
-import com.xamlo.core.engine.graphics.components.example.DualContouring;
 
 import ru.satomi.dc.primitive.Face3i;
 import ru.satomi.dc.primitive.QuadMesh;
@@ -57,10 +55,15 @@ public class BigCubeExample extends AbstractRenderableObject {
     	Vertex[] vertices = new Vertex[triangles.vertexs.size()];
     	int[] indices = new int[triangles.faces.length * 3]; 
 
+    	VertexStructure vertexScruct = new VertexStructure();
+    	vertexScruct.addAttribute(new PositionAttribute());
+    	vertexScruct.addAttribute(new ColorAttribute());
+    	vertexScruct.setVertexCount(triangles.vertexs.size());
+    	
     	for (Vector3d point : triangles.vertexs) {
-    		vertices[i] = new Vertex();
-    		vertices[i].addAttribute(new PositionAttribute((float)point.x, (float)point.y, (float)point.z));
-    		vertices[i].addAttribute(new ColorAttribute((float)Math.random(),  (float)Math.random(), (float)Math.random()));
+    		vertices[i] = new Vertex(6);
+    		vertices[i].append(new Vector3f((float)point.x, (float)point.y, (float)point.z));
+    		vertices[i].append(new Vector3f((float)Math.random(),  (float)Math.random(), (float)Math.random()));
     		i++;
     	}
     	i = 0;
@@ -71,7 +74,7 @@ public class BigCubeExample extends AbstractRenderableObject {
     	}
 		
     	System.out.println("Loading big Cube... " + triangles.faces.length + " poligons loaded.");
-        mesh = new GraphicalMesh(vertices, indices);
+        mesh = new GraphicalMesh(vertices, vertexScruct, indices);
 
 	}
 

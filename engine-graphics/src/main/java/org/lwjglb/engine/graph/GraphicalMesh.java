@@ -1,10 +1,17 @@
 package org.lwjglb.engine.graph;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.system.MemoryUtil;
+
+import com.xamlo.core.engine.graphics.api.primitives.IVertex;
+import com.xamlo.core.engine.graphics.api.primitives.IVertexStructure;
 import com.xamlo.core.engine.graphics.components.Texture;//FIXME: Я уверен, что это не должно здесь находится
 import com.xamlo.core.engine.graphics.primitives.EnumMemoryType;
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexArrayObject;
 import com.xamlo.core.engine.graphics.primitives.VertexBufferObject;
+import com.xamlo.core.engine.graphics.primitives.VertexStructure;
 
 import ru.satomi.dc.primitive.PhysicalMesh;
 
@@ -21,19 +28,31 @@ public class GraphicalMesh extends PhysicalMesh {
 //    	vao.allocMemory(0);
     }
     
-    public GraphicalMesh(Vertex[] vertices, int[] indices) {
+    public GraphicalMesh(IVertex[] vertices, IVertexStructure structure, int[] indices) {
     	super(vertices.length);
 
+		System.out.println("Register Mesh VertexCount: " + structure.getVertexCount() + ". VertexSize " + structure.getVertexSize());
+		
+	    FloatBuffer vertexData = MemoryUtil.memAllocFloat(structure.getVertexCount() * structure.getVertexSize());
+	    for (IVertex v : vertices) {
+		    vertexData.put(v.getVertexData());
+		    v.release();
+	    }
+		vertexData.flip();
+
     	vao = new VertexArrayObject();
-    	vao.addVertexData(new VertexBufferObject(vertices, EnumMemoryType.STATIC));
+    	vao.addVertexData(new VertexBufferObject(vertexData, structure, EnumMemoryType.STATIC));
     	vao.setVertexOrder(indices);
     	vao.allocMemory(0);
-	    
+		/**
+		 * Чистим за собой память. Она НЕ почистится gc, так как расположена не на стеке
+		 */
+	    MemoryUtil.memFree(vertexData);
     	this.verticesCount = indices.length;
     }
     
-    public GraphicalMesh(Vertex[] vertices, int[] indices, Texture texture) {
-    	this(vertices, indices);
+    public GraphicalMesh(Vertex[] vertices, VertexStructure structure,  int[] indices, Texture texture) {
+    	this(vertices, structure, indices);
 //    	vao = new VertexArrayObject(vertices, indices, texture);
 //    	vao.allocMemory(0);
 //        this.verticesCount = indices.length;
