@@ -17,6 +17,8 @@ import static org.lwjgl.opengl.GL11.glFrontFace;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_SRGB;
 
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
+import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glViewport;
@@ -80,7 +82,8 @@ public class RenderEngine {
            	    camera.getNearDistance(), 
            	    camera.getFarDistance()
         );
-          
+        projectionMatrix = projectionMatrix.mul(camera.getViewMatrix());
+
 	}
 	
 	public void createWindow(int width, int height) {
@@ -211,9 +214,22 @@ public class RenderEngine {
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
         scene.tranformScene(projectionMatrix);
+        
 		// Вся логическая сцена
 		scene.renderFrame();
 		
+        projectionMatrix = new Matrix4f().perspective(
+       		    camera.getFov(), 
+           		camera.getAspectRatio(),
+           	    camera.getNearDistance(), 
+           	    camera.getFarDistance()
+        );
+        projectionMatrix = projectionMatrix.mul(camera.getViewMatrix());
+        
+		//camera.setFov(camera.getFov() + 0.01f);
+		//camera.move(new Vector3f(0.0f, 0.01f, 0.01f));
+		camera.rotate(new Vector3f(0.0f, 0.1f, 0.3f));
+
 		// draw into OpenGL window
 		this.window.swapBuffers();
 		

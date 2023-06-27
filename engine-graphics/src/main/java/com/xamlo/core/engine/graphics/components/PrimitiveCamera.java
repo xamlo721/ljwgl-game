@@ -1,7 +1,8 @@
 package com.xamlo.core.engine.graphics.components;
 
 import org.joml.Vector3f;
-import org.lwjgl.util.vector.Matrix4f;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 import com.xamlo.core.engine.graphics.api.components.ICamera;
 
@@ -58,13 +59,27 @@ public class PrimitiveCamera implements ICamera {
 	/*
 	 * Матрица вида для камеры
 	 */
+	@Override
 	public Matrix4f getViewMatrix() {
 	    Matrix4f viewMatrix = new Matrix4f();
-	    viewMatrix.setIdentity();
-	    viewMatrix.rotate((float) Math.toRadians(rotation.x), new org.lwjgl.util.vector.Vector3f(1, 0, 0));
-	    viewMatrix.rotate((float) Math.toRadians(rotation.y), new org.lwjgl.util.vector.Vector3f(0, 1, 0));
-	    viewMatrix.rotate((float) Math.toRadians(rotation.z), new org.lwjgl.util.vector.Vector3f(0, 0, 1));
-	    viewMatrix.translate(new org.lwjgl.util.vector.Vector3f(-position.x, -position.y, -position.z));
+	    viewMatrix.identity();
+
+	    // переводим углы поворота камеры из градусов в радианы
+	    float yaw = (float)Math.toRadians(rotation.x);
+	    float pitch = (float)Math.toRadians(rotation.y);
+	    float roll = (float)Math.toRadians(rotation.z);
+
+	    // создаем кватернион для поворота камеры по осям
+	    Quaternionf orientation = new Quaternionf().rotateYXZ(yaw, pitch, roll);
+
+	    // умножаем матрицу вида на матрицу поворота камеры
+	    viewMatrix.rotate(orientation);
+
+	    // переносим камеру в пространстве
+	    Vector3f invertedPosition = new Vector3f(-position.x, -position.y, -position.z);
+	    viewMatrix.translate(invertedPosition);
+
+	    
 	    return viewMatrix;
 	}
 	

@@ -1,6 +1,7 @@
 package com.xamlo.core.engine.graphics.api.components;
 
 import org.joml.Vector3f;
+import org.joml.Matrix4f;
 
 /*
  * Интерфейс для описания камер
@@ -8,6 +9,11 @@ import org.joml.Vector3f;
  * с их вариантами реализации
  */
 public interface ICamera {
+	
+	/*
+	 * Матрица вида для камеры
+	 */
+	public Matrix4f getViewMatrix();
 
 	/**
 	 * Повернуть камеру на вектор 

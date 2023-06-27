@@ -113,9 +113,9 @@ public class PrimitiveScene implements IScene {
 			smile.bind();
 
 			cube.draw();
-			cube.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
+			//cube.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
 			//cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
-			cube.scale(0.999f);
+			//cube.scale(0.999f);
 		}
 
 		
