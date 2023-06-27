@@ -17,11 +17,10 @@ import static org.lwjgl.opengl.GL11.glFrontFace;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_SRGB;
 
 import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 
-import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.glfw.GLFW.*;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
@@ -31,9 +30,9 @@ import org.lwjgl.opengl.GL43;
 
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.components.PrimitiveCamera;
-import com.xamlo.core.engine.graphics.components.PrimitiveScene;
 import com.xamlo.core.engine.graphics.components.Window;
-
+import com.xamlo.core.engine.graphics.components.LJWGLKeyboard;
+import com.xamlo.core.engine.graphics.components.LJWGLMouse;
 
 public class RenderEngine {
 	
@@ -45,12 +44,16 @@ public class RenderEngine {
 	
 	private boolean isRendering;
 	public boolean isCloseRequest;
-	
+
+	private static final float movAmt = 0.11f;
 	private static final long NANOSECOND = 1000000000;
 	private static final long SECOND = 1;
 	private PrimitiveCamera camera;
     private Matrix4f projectionMatrix;
+    private LJWGLKeyboard keyboard;
+    private LJWGLMouse mouse;
 
+	
 	public RenderEngine() {
 		this.isCloseRequest = false;
 
@@ -58,9 +61,10 @@ public class RenderEngine {
 	
 	public void init() {
 		
+		
 		window = Window.getInstance();
         //camera = Camera.getInstance();
-        
+
 		if(glfwInit() == false) {
 			//Исключение, если мы не можем инициализироваться
 		}
@@ -112,10 +116,16 @@ public class RenderEngine {
 		glEnable(GL_FRAMEBUFFER_SRGB);
 		
 		getDeviceProperties();
-		
+
 
 	}
 	
+	public void loadInputDevice() {
+		keyboard = new LJWGLKeyboard();
+		mouse = new LJWGLMouse();
+
+	}
+ 	
 	public void startRender() {
 		if(isRendering)
 			return;
@@ -226,12 +236,58 @@ public class RenderEngine {
         );
         projectionMatrix = projectionMatrix.mul(camera.getViewMatrix());
         
+        
+		if(keyboard.isKeyHold(GLFW_KEY_W)) {
+			camera.move( new Vector3f(0.0f, 0.0f, -movAmt));
+
+		}
+		if(keyboard.isKeyHold(GLFW_KEY_S)) {
+			camera.move( new Vector3f(0.0f, 0.0f, movAmt));
+		}
+		if(keyboard.isKeyHold(GLFW_KEY_A)) {
+			camera.move( new Vector3f(-movAmt, 0.0f, 0.0f));
+
+		}
+		if(keyboard.isKeyHold(GLFW_KEY_D)) {
+			camera.move( new Vector3f(movAmt, 0.0f, 0.0f));
+		}
+		
+		if(keyboard.isKeyHold(GLFW_KEY_SPACE)) {
+			camera.move( new Vector3f(0.0f, movAmt, 0.0f));
+
+		}
+		if(keyboard.isKeyHold(GLFW_KEY_LEFT_SHIFT)) {
+			camera.move( new Vector3f(0.0f, -movAmt, 0.0f));
+		}
+		
+		if(keyboard.isKeyHold(GLFW_KEY_Q)) {
+			camera.rotate(new Vector3f(0.0f, 0.0f, movAmt));
+
+		}
+		if(keyboard.isKeyHold(GLFW_KEY_E)) {
+			camera.rotate(new Vector3f(0.0f, 0.0f, -movAmt));
+		}
+		
+		// free mouse rotation
+		if(mouse.isShowCursor() && mouse.getLockedCursorPosition()!=null) {
+			float dy = mouse.getLockedCursorPosition().y() - mouse.getCursorPosition().y();
+			float dx = mouse.getLockedCursorPosition().x() - mouse.getCursorPosition().x();
+
+			camera.rotate(new Vector3f(dy * movAmt, dx * movAmt, 0.0f));
+
+			glfwSetCursorPos(Window.getInstance().getWindow(),
+					mouse.getLockedCursorPosition().x(),
+					mouse.getLockedCursorPosition().y());
+			
+		}
 		//camera.setFov(camera.getFov() + 0.01f);
 		//camera.move(new Vector3f(0.0f, 0.01f, 0.01f));
-		camera.rotate(new Vector3f(0.0f, 0.1f, 0.3f));
+		//camera.rotate(new Vector3f(0.0f, 0.1f, 0.3f));
 
 		// draw into OpenGL window
 		this.window.swapBuffers();
+		
+		keyboard.update();
 		
 
 	}
