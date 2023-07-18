@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL15.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL15.glActiveTexture;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class PrimitiveScene implements IScene {
 
 	// Shaders
 	
-	private final String vertexShaderSource = ShaderProgram.loadShader("engine-graphics/res/shaders/PrimitiveVertexShader.glsl");
+	private final String vertexShaderSource = ShaderProgram.loadShader(new File("../engine-graphics/res/shaders/PrimitiveVertexShader.glsl").getAbsolutePath());
 	
-	private final String fragmentShaderSource =  ShaderProgram.loadShader("engine-graphics/res/shaders/PrimitiveFragmentShader.glsl");
+	private final String fragmentShaderSource =  ShaderProgram.loadShader(new File("../engine-graphics/res/shaders/PrimitiveFragmentShader.glsl").getAbsolutePath());
 	
 	private ShaderProgram shaderProgram;
 	    
@@ -61,7 +62,7 @@ public class PrimitiveScene implements IScene {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		smile = new Texture("engine-graphics/res/textures/example/smile.png");
+		smile = new Texture(new File("../engine-graphics/res/textures/example/smile.png").getAbsolutePath());
 		cubes = new ArrayList<AbstractRenderableObject>();
 		for (int i = 0; i < 5; i++) {
 			CubeExample cube = new CubeExample(smile);
