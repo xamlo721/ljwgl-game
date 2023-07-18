@@ -25,9 +25,9 @@ public class PrimitiveScene implements IScene {
 
 	// Shaders
 	
-	private final String vertexShaderSource = ShaderProgram.loadShader("C:/workspace/eclipse/gamedev/engine-graphics/res/shaders/PrimitiveVertexShader.glsl");
+	private final String vertexShaderSource = ShaderProgram.loadShader("engine-graphics/res/shaders/PrimitiveVertexShader.glsl");
 	
-	private final String fragmentShaderSource =  ShaderProgram.loadShader("C:/workspace/eclipse/gamedev/engine-graphics/res/shaders/PrimitiveFragmentShader.glsl");
+	private final String fragmentShaderSource =  ShaderProgram.loadShader("engine-graphics/res/shaders/PrimitiveFragmentShader.glsl");
 	
 	private ShaderProgram shaderProgram;
 	    
@@ -61,7 +61,7 @@ public class PrimitiveScene implements IScene {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		smile = new Texture("C:/workspace/eclipse/gamedev/engine-graphics/res/textures/example/smile.png");
+		smile = new Texture("engine-graphics/res/textures/example/smile.png");
 		cubes = new ArrayList<AbstractRenderableObject>();
 		for (int i = 0; i < 5; i++) {
 			CubeExample cube = new CubeExample(smile);
