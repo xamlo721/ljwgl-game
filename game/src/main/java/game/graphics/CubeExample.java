@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.components.example;
+package game.graphics;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;

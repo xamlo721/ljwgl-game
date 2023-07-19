@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.components.example;
+package game.graphics;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
@@ -13,6 +13,8 @@ import com.xamlo.core.engine.graphics.primitives.VertexStructure;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 import com.xamlo.core.engine.graphics.components.attribs.ColorAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
+import com.xamlo.core.engine.graphics.components.example.DualContouring;
+import com.xamlo.core.engine.graphics.components.example.Model;
 
 import ru.satomi.dc.primitive.Face3i;
 import ru.satomi.dc.primitive.QuadMesh;

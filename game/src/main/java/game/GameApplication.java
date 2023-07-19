@@ -2,6 +2,9 @@ package game;
 
 import com.xamlo.engine.Engine;
 
+import game.graphics.PrimitiveCamera;
+import game.graphics.PrimitiveScene;
+
 public class GameApplication {
 	
 	protected Engine engine;
@@ -9,7 +12,9 @@ public class GameApplication {
 
 	
 	public GameApplication() {
-		engine = new Engine();
+		
+		
+		engine = new Engine(new PrimitiveCamera(), new PrimitiveScene());
 //		planet = new PlanetGenerator();
 	}
 	

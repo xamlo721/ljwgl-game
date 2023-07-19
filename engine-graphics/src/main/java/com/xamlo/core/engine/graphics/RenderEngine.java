@@ -28,13 +28,15 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
+import com.xamlo.core.engine.graphics.api.components.ICamera;
+import com.xamlo.core.engine.graphics.api.components.IRenderEngine;
 import com.xamlo.core.engine.graphics.api.components.IScene;
-import com.xamlo.core.engine.graphics.components.PrimitiveCamera;
 import com.xamlo.core.engine.graphics.components.Window;
+
 import com.xamlo.core.engine.graphics.components.LJWGLKeyboard;
 import com.xamlo.core.engine.graphics.components.LJWGLMouse;
 
-public class RenderEngine {
+public class RenderEngine implements IRenderEngine {
 	
 	@SuppressWarnings("unused")
 	private GLFWErrorCallback errorCallback;
@@ -48,7 +50,7 @@ public class RenderEngine {
 	private static final float movAmt = 0.11f;
 	private static final long NANOSECOND = 1000000000;
 	private static final long SECOND = 1;
-	private PrimitiveCamera camera;
+	private ICamera camera;
     private Matrix4f projectionMatrix;
     private LJWGLKeyboard keyboard;
     private LJWGLMouse mouse;
@@ -56,7 +58,14 @@ public class RenderEngine {
 	
 	public RenderEngine() {
 		this.isCloseRequest = false;
-
+	}
+	
+	public void setCamera(ICamera cam) {
+		this.camera = cam;
+	}
+	
+	public void setScene(IScene scene) {
+		this.scene = scene;
 	}
 	
 	public void init() {
@@ -74,8 +83,7 @@ public class RenderEngine {
 
 
         
-        //TODO: Разумеется камера не должна находиться внутри сцены
-        camera = new PrimitiveCamera();
+
         //camera.setAspectRatio(480, 480);
         camera.setFov((float) Math.toRadians(60.0f));
         //camera.setPosition(new Vec3f(0.f, 0f, 0f));
@@ -87,6 +95,7 @@ public class RenderEngine {
            	    camera.getFarDistance()
         );
         projectionMatrix = projectionMatrix.mul(camera.getViewMatrix());
+
 
 	}
 	
@@ -126,12 +135,6 @@ public class RenderEngine {
 
 	}
  	
-	public void startRender() {
-		if(isRendering)
-			return;
-		
-		run();
-	}
 	
 	private void run() {
 		
@@ -199,12 +202,13 @@ public class RenderEngine {
 			
 		}
 		
-		stopRendering();
-		shutdown();	
+		stop();
+		release();	
 		
 	}
 	
-	private void stopRendering() {
+	@Override
+	public void stop() {
 		
 		System.out.println("stop rendering");
 		
@@ -291,17 +295,27 @@ public class RenderEngine {
 		
 
 	}
+
+	@Override
+	public void start() {
+		if(isRendering)
+			return;
 		
-	public void shutdown(){
+		run();		
+	}
+
+
+	@Override
+	public void release() {
 		
 		scene.release();
 		window.close();
 		glfwTerminate();
-		this.isCloseRequest = true;
-
+		this.isCloseRequest = true;		
+		
 	}
-	
-	
+
+
 	private void getDeviceProperties() {
 		System.out.println("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION) + " bytes");
 		System.out.println("Max Geometry Uniform Blocks: " + GL31.GL_MAX_GEOMETRY_UNIFORM_BLOCKS+ " bytes");
@@ -330,6 +344,5 @@ public class RenderEngine {
 
 		System.out.println("GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS " + GL11.glGetInteger(GL43.GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS));
 	}
-
 
 }

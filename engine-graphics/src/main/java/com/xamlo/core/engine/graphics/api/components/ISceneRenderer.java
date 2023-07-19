@@ -9,12 +9,14 @@ package com.xamlo.core.engine.graphics.api.components;
  * 
  * TODO: Полагаю, что именно здесь должны находиться шейдера, которые будут использованы
  */
-public interface ISceneSpectator {
+public interface ISceneRenderer {
 
 	
-	void setScene(IScene scene);
-	
-	void renderFrame();
+    void init(); // Метод для инициализации рендерера
+    
+    void render(IScene scene); // Метод для отрисовки сцены
+    
+    void cleanup(); // Метод для освобождения ресурсов рендерера
 	
 	
 }

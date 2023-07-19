@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.components;
+package game.graphics;
 
 import org.joml.Vector3f;
 import org.joml.Matrix4f;

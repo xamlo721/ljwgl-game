@@ -1,11 +1,12 @@
-package com.xamlo.core.engine.graphics.components;
+package game.graphics;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import com.xamlo.core.engine.graphics.api.components.IScene;
-import com.xamlo.core.engine.graphics.components.example.BigCubeExample;
-import com.xamlo.core.engine.graphics.components.example.CubeExample;
+import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
+import com.xamlo.core.engine.graphics.components.ShaderProgram;
+import com.xamlo.core.engine.graphics.components.Texture;
 
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
