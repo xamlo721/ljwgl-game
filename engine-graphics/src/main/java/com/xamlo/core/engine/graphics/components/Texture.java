@@ -1,5 +1,7 @@
 package com.xamlo.core.engine.graphics.components;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -8,7 +10,6 @@ import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.opengl.GL30.*;
-
 
 /**
  * Класс Texture представляет текстуру OpenGL.
@@ -39,7 +40,26 @@ public class Texture extends AbstractTexture {
             IntBuffer h = stack.mallocInt(1);
             IntBuffer channels = stack.mallocInt(1);
 
-            ByteBuffer buf = stbi_load(filename, w, h, channels, 4);
+            ByteBuffer buf;
+            try(InputStream is = Texture.class.getResourceAsStream(filename)) {
+                if (is == null) {
+                    throw new IOException("Texture resource not found");
+                }
+                byte[] bytes = is.readAllBytes();
+
+                buf = stbi_load_from_memory(
+                        ByteBuffer.allocateDirect(bytes.length)
+                                .put(bytes)
+                                .flip(),
+                        w,
+                        h,
+                        channels,
+                        4
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
             if (buf == null) {
                 throw new RuntimeException("Image file [" + filename + "] not loaded: " + stbi_failure_reason());
             }

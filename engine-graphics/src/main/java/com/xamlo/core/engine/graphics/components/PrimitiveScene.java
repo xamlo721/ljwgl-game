@@ -8,13 +8,9 @@ import com.xamlo.core.engine.graphics.components.example.BigCubeExample;
 import com.xamlo.core.engine.graphics.components.example.CubeExample;
 
 import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
-import static org.lwjgl.opengl.GL11.GL_LINE;
-import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL15.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL15.glActiveTexture;
 
 import java.io.File;
@@ -26,9 +22,9 @@ public class PrimitiveScene implements IScene {
 
 	// Shaders
 	
-	private final String vertexShaderSource = ShaderProgram.loadShader(new File("../engine-graphics/res/shaders/PrimitiveVertexShader.glsl").getAbsolutePath());
+	private final String vertexShaderSource = ShaderProgram.loadShaderFromResource("/shaders/PrimitiveVertexShader.glsl");
 	
-	private final String fragmentShaderSource =  ShaderProgram.loadShader(new File("../engine-graphics/res/shaders/PrimitiveFragmentShader.glsl").getAbsolutePath());
+	private final String fragmentShaderSource =  ShaderProgram.loadShaderFromResource("/shaders/PrimitiveFragmentShader.glsl");
 	
 	private ShaderProgram shaderProgram;
 	    
@@ -62,7 +58,7 @@ public class PrimitiveScene implements IScene {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		smile = new Texture(new File("../engine-graphics/res/textures/example/smile.png").getAbsolutePath());
+		smile = new Texture("/textures/example/smile.png");
 		cubes = new ArrayList<AbstractRenderableObject>();
 		for (int i = 0; i < 5; i++) {
 			CubeExample cube = new CubeExample(smile);
