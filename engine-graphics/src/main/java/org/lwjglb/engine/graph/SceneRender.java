@@ -12,9 +12,9 @@ public class SceneRender {
 
     private ShaderProgram shaderProgram;
     
-	private final String vertexShaderSource = ShaderProgram.loadShader("C:/workspace/eclipse/gamedev/engine-graphics/res/shaders/PrimitiveVertexShader.glsl");
+	private final String vertexShaderSource = ShaderProgram.loadShaderFromResource("/shaders/PrimitiveVertexShader.glsl");
 	
-	private final String fragmentShaderSource =  ShaderProgram.loadShader("C:/workspace/eclipse/gamedev/engine-graphics/res/shaders/PrimitiveFragmentShader.glsl");
+	private final String fragmentShaderSource =  ShaderProgram.loadShaderFromResource("/shaders/PrimitiveFragmentShader.glsl");
 	private GraphicalMesh mesh;
 
     public SceneRender() {
