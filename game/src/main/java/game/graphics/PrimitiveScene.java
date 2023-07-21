@@ -5,30 +5,14 @@ import org.joml.Vector3f;
 
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
-import com.xamlo.core.engine.graphics.components.ShaderProgram;
 import com.xamlo.core.engine.graphics.components.Texture;
 
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL15.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL15.glActiveTexture;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PrimitiveScene implements IScene {
-	
-
-	// Shaders
-	
-	private final String vertexShaderSource = ShaderProgram.loadShaderFromResource("/shaders/PrimitiveVertexShader.glsl");
-	
-	private final String fragmentShaderSource =  ShaderProgram.loadShaderFromResource("/shaders/PrimitiveFragmentShader.glsl");
-	
-	private ShaderProgram shaderProgram;
-	    
+		    
     private List<AbstractRenderableObject> cubes;
 
     private Matrix4f projectionMatrix;
@@ -41,24 +25,7 @@ public class PrimitiveScene implements IScene {
 
 	@Override
 	public void load() {		
-		
-        //Рисовать рамку или заливать цветом - закомментировать, если хотим цвет
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glEnable(GL_DEPTH_TEST);
 
-		shaderProgram = new ShaderProgram();
-		shaderProgram.addVertexShader(vertexShaderSource);
-		shaderProgram.addFragmentShader(fragmentShaderSource);
-		shaderProgram.compileShader();
-		shaderProgram.bind();
-		try {
-			shaderProgram.createUniform("projectionMatrix");
-			shaderProgram.createUniform("worldMatrix");
-			shaderProgram.createUniform("texture_sampler");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		smile = new Texture("/textures/example/smile.png");
 		cubes = new ArrayList<AbstractRenderableObject>();
 		for (int i = 0; i < 5; i++) {
@@ -86,47 +53,25 @@ public class PrimitiveScene implements IScene {
 			//big.setScale(0.25f);
 			cubes.add(big);
 		}
-		
-		shaderProgram.unbind();
-        
-        // clear the framebuffer
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
 		System.out.println("Primitive scene loaded");
 	}
 
 	@Override
-	public void renderFrame() {
-        
-		shaderProgram.bind();
-		
-		shaderProgram.setUniform("projectionMatrix", this.projectionMatrix);
-		shaderProgram.setUniform("texture_sampler", 0);
-
-		for (AbstractRenderableObject cube : cubes) {
-			//Теперь матрица преобразования обновляется каждый раз
-			shaderProgram.setUniform("worldMatrix", cube.getWorldMatrix());
-			
-			glActiveTexture(GL_TEXTURE0);
-			
-			smile.bind();
-
-			cube.draw();
-			//cube.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
-			//cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
-			//cube.scale(0.999f);
-		}
-
-		
-	    shaderProgram.unbind();
-
+	public List<AbstractRenderableObject> getRenderableObject() {
+		return this.cubes;
 	}
 	
 	@Override
 	public void release() {	    
-		shaderProgram.cleanup();	
 		for (AbstractRenderableObject cube : cubes) {
 			cube.release();
 		}
+	}
+
+	@Override
+	public Matrix4f getProjectionMatrix() {
+		return projectionMatrix;
 	}
 	
 

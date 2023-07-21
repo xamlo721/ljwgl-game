@@ -31,8 +31,9 @@ import org.lwjgl.opengl.GL43;
 import com.xamlo.core.engine.graphics.api.components.ICamera;
 import com.xamlo.core.engine.graphics.api.components.IRenderEngine;
 import com.xamlo.core.engine.graphics.api.components.IScene;
+import com.xamlo.core.engine.graphics.api.components.ISceneRenderer;
 import com.xamlo.core.engine.graphics.components.Window;
-
+import com.xamlo.core.engine.graphics.components.DefaultSceneRenderer;
 import com.xamlo.core.engine.graphics.components.LJWGLKeyboard;
 import com.xamlo.core.engine.graphics.components.LJWGLMouse;
 
@@ -43,6 +44,7 @@ public class RenderEngine implements IRenderEngine {
 	
 	private Window window;
 	public IScene scene;
+	private ISceneRenderer renderer;
 	
 	private boolean isRendering;
 	public boolean isCloseRequest;
@@ -70,7 +72,6 @@ public class RenderEngine implements IRenderEngine {
 	
 	public void init() {
 		
-		
 		window = Window.getInstance();
         //camera = Camera.getInstance();
 
@@ -81,8 +82,6 @@ public class RenderEngine implements IRenderEngine {
 		//Может вызываться перед инициализацией
 		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
-
-        
 
         //camera.setAspectRatio(480, 480);
         camera.setFov((float) Math.toRadians(60.0f));
@@ -97,10 +96,13 @@ public class RenderEngine implements IRenderEngine {
         projectionMatrix = projectionMatrix.mul(camera.getViewMatrix());
 
 
+		renderer = new DefaultSceneRenderer();
+
+
 	}
 	
 	public void createWindow(int width, int height) {
-		
+
 		window.create(width, height);
 		window.setWindowTitle("Game window");
 		
@@ -137,7 +139,9 @@ public class RenderEngine implements IRenderEngine {
  	
 	
 	private void run() {
-		
+		renderer.init();
+        renderer.loadScene(scene);
+        
 		//****************Пресет***************//
 		this.isRendering = true;
 		//Количество отрисованных кадров
@@ -228,9 +232,10 @@ public class RenderEngine implements IRenderEngine {
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
         scene.tranformScene(projectionMatrix);
+
         
 		// Вся логическая сцена
-		scene.renderFrame();
+        renderer.render(scene);
 		
         projectionMatrix = new Matrix4f().perspective(
        		    camera.getFov(), 

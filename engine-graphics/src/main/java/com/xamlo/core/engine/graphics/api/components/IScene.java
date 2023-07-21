@@ -1,6 +1,10 @@
 package com.xamlo.core.engine.graphics.api.components;
 
+import java.util.List;
+
 import org.joml.Matrix4f;
+
+import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 
 /*
  * Интерфейс, описывающий правила в заимодействия с понятием "Сцена"
@@ -15,7 +19,12 @@ public interface IScene {
 	
 	void load();
 
-	void renderFrame();
+	List<AbstractRenderableObject> getRenderableObject();
+	
+	//TODO: Есть мнение, что сцена это совокупность объектов, которую могут рисовать
+	// всякие Renderer, они и определяют её положение в мире, а она сама не знает где она расположена
+	// Пока не уверен как правильно - сделаем World + несколько Renderer, тогда и разберемся
+	Matrix4f getProjectionMatrix();
 	
 	void tranformScene(Matrix4f transformMatrix);
 	

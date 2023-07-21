@@ -14,6 +14,8 @@ public interface ISceneRenderer {
 	
     void init(); // Метод для инициализации рендерера
     
+    void loadScene(IScene scene); //Метод для загрузки сцены
+    
     void render(IScene scene); // Метод для отрисовки сцены
     
     void cleanup(); // Метод для освобождения ресурсов рендерера
