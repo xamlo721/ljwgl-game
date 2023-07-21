@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PrimitiveScene implements IScene {
 		    
-    private List<AbstractRenderableObject> cubes;
+    private List<AbstractRenderableObject> items;
 
     private Matrix4f projectionMatrix;
     private Texture smile;
@@ -27,7 +27,7 @@ public class PrimitiveScene implements IScene {
 	public void load() {		
 
 		smile = new Texture("/textures/example/smile.png");
-		cubes = new ArrayList<AbstractRenderableObject>();
+		items = new ArrayList<AbstractRenderableObject>();
 		for (int i = 0; i < 5; i++) {
 			CubeExample cube = new CubeExample(smile);
 			cube.init();
@@ -38,7 +38,7 @@ public class PrimitiveScene implements IScene {
 			);
 			//cube.setPosition(new Vec3f( 0.1f,  0.1f, -1.0f));
 			cube.setScale(0.5f);
-			cubes.add(cube);
+			items.add(cube);
 		}
 		
 		for (int i = 0; i < 1; i++) {
@@ -51,7 +51,7 @@ public class PrimitiveScene implements IScene {
 			);
 			//cube.setPosition(new Vec3f( 0.1f,  0.1f, -1.0f));
 			//big.setScale(0.25f);
-			cubes.add(big);
+			items.add(big);
 		}
 
 		System.out.println("Primitive scene loaded");
@@ -59,12 +59,12 @@ public class PrimitiveScene implements IScene {
 
 	@Override
 	public List<AbstractRenderableObject> getRenderableObject() {
-		return this.cubes;
+		return this.items;
 	}
 	
 	@Override
 	public void release() {	    
-		for (AbstractRenderableObject cube : cubes) {
+		for (AbstractRenderableObject cube : items) {
 			cube.release();
 		}
 	}

@@ -51,12 +51,11 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 
 	@Override
 	public void loadScene(IScene scene) {
-		//TODO: Сейчас загрузка сцены происходит с учётом шейдеров. Надо поправить, думаю
-		shaderProgram.bind();
+		
+		//TODO: Подгрузка в кеш текстур и моделей сцены
 		
 		scene.load();
 		
-		shaderProgram.unbind();
 	}
 	
 	@Override

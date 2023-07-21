@@ -101,6 +101,7 @@ public class RenderEngine implements IRenderEngine {
 
 	}
 	
+	@Override
 	public void createWindow(int width, int height) {
 
 		window.create(width, height);
@@ -140,7 +141,7 @@ public class RenderEngine implements IRenderEngine {
 	
 	private void run() {
 		renderer.init();
-        renderer.loadScene(scene);
+		scene.load();
         
 		//****************Пресет***************//
 		this.isRendering = true;
