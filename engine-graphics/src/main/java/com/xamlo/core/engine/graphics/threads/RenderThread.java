@@ -34,7 +34,7 @@ public class RenderThread extends Thread {
 	    	
 	    	if (!this.isWindowed) {
 	    		//FIXME: Настройки здесь не должны находиться 100%
-	    		renderingEngine.createWindow(1920/2, 1080/2);
+	    		renderingEngine.createWindow(1920, 1080);
 	    		renderingEngine.loadInputDevice();
 	    		this.isWindowed = true;
 	    	}

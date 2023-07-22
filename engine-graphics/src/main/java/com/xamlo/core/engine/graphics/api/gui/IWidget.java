@@ -15,6 +15,9 @@ public interface IWidget {
     // Устанавливает родительский виджет
 	public void setParent(IWidget parent);
 	
+	// Проверяет, есть ли родитель у этого виджета
+	public boolean hasParent();
+	
     // Возвращает родительский виджет
 	public IWidget getParent();
 	
@@ -89,6 +92,9 @@ public interface IWidget {
 
     // Устанавливает границу для виджета
     public void setBorder(Border border);
+
+    // Устанавливает границу для виджета
+    public void setBorder(int borderSize);
 
     // Возвращает границу виджета
     public Border getBorder();

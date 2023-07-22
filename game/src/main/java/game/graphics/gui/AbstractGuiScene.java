@@ -6,6 +6,7 @@ import org.joml.Matrix4f;
 
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
+import com.xamlo.core.engine.graphics.components.gui.Widget;
 
 public abstract class AbstractGuiScene implements IScene {
 
@@ -22,9 +23,9 @@ public abstract class AbstractGuiScene implements IScene {
 		return this.guiID;
 	}
 	
-	abstract void addWidget();
+	abstract void addWidget(Widget widget);
 	
-	abstract void removeWidget();
+	abstract void removeWidget(Widget widget);
 	
 	@Override
 	public Matrix4f getProjectionMatrix() {

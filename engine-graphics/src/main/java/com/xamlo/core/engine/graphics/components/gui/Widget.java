@@ -1,15 +1,30 @@
 package com.xamlo.core.engine.graphics.components.gui;
 
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.lwjglb.engine.graph.GraphicalMesh;
+
 import com.xamlo.core.engine.graphics.api.gui.IWidget;
+import com.xamlo.core.engine.graphics.api.primitives.IVertex;
+import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
+import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
+import com.xamlo.core.engine.graphics.components.attribs.TexCoordAttribute;
+import com.xamlo.core.engine.graphics.primitives.Vertex;
+import com.xamlo.core.engine.graphics.primitives.VertexStructure;
 import com.xamlo.engine.api.resources.ITextureResource;
 
-public class Widget implements IWidget {
+public class Widget extends AbstractRenderableObject implements IWidget {
 	
 	protected WidgetGeometry geometry;
 	protected IWidget parent;
+	protected boolean hasParent;
 	protected List<IWidget> childWidgets;
 	protected boolean visible;
 	protected boolean isEnable;
@@ -21,11 +36,13 @@ public class Widget implements IWidget {
 	protected String toolTipText;
 	protected Border border;
 	protected String widgetName;
-	
+	protected GraphicalMesh mesh;
+
 	public Widget() {
 		
 		this.geometry = new WidgetGeometry(0, 0, 0, 0);
 		this.parent = null;
+		this.hasParent = false;
 		this.childWidgets = new ArrayList<IWidget>();
 		this.visible = true;
 		this.isEnable = true;
@@ -40,9 +57,15 @@ public class Widget implements IWidget {
 	
 	@Override
 	public void setParent(IWidget parent) {
-		// TODO Auto-generated method stub
+		this.hasParent = true;
 		this.parent = parent;
 	}
+
+	@Override
+	public boolean hasParent() {
+		return this.hasParent;
+	}
+
 
 	@Override
 	public IWidget getParent() {
@@ -178,6 +201,11 @@ public class Widget implements IWidget {
 	public void setBorder(Border border) {
 		this.border = border;
 	}
+	
+	@Override
+	public void setBorder(int borderSize) {
+		this.border = new Border(borderSize, this.border.getColor());
+	}
 
 	@Override
 	public Border getBorder() {
@@ -193,6 +221,74 @@ public class Widget implements IWidget {
 	public boolean isFocusable() {
 		return this.focusable;
 	}
+
+	@Override
+	public void init() {
+		if (mesh == null) {
+			this.loadMesh();
+		}		
+	}
+
+	@Override
+	public void release() {
+		mesh.cleanup();
+		
+	}
+
+	@Override
+	public void draw() {
+		mesh.bind();
+		
+	    // Draw the vertices
+	    //glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
+		
+
+		/**
+		 * mode: Задает примитивы для рендеринга, в данном случае треугольники. Здесь никаких изменений.
+		 * count: Указывает количество элементов, которые должны быть отрисованы.
+		 * type: Указывает тип значения в данных индексов. В данном случае мы используем целые числа.
+		 * indices: Задает смещение, которое необходимо применить к данным индексов для начала рендеринга.
+		 */
+		glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);		
+	}
+
+	@Override
+	public GraphicalMesh getMesh() {
+		return mesh;
+	}
+
+	@Override
+	public void loadMesh() {
+
+    	IVertex[] vertices = new Vertex[4];
+    	int i = 0;
+    	
+    	VertexStructure vertexScruct = new VertexStructure();
+    	vertexScruct.addAttribute(new PositionAttribute());
+    	vertexScruct.addAttribute(new TexCoordAttribute());
+    	vertexScruct.setVertexCount(4);
+    	
+    	vertices[i++] = new Vertex(5).append(new Vector3f(-1.0f,  1.0f, 0.0f)).append(new Vector2f(0.0f, 0.0f)); //V1
+    	vertices[i++] = new Vertex(5).append(new Vector3f(-1.0f, -1.0f, 0.0f)).append(new Vector2f(0.0f, 1.0f)); //V2
+    	vertices[i++] = new Vertex(5).append(new Vector3f( 1.0f, -1.0f, 0.0f)).append(new Vector2f(1.0f, 1.0f)); //V3
+    	vertices[i++] = new Vertex(5).append(new Vector3f( 1.0f,  1.0f, 0.0f)).append(new Vector2f(1.0f, 0.0f)); //V4
+
+
+    	i = 0;
+    	int[] indices = new int[6]; 
+    	//FACE
+    	indices[i++] = 0;
+    	indices[i++] = 1;
+    	indices[i++] = 3;
+    	
+    	indices[i++] = 3;
+    	indices[i++] = 1;
+    	indices[i++] = 2;
+
+        mesh = new GraphicalMesh(vertices, vertexScruct, indices);
+        		
+	}
+
 
 
 

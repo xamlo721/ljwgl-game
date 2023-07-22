@@ -66,18 +66,18 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 		shaderProgram.setUniform("projectionMatrix", scene.getProjectionMatrix());
 		shaderProgram.setUniform("texture_sampler", 0);
 		
-		for (AbstractRenderableObject cube : scene.getRenderableObject()) {
+		for (AbstractRenderableObject obj : scene.getRenderableObject()) {
 			//Теперь матрица преобразования обновляется каждый раз
-			shaderProgram.setUniform("worldMatrix", cube.getWorldMatrix());
+			shaderProgram.setUniform("worldMatrix", obj.getWorldMatrix());
 			
 			glActiveTexture(GL_TEXTURE0);
 			
 			//smile.bind();
 
-			cube.draw();
-			//cube.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
-			//cube.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
-			//cube.scale(0.999f);
+			obj.draw();
+			//obj.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
+			//obj.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
+			//obj.scale(0.999f);
 		}
 		
 	    shaderProgram.unbind();
