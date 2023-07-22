@@ -20,10 +20,10 @@ public class Engine {
 	public Engine(ICamera cam, IScene scene) {
 		this.camera = cam;
 		this.scene = scene;
+		this.isRunning = false;
 	}
 	
 	public void init() {
-
 		renderingEngine = new RenderEngine();
         //TODO: Разумеется камера не должна находиться внутри сцены
         renderingEngine.setCamera(camera);
@@ -34,18 +34,9 @@ public class Engine {
 
 	public void start() {
 		glThread.start();
-
-		if(isRunning)
-			return;
-		
-		//Поток здесь больше не виснет
-		glThread.startRender();
+		this.isRunning = true;
 
 	}
 	
-	
-
-	
-
 
 }

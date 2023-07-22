@@ -5,7 +5,6 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.GL_BACK;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_CW;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
@@ -50,8 +49,7 @@ public class RenderEngine implements IRenderEngine {
 	public boolean isCloseRequest;
 
 	private static final float movAmt = 0.11f;
-	private static final long NANOSECOND = 1000000000;
-	private static final long SECOND = 1;
+
 	private ICamera camera;
     private Matrix4f projectionMatrix;
     private LJWGLKeyboard keyboard;
@@ -70,6 +68,12 @@ public class RenderEngine implements IRenderEngine {
 		this.scene = scene;
 	}
 	
+	public boolean isRendering() {
+		return this.isRendering && !this.window.isCloseRequested();
+	}
+	
+
+	@Override
 	public void init() {
 		
 		window = Window.getInstance();
@@ -137,81 +141,7 @@ public class RenderEngine implements IRenderEngine {
 		mouse = new LJWGLMouse();
 
 	}
- 	
-	
-	private void run() {
-		renderer.init();
-		scene.load();
-        
-		//****************Пресет***************//
-		this.isRendering = true;
-		//Количество отрисованных кадров
-		int frames = 0;
-		//Время последнего отрисованного кадра
-		long lastTime = System.nanoTime();
-		//Прошедшее время с начала цикла
-		double idleTime = 0;
-		//Лимит кадров
-		float framerate = 60;
-		//Количество кадров за прошлую секунду
-		int fps = 0;
-		//Счётчик времени по которому мы будем мерить 1 секунду
-		int secondsForFpsCounter = 0;
-		//Лимит времени на отрисовку 1 кадра
-		float frameTime = 1.0f/framerate;
-		//************************************//
 
-
-		while (isRendering && !this.window.isCloseRequested()) {
-			
-			boolean isRenderFrame = false;
-						
-			//Количество циклов сейчас
-			long currentTime = System.nanoTime();
-
-			//прибавим к времени ожидания с прошлого кадра время которое проспал цикл
-			idleTime += (currentTime - lastTime) / (double) NANOSECOND;
-			
-			//Разница в секундах между прошлым замером fps и текущим временем
-			int currentDelta = (int) ((currentTime / (double) NANOSECOND) - secondsForFpsCounter);
-			
-			//Если прошла секунда, отмерить ФПС и сбросиь счётчики
-			if (currentDelta > 0) {
-				fps = frames;
-				frames = 0;
-				secondsForFpsCounter +=currentDelta;
-				System.out.println(Thread.currentThread().getName() + " " + idleTime );
-				System.out.println(Thread.currentThread().getName() + " " + fps );
-
-			}
-			
-			//Если с времени последнего кадра прошло времени больше чем время кадра, то пора рисовать следующий
-			if (idleTime > frameTime) {
-				isRenderFrame = true;
-				idleTime -= frameTime;
-				lastTime = currentTime;
-			}
-						
-			if(isRenderFrame) {
-				renderFrame();
-				frames++;
-			} else {
-				
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}	
-			
-			
-		}
-		
-		stop();
-		release();	
-		
-	}
-	
 	@Override
 	public void stop() {
 		
@@ -306,8 +236,11 @@ public class RenderEngine implements IRenderEngine {
 	public void start() {
 		if(isRendering)
 			return;
-		
-		run();		
+	    
+	    this.isRendering = true;
+
+	    this.renderer.init();
+	    this.scene.load();	
 	}
 
 
