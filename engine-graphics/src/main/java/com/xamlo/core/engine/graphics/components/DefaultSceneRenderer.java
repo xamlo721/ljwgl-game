@@ -1,7 +1,10 @@
 package com.xamlo.core.engine.graphics.components;
 
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
@@ -73,8 +76,20 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 			glActiveTexture(GL_TEXTURE0);
 			
 			//smile.bind();
+			obj.getMesh().bind();
 
-			obj.draw();
+		    // Draw the vertices
+		    //glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());
+			
+
+			/**
+			 * mode: Задает примитивы для рендеринга, в данном случае треугольники. Здесь никаких изменений.
+			 * count: Указывает количество элементов, которые должны быть отрисованы.
+			 * type: Указывает тип значения в данных индексов. В данном случае мы используем целые числа.
+			 * indices: Задает смещение, которое необходимо применить к данным индексов для начала рендеринга.
+			 */
+			glDrawElements(GL_TRIANGLES, obj.getMesh().getNumVertices(), GL_UNSIGNED_INT, 0);
+			
 			//obj.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
 			//obj.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
 			//obj.scale(0.999f);

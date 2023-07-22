@@ -78,10 +78,6 @@ public interface IRenderable {
 	 * Метод для освобождения объекта
 	 */
 	public void release();
-	
-	/**
-	 * Самый главный метод - рисования на экране
-	 */
-	public void draw();
+
 	
 }

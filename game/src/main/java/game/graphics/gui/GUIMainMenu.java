@@ -2,7 +2,6 @@ package game.graphics.gui;
 
 import java.util.ArrayList;
 
-import com.xamlo.core.engine.graphics.api.gui.IWidget;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 import com.xamlo.core.engine.graphics.components.Texture;
 import com.xamlo.core.engine.graphics.components.gui.Color;

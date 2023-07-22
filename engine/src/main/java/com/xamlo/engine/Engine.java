@@ -11,7 +11,6 @@ public class Engine {
 	World w;
 	
 	private boolean isRunning;
-		
 	private RenderEngine renderingEngine;
 	private RenderThread glThread;
 	private ICamera camera;
