@@ -1,4 +1,4 @@
-package org.lwjglb.engine.graph;
+package com.xamlo.core.engine.graphics.components;
 
 import java.nio.FloatBuffer;
 
@@ -6,7 +6,6 @@ import org.lwjgl.system.MemoryUtil;
 
 import com.xamlo.core.engine.graphics.api.primitives.IVertex;
 import com.xamlo.core.engine.graphics.api.primitives.IVertexStructure;
-import com.xamlo.core.engine.graphics.components.Texture;//FIXME: Я уверен, что это не должно здесь находится
 import com.xamlo.core.engine.graphics.primitives.EnumMemoryType;
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexArrayObject;

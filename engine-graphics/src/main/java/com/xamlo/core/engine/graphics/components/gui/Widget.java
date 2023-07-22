@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.lwjglb.engine.graph.GraphicalMesh;
 
 import com.xamlo.core.engine.graphics.api.gui.IWidget;
 import com.xamlo.core.engine.graphics.api.primitives.IVertex;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
+import com.xamlo.core.engine.graphics.components.GraphicalMesh;
 import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.TexCoordAttribute;
 import com.xamlo.core.engine.graphics.primitives.Vertex;

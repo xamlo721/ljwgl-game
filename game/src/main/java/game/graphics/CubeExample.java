@@ -2,10 +2,10 @@ package game.graphics;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.lwjglb.engine.graph.GraphicalMesh;
 
 import com.xamlo.core.engine.graphics.api.primitives.IVertex;
 import com.xamlo.core.engine.graphics.components.AbstractModel;
+import com.xamlo.core.engine.graphics.components.GraphicalMesh;
 import com.xamlo.core.engine.graphics.components.Texture;
 import com.xamlo.core.engine.graphics.components.attribs.ColorAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
