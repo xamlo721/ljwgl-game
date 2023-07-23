@@ -3,8 +3,6 @@ package com.xamlo.core.engine.graphics.api.gui;
 import java.util.List;
 
 import com.xamlo.core.engine.graphics.components.gui.Border;
-import com.xamlo.core.engine.graphics.components.gui.Color;
-import com.xamlo.core.engine.graphics.components.gui.Font;
 import com.xamlo.core.engine.graphics.components.gui.WidgetGeometry;
 import com.xamlo.core.engine.graphics.components.gui.WidgetSize;
 
@@ -73,16 +71,16 @@ public interface IWidget {
     public boolean isEnabled();
 
     // Устанавливает цвет фона виджета
-    public void setBackgroundColor(Color color);
+    public void setBackgroundColor(IColor color);
 
     // Возвращает цвет фона виджета
-    public Color getBackgroundColor();
+    public IColor getBackgroundColor();
 
     // Устанавливает шрифт для текстовых элементов виджета
-    public void setFont(Font font);
+    public void setFont(IFont font);
 
     // Возвращает шрифт, используемый в виджете
-    public Font getFont();
+    public IFont getFont();
 
     // Устанавливает всплывающую подсказку для виджета
     public void setToolTipText(String tooltip);

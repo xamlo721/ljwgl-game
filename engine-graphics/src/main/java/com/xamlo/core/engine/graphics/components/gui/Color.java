@@ -1,6 +1,9 @@
 package com.xamlo.core.engine.graphics.components.gui;
 
-public class Color {
+import com.xamlo.core.engine.graphics.api.gui.IColor;
+
+public class Color implements IColor {
+	
     private int red;
     private int green;
     private int blue;
@@ -16,20 +19,25 @@ public class Color {
         this.blue = blue;
         this.alpha = alpha;
     }
-
+    
+    @Override
     public int getRed() {
         return red;
     }
 
+    @Override
     public int getGreen() {
         return green;
     }
 
+    @Override
     public int getBlue() {
         return blue;
     }
 
+    @Override
     public int getAlpha() {
         return alpha;
     }
+    
 }

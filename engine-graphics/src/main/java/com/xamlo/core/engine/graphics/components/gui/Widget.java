@@ -6,6 +6,8 @@ import java.util.List;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import com.xamlo.core.engine.graphics.api.gui.IColor;
+import com.xamlo.core.engine.graphics.api.gui.IFont;
 import com.xamlo.core.engine.graphics.api.gui.IWidget;
 import com.xamlo.core.engine.graphics.api.primitives.IVertex;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
@@ -27,8 +29,8 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	protected boolean focusable;
 	protected boolean hasBackgroundImage; //TODO: Это Variant-ом чтоли делают? почините кто знает
 	protected ITextureResource backgroundImage;
-	protected Color backgroundColor;
-	protected Font font;
+	protected IColor backgroundColor;
+	protected IFont font;
 	protected String toolTipText;
 	protected Border border;
 	protected String widgetName;
@@ -164,22 +166,22 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	}
 
 	@Override
-	public void setBackgroundColor(Color color) {
+	public void setBackgroundColor(IColor color) {
 		this.backgroundColor = color;
 	}
 
 	@Override
-	public Color getBackgroundColor() {
+	public IColor getBackgroundColor() {
 		return this.backgroundColor;
 	}
 
 	@Override
-	public void setFont(Font font) {
+	public void setFont(IFont font) {
 		this.font = font;
 	}
 
 	@Override
-	public Font getFont() {
+	public IFont getFont() {
 		return this.font;
 	}
 
