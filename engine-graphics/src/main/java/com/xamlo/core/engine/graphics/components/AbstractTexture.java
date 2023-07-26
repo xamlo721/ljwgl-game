@@ -1,72 +1,44 @@
 package com.xamlo.core.engine.graphics.components;
 
-import com.xamlo.engine.api.resources.EnumResourceType;
 import com.xamlo.engine.api.resources.ITextureResource;
+
+import java.net.URI;
 
 public class AbstractTexture implements ITextureResource {
 
-	//Какое-то уникальное имя текстуры
-	protected String textureName;
-	//Расположение текстуры на диске
-	//TODO: Я думаю это можно убрать отсюда и перенести 
-	//TODO: в ResourceLoader
-	protected String textureLocation;
+	protected final URI location;
 	// Идентификатор текстуры OpenGL
-	protected int textureID; 
+	protected final int glTextureID;
 	// Ширина изображения
-	protected int width;
+	protected final int width;
 	// Высота изображения
-	protected int height;
-    
-	@Override
-	public String getName() {
-		return textureName;
+	protected final int height;
+
+	public AbstractTexture(URI location, int glTextureID, int width, int height) {
+		this.location = location;
+		this.glTextureID = glTextureID;
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
-	public void setName(String name) {
-		this.textureName = name;
-	}
-	
-	@Override
-	public EnumResourceType getType() {
-		return EnumResourceType.Texture;
-	}
-
-	@Override
-	public String getLocation() {
-		return this.textureLocation;
-	}
-
-	@Override
-	public void setLocation(String location) {
-		this.textureLocation = location;
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setAvailable(boolean available) {
-		// TODO Auto-generated method stub
-		
+	public URI getLocation() {
+		return location;
 	}
 
 	@Override
 	public int getTextureSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return width * height;
 	}
 
 	@Override
-	public void setTextureSize(int size) {
-		// TODO Auto-generated method stub
-		
+	public int getWidth() {
+		return width;
 	}
 
-
+	@Override
+	public int getHeight() {
+		return height;
+	}
 
 }

@@ -8,9 +8,7 @@ public interface ITextureResource extends IResource {
      */
     int getTextureSize();
 
-    /**
-     * Установить размер текстуры.
-     * @param size размер текстуры
-     */
-    void setTextureSize(int size);
+    int getWidth();
+
+    int getHeight();
 }

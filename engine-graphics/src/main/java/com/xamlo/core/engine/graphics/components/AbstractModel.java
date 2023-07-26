@@ -1,60 +1,30 @@
 package com.xamlo.core.engine.graphics.components;
 
-import com.xamlo.engine.api.resources.EnumResourceType;
 import com.xamlo.engine.api.resources.IModelResource;
+
+import java.net.URI;
 
 public abstract class AbstractModel extends AbstractRenderableObject implements IModelResource {
 
-	protected String modelName;
-	protected String modelLocation;
+	protected final URI modelLocation;
 
-	@Override
-	public String getName() {
-		return this.modelName;
+	protected AbstractModel(URI modelLocation) {
+		this.modelLocation = modelLocation;
 	}
 
 	@Override
-	public void setName(String name) {
-		this.modelName = name;
-	}
-	
-	@Override
-	public EnumResourceType getType() {
-		return EnumResourceType.Model;
-	}
-
-	@Override
-	public String getLocation() {
+	public URI getLocation() {
 		return this.modelLocation;
 	}
 
 	@Override
-	public void setLocation(String location) {
-		this.modelLocation = location;
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setAvailable(boolean available) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public int getPolygonCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new UnsupportedOperationException("No implemented yet");
 	}
 
 	@Override
 	public void setPolygonCount(int count) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("No implemented yet");
 	}
 
 }

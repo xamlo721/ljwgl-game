@@ -6,12 +6,12 @@ import org.joml.Vector3f;
 import com.xamlo.core.engine.graphics.api.primitives.IVertex;
 import com.xamlo.core.engine.graphics.components.AbstractModel;
 import com.xamlo.core.engine.graphics.components.GraphicalMesh;
-import com.xamlo.core.engine.graphics.components.Texture;
-import com.xamlo.core.engine.graphics.components.attribs.ColorAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.TexCoordAttribute;
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexStructure;
+
+import java.net.URI;
 
 public class CubeExample extends AbstractModel {
 
@@ -19,12 +19,10 @@ public class CubeExample extends AbstractModel {
 	 * Сетка точек, описывающая объект
 	 */
 	protected static GraphicalMesh mesh;
-	public Texture texture;
 
 	
-	public CubeExample(Texture texture) {
-		super();
-		this.texture = texture;
+	public CubeExample() {
+		super(URI.create("resource:///empty"));
 	}
 	
 	@Override
