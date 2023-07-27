@@ -14,16 +14,27 @@ import static org.lwjgl.opengl.GL30.*;
  */
 public class Texture extends AbstractTexture {
 
-    public Texture(int width, int height, ByteBuffer buf, URI location) {
-        super(location, glGenTextures(), width, height);
+    private ByteBuffer textureBuffer;
 
-        bind(buf);
+    public Texture(int width, int height, ByteBuffer buf, URI location) {
+        super(location, width, height);
+
+        this.textureBuffer = buf;
     }
     
     /**
      * Привязывает текстуру OpenGL.
      */
-    public void bind(ByteBuffer buf) {
+    public void bind() {
+        if (glTextureID > 0) {
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTextureID);
+        } else {
+            generateImage();
+        }
+    }
+
+    private void generateImage() {
+        glTextureID = glGenTextures();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTextureID);
         //Указываем сколько байт использовалось для одного пикселя
         //R(8)+G(8)+B(8)+A(8) => 32bit => 1 int
@@ -57,13 +68,14 @@ public class Texture extends AbstractTexture {
          *
          * data - буфер, где лежит текстура
          */
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureBuffer);
         /*
          * Разрешить видеокарте сгенерировать mipmap для текстуры
          */
         glGenerateMipmap(GL_TEXTURE_2D);
 
-        stbi_image_free(buf);
+        stbi_image_free(textureBuffer);
+        textureBuffer = null;
     }
 
     /**

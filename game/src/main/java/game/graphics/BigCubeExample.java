@@ -78,8 +78,7 @@ public class BigCubeExample extends AbstractRenderableObject {
 
 	@Override
 	public GraphicalMesh getMesh() {
-		// TODO Auto-generated method stub
-		return null;
+		return mesh;
 	}
 
 	@Override

@@ -28,7 +28,7 @@ public class SimpleResourceLoader implements ResourceLoader {
     }
 
     @Override
-    public ITextureResource loadTexture(URI uri) {
+    public Texture loadTexture(URI uri) {
         IntBuffer width = BufferUtils.createIntBuffer(Integer.BYTES);
         IntBuffer height = BufferUtils.createIntBuffer(Integer.BYTES);
         IntBuffer channels = BufferUtils.createIntBuffer(Integer.BYTES);

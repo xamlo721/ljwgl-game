@@ -1,12 +1,8 @@
 package com.xamlo.core.engine.graphics.components;
 
-import java.io.*;
 import java.nio.FloatBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringJoiner;
 
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
@@ -36,39 +32,6 @@ public class ShaderProgram {
 	private int computeShaderID;
 
 	private final Map<String, Integer> uniforms = new HashMap<>();
-
-	/**
-	 * Статический метод для загрузки с диска файлов с шейдерами
-	 * принимает абсолютный путь к файлу и не зависит от расширения и названия файла
-	 * 
-	 * @param fileName путь к файлу
-	 * @return Текстовое предсталение шейдера
-	 */
-	public static String loadShaderFromFile(String fileName) {
-		try {
-			return String.join("\n", Files.readAllLines(Path.of(fileName)));
-		} catch(IOException e) {
-			throw new RuntimeException("Error occurred while loading shader program from file", e);
-		}
-	}
-
-	public static String loadShaderFromResource(String resourceName) {
-		try (InputStream is = ShaderProgram.class.getResourceAsStream(resourceName)) {
-			if (is == null) {
-				throw new IOException("Specified shader resource not found.");
-			}
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
-			StringJoiner stringJoiner = new StringJoiner("\n");
-			String line;
-			while ((line = reader.readLine()) != null) {
-				stringJoiner.add(line);
-			}
-			return stringJoiner.toString();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
 	
 	public ShaderProgram() {
 		program = glCreateProgram();

@@ -19,7 +19,7 @@ public class PrimitiveScene implements IScene {
     private List<AbstractRenderableObject> items;
 
     private Matrix4f projectionMatrix;
-    private ITextureResource smile;
+    private Texture smile;
 
 	@Override
     public void tranformScene(Matrix4f transformMatrix) {
@@ -27,9 +27,9 @@ public class PrimitiveScene implements IScene {
     }
 
 	@Override
-	public void load() {		
-
+	public void load() {
 		smile = SimpleResourceLoader.getInstance().loadTexture(URI.create("resource:///textures/example/smile.png"));
+		smile.bind();
 		items = new ArrayList<AbstractRenderableObject>();
 		for (int i = 0; i < 5; i++) {
 			CubeExample cube = new CubeExample();

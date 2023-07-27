@@ -8,13 +8,12 @@ import com.xamlo.core.engine.graphics.components.Texture;
 import com.xamlo.core.engine.graphics.components.gui.Color;
 import com.xamlo.core.engine.graphics.components.gui.Widget;
 import com.xamlo.core.engine.graphics.components.gui.WidgetGeometry;
-import com.xamlo.engine.api.resources.ITextureResource;
 import com.xamlo.engine.resource.SimpleResourceLoader;
 
 public class GUIMainMenu extends AbstractGuiScene {
 	
 	private Widget menuBg;
-    private ITextureResource backgroundImage;
+    private Texture backgroundImage;
 
 	public GUIMainMenu() {
 		this.widgets = new ArrayList<AbstractRenderableObject>();
@@ -26,6 +25,7 @@ public class GUIMainMenu extends AbstractGuiScene {
 	@Override
 	public void load() {
 		backgroundImage = SimpleResourceLoader.getInstance().loadTexture(URI.create("resource:///textures/gui/mainmenu/background.png"));
+		backgroundImage.bind();
 		
 		menuBg.setBackgroundColor(new Color(255, 0, 0));
 		menuBg.setBorder(0);
