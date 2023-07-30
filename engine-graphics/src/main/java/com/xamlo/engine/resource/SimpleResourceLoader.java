@@ -60,6 +60,7 @@ public class SimpleResourceLoader implements ResourceLoader {
         return new Texture(width.get(), height.get(), buf, uri);
     }
 
+    @Override
     public IShaderResource loadShader(URI uri) {
         try (InputStream is = getResourceStream(uri)) {
             if (is == null) {
