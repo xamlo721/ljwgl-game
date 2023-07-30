@@ -2,11 +2,9 @@ package com.xamlo.core.engine.graphics.components;
 
 import com.xamlo.engine.api.resources.ITextureResource;
 
-import java.net.URI;
+public abstract class AbstractTexture implements ITextureResource<String> {
 
-public class AbstractTexture implements ITextureResource {
-
-	protected final URI location;
+	protected final String identifier;
 	// Идентификатор текстуры OpenGL
 	protected int glTextureID = -1;
 	// Ширина изображения
@@ -14,15 +12,15 @@ public class AbstractTexture implements ITextureResource {
 	// Высота изображения
 	protected final int height;
 
-	public AbstractTexture(URI location, int width, int height) {
-		this.location = location;
+	public AbstractTexture(String identifier, int width, int height) {
+		this.identifier = identifier;
 		this.width = width;
 		this.height = height;
 	}
 
 	@Override
-	public URI getLocation() {
-		return location;
+	public String getIdentifier() {
+		return identifier;
 	}
 
 	@Override

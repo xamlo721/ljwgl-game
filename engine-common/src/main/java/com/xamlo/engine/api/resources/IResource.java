@@ -8,11 +8,11 @@ import java.net.URI;
  * быть унаследованы от данного интерфейса
  * @author Satomi
  */
-public interface IResource {
+public interface IResource<I> {
     
     /**
      * Получить местоположение ресурса.
      * @return местоположение ресурса
      */
-    URI getLocation();
+    I getIdentifier();
 }

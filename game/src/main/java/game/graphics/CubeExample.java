@@ -22,7 +22,7 @@ public class CubeExample extends AbstractModel {
 
 	
 	public CubeExample() {
-		super(URI.create("resource:///empty"));
+		super("empty");
 	}
 	
 	@Override

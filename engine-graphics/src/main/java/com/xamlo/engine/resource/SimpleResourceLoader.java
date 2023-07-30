@@ -15,26 +15,39 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.StringJoiner;
 
 import static org.lwjgl.stb.STBImage.*;
 
-public class SimpleResourceLoader implements ResourceLoader {
+public class SimpleResourceLoader implements ResourceLoader<String> {
 
-    private static final SimpleResourceLoader INSTANCE = new SimpleResourceLoader();
+    private final Properties resourceMap;
 
-    public static SimpleResourceLoader getInstance() {
-        return INSTANCE;
+    public SimpleResourceLoader(Properties resourceMap) {
+        this.resourceMap = resourceMap;
+    }
+
+    public static SimpleResourceLoader createFromBundledList(String bundledResourceListPath) {
+        try (InputStream is = SimpleResourceLoader.class.getResourceAsStream(bundledResourceListPath)) {
+            Properties properties = new Properties();
+            properties.load(is);
+            return new SimpleResourceLoader(properties);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public Texture loadTexture(URI uri) {
+    public Texture loadTexture(String identifier) {
+        URI resourceUri = getResourceUriByIdentifier(identifier).orElseThrow();
         IntBuffer width = BufferUtils.createIntBuffer(Integer.BYTES);
         IntBuffer height = BufferUtils.createIntBuffer(Integer.BYTES);
         IntBuffer channels = BufferUtils.createIntBuffer(Integer.BYTES);
 
         ByteBuffer buf;
-        try (InputStream is = getResourceStream(uri)) {
+        try (InputStream is = getResourceStream(resourceUri)) {
             if (is == null) {
                 throw new IOException("Texture resource not found");
             }
@@ -51,18 +64,19 @@ public class SimpleResourceLoader implements ResourceLoader {
             );
 
             if (buf == null) {
-                throw new IOException("Texture [" + uri + "] not loaded: " + stbi_failure_reason());
+                throw new IOException("Texture [" + resourceUri + "] not loaded: " + stbi_failure_reason());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return new Texture(width.get(), height.get(), buf, uri);
+        return new Texture(width.get(), height.get(), buf, identifier);
     }
 
     @Override
-    public IShaderResource loadShader(URI uri) {
-        try (InputStream is = getResourceStream(uri)) {
+    public IShaderResource<String> loadShader(String identifier) {
+        URI resourceUri = getResourceUriByIdentifier(identifier).orElseThrow();
+        try (InputStream is = getResourceStream(resourceUri)) {
             if (is == null) {
                 throw new IOException("Specified shader resource not found.");
             }
@@ -73,10 +87,15 @@ public class SimpleResourceLoader implements ResourceLoader {
             while ((line = reader.readLine()) != null) {
                 stringJoiner.add(line);
             }
-            return new SimpleShaderResource(uri, stringJoiner.toString());
+            return new SimpleShaderResource(identifier, stringJoiner.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Optional<URI> getResourceUriByIdentifier(String identifier) {
+        return Optional.ofNullable(resourceMap.getProperty(identifier))
+                .map(URI::create);
     }
 
     private static InputStream getResourceStream(URI uri) throws IOException {

@@ -1,6 +1,6 @@
 package com.xamlo.engine.api.resources;
 
-public interface ITextureResource extends IResource {
+public interface ITextureResource<I> extends IResource<I> {
 
     /**
      * Получить размер текстуры.
@@ -11,4 +11,8 @@ public interface ITextureResource extends IResource {
     int getWidth();
 
     int getHeight();
+
+    void bind();
+
+    void unbind();
 }

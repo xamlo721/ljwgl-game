@@ -2,19 +2,17 @@ package com.xamlo.core.engine.graphics.components;
 
 import com.xamlo.engine.api.resources.IModelResource;
 
-import java.net.URI;
+public abstract class AbstractModel extends AbstractRenderableObject implements IModelResource<String> {
 
-public abstract class AbstractModel extends AbstractRenderableObject implements IModelResource {
+	protected final String identifier;
 
-	protected final URI modelLocation;
-
-	protected AbstractModel(URI modelLocation) {
-		this.modelLocation = modelLocation;
+	protected AbstractModel(String identifier) {
+		this.identifier = identifier;
 	}
 
 	@Override
-	public URI getLocation() {
-		return this.modelLocation;
+	public String getIdentifier() {
+		return this.identifier;
 	}
 
 	@Override

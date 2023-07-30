@@ -1,6 +1,6 @@
 package com.xamlo.engine.api.resources;
 
-public interface IModelResource extends IResource {
+public interface IModelResource<I> extends IResource<I> {
 
     /**
      * Получить количество полигонов модели.

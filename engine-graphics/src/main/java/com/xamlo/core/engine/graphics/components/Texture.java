@@ -1,6 +1,5 @@
 package com.xamlo.core.engine.graphics.components;
 
-import java.net.URI;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.opengl.GL11;
@@ -16,8 +15,8 @@ public class Texture extends AbstractTexture {
 
     private ByteBuffer textureBuffer;
 
-    public Texture(int width, int height, ByteBuffer buf, URI location) {
-        super(location, width, height);
+    public Texture(int width, int height, ByteBuffer buf, String identifier) {
+        super(identifier, width, height);
 
         this.textureBuffer = buf;
     }

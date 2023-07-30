@@ -1,10 +1,8 @@
 package com.xamlo.engine.api.resources;
 
-import java.net.URI;
+public interface ResourceLoader<I> {
 
-public interface ResourceLoader {
+    ITextureResource<I> loadTexture(I identifier);
 
-    ITextureResource loadTexture(URI uri);
-
-    IShaderResource loadShader(URI uri);
+    IShaderResource<I> loadShader(I identifier);
 }

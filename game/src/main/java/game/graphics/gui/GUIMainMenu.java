@@ -4,19 +4,22 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
-import com.xamlo.core.engine.graphics.components.Texture;
 import com.xamlo.core.engine.graphics.components.gui.Color;
 import com.xamlo.core.engine.graphics.components.gui.Widget;
 import com.xamlo.core.engine.graphics.components.gui.WidgetGeometry;
-import com.xamlo.engine.resource.SimpleResourceLoader;
+import com.xamlo.engine.api.resources.ITextureResource;
+import com.xamlo.engine.api.resources.ResourceLoader;
 
 public class GUIMainMenu extends AbstractGuiScene {
 	
 	private Widget menuBg;
-    private Texture backgroundImage;
+    private ITextureResource<String> backgroundImage;
 
-	public GUIMainMenu() {
+	private final ResourceLoader<String> resourceLoader;
+
+	public GUIMainMenu(ResourceLoader<String> resourceLoader) {
 		this.widgets = new ArrayList<AbstractRenderableObject>();
+		this.resourceLoader = resourceLoader;
 
 		menuBg = new Widget();
 
@@ -24,7 +27,7 @@ public class GUIMainMenu extends AbstractGuiScene {
 
 	@Override
 	public void load() {
-		backgroundImage = SimpleResourceLoader.getInstance().loadTexture(URI.create("resource:///textures/gui/mainmenu/background.png"));
+		backgroundImage = resourceLoader.loadTexture("texture.gui.mainmenu.background");
 		backgroundImage.bind();
 		
 		menuBg.setBackgroundColor(new Color(255, 0, 0));
