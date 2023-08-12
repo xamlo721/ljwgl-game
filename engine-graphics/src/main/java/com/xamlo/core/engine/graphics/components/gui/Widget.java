@@ -11,6 +11,7 @@ import com.xamlo.core.engine.graphics.api.gui.IFont;
 import com.xamlo.core.engine.graphics.api.gui.IWidget;
 import com.xamlo.core.engine.graphics.api.primitives.IVertex;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
+import com.xamlo.core.engine.graphics.components.AbstractTexture;
 import com.xamlo.core.engine.graphics.components.GraphicalMesh;
 import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.TexCoordAttribute;
@@ -27,9 +28,7 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	protected boolean visible;
 	protected boolean isEnable;
 	protected boolean focusable;
-	protected boolean hasBackgroundImage; //TODO: Это Variant-ом чтоли делают? почините кто знает
-	protected ITextureResource backgroundImage;
-	protected IColor backgroundColor;
+
 	protected IFont font;
 	protected String toolTipText;
 	protected Border border;
@@ -138,12 +137,12 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	}
 	
 	@Override
-	public void setBackgroundImage(ITextureResource image) {
+	public void setBackgroundImage(AbstractTexture image) {
 		this.backgroundImage = image;
 	}
 
 	@Override
-	public ITextureResource getBackgroundImage() {
+	public AbstractTexture getBackgroundImage() {
 		if (!this.hasBackgroundImage) {
 			return null;
 		}
@@ -269,8 +268,6 @@ public class Widget extends AbstractRenderableObject implements IWidget {
         mesh = new GraphicalMesh(vertices, vertexScruct, indices);
         		
 	}
-
-
 
 
 }

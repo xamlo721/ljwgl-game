@@ -77,6 +77,9 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 			
 			//smile.bind();
 			obj.getMesh().bind();
+			if (obj.hasBackgroundImage) {
+				obj.backgroundImage.bind();
+			}
 
 		    // Draw the vertices
 		    //glDrawArrays(GL_TRIANGLES, 0, mesh.getNumVertices());

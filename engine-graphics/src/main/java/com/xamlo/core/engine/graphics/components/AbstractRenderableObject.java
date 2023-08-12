@@ -4,6 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import com.xamlo.core.engine.graphics.api.components.IRenderable;
+import com.xamlo.core.engine.graphics.api.gui.IColor;
 
 
 public abstract class AbstractRenderableObject implements IRenderable {
@@ -44,7 +45,11 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 */
 	protected float scale;
 	
-
+	protected boolean hasBackgroundImage; //TODO: Это Variant-ом чтоли делают? почините кто знает
+	
+	protected AbstractTexture backgroundImage;
+	
+	protected IColor backgroundColor;
 	
 	
 	public AbstractRenderableObject() {

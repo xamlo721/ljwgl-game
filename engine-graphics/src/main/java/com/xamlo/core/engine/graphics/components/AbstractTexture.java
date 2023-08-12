@@ -3,7 +3,7 @@ package com.xamlo.core.engine.graphics.components;
 import com.xamlo.engine.api.resources.EnumResourceType;
 import com.xamlo.engine.api.resources.ITextureResource;
 
-public class AbstractTexture implements ITextureResource {
+public abstract class AbstractTexture implements ITextureResource {
 
 	//Какое-то уникальное имя текстуры
 	protected String textureName;
@@ -17,7 +17,11 @@ public class AbstractTexture implements ITextureResource {
 	protected int width;
 	// Высота изображения
 	protected int height;
-    
+
+	public abstract void bind();
+	
+	public abstract void unbind();
+
 	@Override
 	public String getName() {
 		return textureName;

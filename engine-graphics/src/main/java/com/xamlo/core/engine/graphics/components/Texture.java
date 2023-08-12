@@ -120,6 +120,7 @@ public class Texture extends AbstractTexture {
     /**
      * Привязывает текстуру OpenGL.
      */
+    @Override
     public void bind() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
     }
@@ -127,6 +128,7 @@ public class Texture extends AbstractTexture {
     /**
      * Отвязывает текстуру OpenGL.
      */
+    @Override
     public void unbind() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }

@@ -2,11 +2,10 @@ package com.xamlo.core.engine.graphics.api.gui;
 
 import java.util.List;
 
+import com.xamlo.core.engine.graphics.components.AbstractTexture;
 import com.xamlo.core.engine.graphics.components.gui.Border;
 import com.xamlo.core.engine.graphics.components.gui.WidgetGeometry;
 import com.xamlo.core.engine.graphics.components.gui.WidgetSize;
-
-import com.xamlo.engine.api.resources.ITextureResource;
 
 public interface IWidget {
 	
@@ -56,10 +55,10 @@ public interface IWidget {
 	public boolean hasBackgroundImage();
 	
     // Возвращает фоновое изображение виджета
-	public ITextureResource getBackgroundImage();
+	public AbstractTexture getBackgroundImage();
 	
     // Устанавливает фоновое изображение виджета
-	public void setBackgroundImage(ITextureResource image);
+	public void setBackgroundImage(AbstractTexture image);
 
     // Устанавливает позицию виджета по координатам x и y
     public void setPosition(int x, int y);
