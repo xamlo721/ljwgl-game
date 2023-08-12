@@ -1,22 +1,28 @@
 package game.graphics;
 
+import com.xamlo.engine.api.resources.ITextureResource;
+import com.xamlo.engine.api.resources.ResourceLoader;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
-import com.xamlo.core.engine.graphics.components.Texture;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PrimitiveScene implements IScene {
-		    
+
+	private final ResourceLoader<String> resourceLoader;
+
     private List<AbstractRenderableObject> items;
 
     private Matrix4f projectionMatrix;
-    private Texture smile;
+    private ITextureResource<String> smile;
+
+	public PrimitiveScene(ResourceLoader<String> resourceLoader) {
+		this.resourceLoader = resourceLoader;
+	}
 
 	@Override
     public void tranformScene(Matrix4f transformMatrix) {
@@ -24,12 +30,12 @@ public class PrimitiveScene implements IScene {
     }
 
 	@Override
-	public void load() {		
-
-		smile = new Texture("/textures/example/smile.png");
+	public void load() {
+		smile = resourceLoader.loadTexture("texture.example.smile");
+		smile.bind();
 		items = new ArrayList<AbstractRenderableObject>();
 		for (int i = 0; i < 5; i++) {
-			CubeExample cube = new CubeExample(smile);
+			CubeExample cube = new CubeExample();
 			cube.init();
 			cube.setPosition(new Vector3f(
 					((float)Math.random() - 0.5f) * 5, 

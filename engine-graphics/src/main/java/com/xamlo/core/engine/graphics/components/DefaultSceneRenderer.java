@@ -11,16 +11,24 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.api.components.ISceneRenderer;
+import com.xamlo.engine.api.resources.IShaderResource;
+import com.xamlo.engine.api.resources.ResourceLoader;
 
 public class DefaultSceneRenderer implements ISceneRenderer {
 	
 	// Shaders
 	
-	private final String vertexShaderSource = ShaderProgram.loadShaderFromResource("/shaders/PrimitiveVertexShader.glsl");
+	private final IShaderResource<String> vertexShaderSource;
 	
-	private final String fragmentShaderSource =  ShaderProgram.loadShaderFromResource("/shaders/PrimitiveFragmentShader.glsl");
+	private final IShaderResource<String> fragmentShaderSource;
 	
 	private ShaderProgram shaderProgram;
+
+	public DefaultSceneRenderer(ResourceLoader<String> resourceLoader) {
+		this.vertexShaderSource = resourceLoader.loadShader("shader.primitive.vertex");
+		this.fragmentShaderSource = resourceLoader.loadShader("shader.primitive.fragment");
+	}
+
 
 	@Override
 	public void init() {
@@ -32,8 +40,8 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 
 
 		shaderProgram = new ShaderProgram();
-		shaderProgram.addVertexShader(vertexShaderSource);
-		shaderProgram.addFragmentShader(fragmentShaderSource);
+		shaderProgram.addVertexShader(vertexShaderSource.getShaderProgram());
+		shaderProgram.addFragmentShader(fragmentShaderSource.getShaderProgram());
 		shaderProgram.compileShader();
 		shaderProgram.bind();
 		try {

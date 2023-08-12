@@ -43,7 +43,7 @@ public class RenderEngine implements IRenderEngine {
 	
 	private Window window;
 	public IScene scene;
-	private ISceneRenderer renderer;
+	private final ISceneRenderer renderer;
 	
 	private boolean isRendering;
 	public boolean isCloseRequest;
@@ -56,8 +56,9 @@ public class RenderEngine implements IRenderEngine {
     private LJWGLMouse mouse;
 
 	
-	public RenderEngine() {
+	public RenderEngine(ISceneRenderer renderer) {
 		this.isCloseRequest = false;
+		this.renderer = renderer;
 	}
 	
 	public void setCamera(ICamera cam) {
@@ -98,11 +99,6 @@ public class RenderEngine implements IRenderEngine {
            	    camera.getFarDistance()
         );
         projectionMatrix = projectionMatrix.mul(camera.getViewMatrix());
-
-
-		renderer = new DefaultSceneRenderer();
-
-
 	}
 	
 	@Override

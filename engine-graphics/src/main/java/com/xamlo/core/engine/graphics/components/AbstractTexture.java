@@ -1,22 +1,16 @@
 package com.xamlo.core.engine.graphics.components;
 
-import com.xamlo.engine.api.resources.EnumResourceType;
 import com.xamlo.engine.api.resources.ITextureResource;
 
-public abstract class AbstractTexture implements ITextureResource {
+public abstract class AbstractTexture implements ITextureResource<String> {
 
-	//Какое-то уникальное имя текстуры
-	protected String textureName;
-	//Расположение текстуры на диске
-	//TODO: Я думаю это можно убрать отсюда и перенести 
-	//TODO: в ResourceLoader
-	protected String textureLocation;
+	protected final String identifier;
 	// Идентификатор текстуры OpenGL
-	protected int textureID; 
+	protected int glTextureID = -1;
 	// Ширина изображения
-	protected int width;
+	protected final int width;
 	// Высота изображения
-	protected int height;
+	protected final int height;
 
 	public abstract void bind();
 	
@@ -27,50 +21,30 @@ public abstract class AbstractTexture implements ITextureResource {
 		return textureName;
 	}
 
-	@Override
-	public void setName(String name) {
-		this.textureName = name;
-	}
-	
-	@Override
-	public EnumResourceType getType() {
-		return EnumResourceType.Texture;
+	public AbstractTexture(String identifier, int width, int height) {
+		this.identifier = identifier;
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
-	public String getLocation() {
-		return this.textureLocation;
-	}
-
-	@Override
-	public void setLocation(String location) {
-		this.textureLocation = location;
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setAvailable(boolean available) {
-		// TODO Auto-generated method stub
-		
+	public String getIdentifier() {
+		return identifier;
 	}
 
 	@Override
 	public int getTextureSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return width * height;
 	}
 
 	@Override
-	public void setTextureSize(int size) {
-		// TODO Auto-generated method stub
-		
+	public int getWidth() {
+		return width;
 	}
 
-
+	@Override
+	public int getHeight() {
+		return height;
+	}
 
 }
