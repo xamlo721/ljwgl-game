@@ -36,6 +36,7 @@ public class BigCubeExample extends AbstractRenderableObject {
 	
 	@Override
 	public void loadMesh() {
+
 		
 		// create the test object
 		Model model = new Model();
@@ -78,8 +79,7 @@ public class BigCubeExample extends AbstractRenderableObject {
 
 	@Override
 	public GraphicalMesh getMesh() {
-		// TODO Auto-generated method stub
-		return null;
+		return mesh;
 	}
 
 	@Override
