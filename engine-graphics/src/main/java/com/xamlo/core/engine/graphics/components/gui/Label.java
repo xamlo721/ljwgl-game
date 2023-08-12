@@ -7,8 +7,9 @@ import com.xamlo.core.engine.graphics.api.gui.ILabel;
 
 public class Label extends Widget implements ILabel {
 
-    private String text;
-    private IColor textColor;
+    protected String text;
+    protected IColor textColor;
+    protected IFont font;
 
     public Label() {
         super();
@@ -16,6 +17,13 @@ public class Label extends Widget implements ILabel {
         this.textColor = new Color(0, 0, 0);
     }
 
+    public Label(String text) {
+        super();
+        this.text = text;
+        this.textColor = new Color(0, 0, 0);
+    }
+    
+    
     @Override
     public void setText(String text) {
         this.text = text;

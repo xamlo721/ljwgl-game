@@ -8,6 +8,13 @@ import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL13.GL_BLEND;
+import static org.lwjgl.opengl.GL13.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL13.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL13.glBlendFunc;
+import static org.lwjgl.opengl.GL13.GL_FRONT_AND_BACK;
+import static org.lwjgl.opengl.GL13.GL_LINE;
+import static org.lwjgl.opengl.GL13.glPolygonMode;
 
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.api.components.ISceneRenderer;
@@ -33,9 +40,10 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 	@Override
 	public void init() {
         //Рисовать рамку или заливать цветом - закомментировать, если хотим цвет
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glEnable(GL_DEPTH_TEST);		
-		
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 
 
@@ -57,7 +65,8 @@ public class DefaultSceneRenderer implements ISceneRenderer {
         
         // clear the framebuffer
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		
+
+
 	}
 
 	@Override
@@ -77,6 +86,8 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 		shaderProgram.setUniform("projectionMatrix", scene.getProjectionMatrix());
 		shaderProgram.setUniform("texture_sampler", 0);
 		
+		System.out.println("i render " + scene.getRenderableObject().size() + " objects");
+
 		for (AbstractRenderableObject obj : scene.getRenderableObject()) {
 			//Теперь матрица преобразования обновляется каждый раз
 			shaderProgram.setUniform("worldMatrix", obj.getWorldMatrix());
@@ -86,7 +97,6 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 			//smile.bind();
 			obj.getMesh().bind();
 			if (obj.hasBackgroundImage) {
-				System.out.println("bind texture!");
 				obj.backgroundImage.bind();
 			}
 

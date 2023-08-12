@@ -1,9 +1,8 @@
 package com.xamlo.core.engine.graphics.api.gui;
 
+import com.xamlo.core.engine.graphics.components.AbstractTexture;
 import com.xamlo.core.engine.graphics.components.gui.ButtonAlignment;
 import com.xamlo.core.engine.graphics.components.gui.ButtonIconPosition;
-import com.xamlo.engine.api.resources.ITextureResource;
-
 
 public interface IPushButton extends ILabel {
 
@@ -35,9 +34,9 @@ public interface IPushButton extends ILabel {
 
     int getButtonCornerRadius();
 
-    void setButtonIcon(ITextureResource icon);
+    void setButtonIcon(AbstractTexture icon);
 
-    ITextureResource getButtonIcon();
+    AbstractTexture getButtonIcon();
 
     void setButtonIconPosition(ButtonIconPosition position);
 

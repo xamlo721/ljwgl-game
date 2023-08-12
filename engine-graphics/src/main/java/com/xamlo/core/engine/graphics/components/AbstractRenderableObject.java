@@ -24,7 +24,7 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 */
 	protected final Matrix4f worldMatrix = new Matrix4f();
 
-	/*
+	/**
 	 * Позиция камеры в мире
 	 * [0] - x Coord
 	 * [1] - y Coord
@@ -32,13 +32,18 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 */
     protected Vector3f position;
 	
-	/*
+	/**
 	 * Поворот камеры в мире
 	 * [0] - yaw
 	 * [1] - pitch
 	 * [2] - roll
 	 */
 	protected Vector3f rotation;
+	
+	/**
+	 * Искажение геометрии объекта по Х У Z
+	 */
+	protected Vector3f geometryDeformation;
 	
 	/**
 	 * Масштаб объекта
@@ -51,10 +56,10 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	
 	protected IColor backgroundColor;
 	
-	
 	public AbstractRenderableObject() {
 		this.position = new Vector3f(0.0f, 0.0f, 0.0f);
 		this.rotation = new Vector3f(0.0f, 0.0f, 0.0f);
+		this.geometryDeformation = new Vector3f(1.0f, 1.0f, 1.0f);
 		this.scale = 1.0f;
 	}
 
@@ -64,9 +69,20 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	}
 	
 	@Override
+	public void move(float xCoord, float yCoord, float zCoord) {
+		this.move(new Vector3f(xCoord, yCoord, zCoord));
+		
+	}
+
+	@Override
 	public void rotate(Vector3f vector) {
 		this.rotation = this.rotation.add(vector);
 
+	}
+	
+	@Override
+	public void rotate(float yaw, float pitch, float roll) {
+		this.rotate(new Vector3f(yaw, pitch, roll));
 	}
 
 	@Override
@@ -78,17 +94,53 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	public void setPosition(Vector3f pos) {
 		this.position = pos;
 	}
-
+	
+	@Override
+	public void setPosition(float xCoord, float yCoord, float zCoord) {
+		this.setPosition(new Vector3f(xCoord, yCoord, zCoord));
+		
+	}
+	
 	@Override
 	public void setRotation(Vector3f rot) {
 		this.rotation = rot;
 	}
-
+	
+	@Override
+	public void setRotation(float yaw, float pitch, float roll) {
+		this.setRotation(new Vector3f(yaw, pitch, roll));
+	}
+	
 	@Override
 	public void setScale(float scaleIndex) {
 		this.scale = scaleIndex;
 	}
 
+	@Override
+	public void expandGeometry(Vector3f geometry) {
+		this.geometryDeformation = this.geometryDeformation.add(geometry);		
+	}
+
+	@Override
+	public void expandGeometry(float xCoord, float yCoord, float zCoord) {
+		this.expandGeometry(new Vector3f(xCoord, yCoord, zCoord));
+	}
+
+	@Override
+	public void setExpandGeometry(Vector3f geometry) {
+		geometryDeformation = geometry;
+	}
+
+	@Override
+	public void setExpandGeometry(float xCoord, float yCoord, float zCoord) {
+		this.setExpandGeometry(new Vector3f(xCoord, yCoord, zCoord));
+	}
+
+	@Override
+	public void resetGeometry() {
+		geometryDeformation = new Vector3f(1.0f, 1.0f, 1.0f);
+	}
+	
 	@Override
 	public Vector3f getPosition() {
 		return position;
@@ -120,11 +172,12 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 * @return Матрица преобразования объекта в мировые координаты
 	 */
     public Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, float scale) {
-        worldMatrix.identity().translate(offset).
-                rotateX((float)Math.toRadians(rotation.x)).
-                rotateY((float)Math.toRadians(rotation.y)).
-                rotateZ((float)Math.toRadians(rotation.z)).
-                scale(scale);
+        worldMatrix.identity().translate(offset)
+        		.rotateX((float)Math.toRadians(rotation.x))
+                .rotateY((float)Math.toRadians(rotation.y))
+                .rotateZ((float)Math.toRadians(rotation.z))
+                .scale(scale)
+	            .scale(geometryDeformation);
         return worldMatrix;
     }
     
@@ -135,11 +188,14 @@ public abstract class AbstractRenderableObject implements IRenderable {
 	 * @return Матрица преобразования объекта в мировые координаты
 	 */
     public Matrix4f getWorldMatrix() {
-        worldMatrix.identity().translate(position).
-                rotateX((float)Math.toRadians(rotation.x)).
-                rotateY((float)Math.toRadians(rotation.y)).
-                rotateZ((float)Math.toRadians(rotation.z)).
-                scale(scale);
+        worldMatrix.identity().translate(position)
+                .rotateX((float)Math.toRadians(rotation.x))
+                .rotateY((float)Math.toRadians(rotation.y))
+                .rotateZ((float)Math.toRadians(rotation.z))
+                .scale(scale)
+	            .scale(geometryDeformation);
+        //System.out.println("geometryDef: " + geometryDeformation);
+        System.out.println("position: " + position);
         
 //		System.out.println("updating world matrix for rot" + this.rotation.X + ", " + this.rotation.Y + ", " + this.rotation.Z);
 //		System.out.println("{" + worldMatrix.m00() + ", " + worldMatrix.m01() + ", " + worldMatrix.m02() + ", " + worldMatrix.m03() + "}");

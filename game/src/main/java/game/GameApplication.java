@@ -9,6 +9,7 @@ import com.xamlo.core.engine.graphics.api.components.ICamera;
 import com.xamlo.engine.Engine;
 
 import game.graphics.PrimitiveCamera;
+import game.graphics.PrimitiveScene;
 import game.graphics.gui.GUIMainMenu;
 
 public class GameApplication {
@@ -24,6 +25,7 @@ public class GameApplication {
 		cam.move(new Vector3f(0.0f, 0.0f, 1.5f));//Костыль, чтобы рисовало меню нормально
 		
 		engine = new Engine(cam, new GUIMainMenu(resourceLoader), new DefaultSceneRenderer(resourceLoader));
+		//engine = new Engine(cam, new PrimitiveScene(resourceLoader), new DefaultSceneRenderer(resourceLoader));
 //		planet = new PlanetGenerator();
 	}
 	

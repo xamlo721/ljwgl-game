@@ -17,7 +17,6 @@ import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.TexCoordAttribute;
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexStructure;
-import com.xamlo.engine.api.resources.ITextureResource;
 
 public class Widget extends AbstractRenderableObject implements IWidget {
 	
@@ -37,6 +36,24 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 
 	public Widget() {
 		
+		this.geometry = new WidgetGeometry(0, 0, 0, 0);
+		this.parent = null;
+		this.hasParent = false;
+		this.childWidgets = new ArrayList<IWidget>();
+		this.visible = true;
+		this.isEnable = true;
+		this.focusable = false;
+		this.hasBackgroundImage = false;
+		this.backgroundColor = new Color(255, 255, 255);
+		this.font = new Font("Default", 12, false, false);
+		this.toolTipText = "";
+		this.border = new Border(4, new Color(128, 128, 128));
+		
+	}
+	
+	public Widget(Widget parent) {
+		this.parent = parent;
+		this.parent.addChild(this);
 		this.geometry = new WidgetGeometry(0, 0, 0, 0);
 		this.parent = null;
 		this.hasParent = false;
@@ -91,14 +108,39 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 
 	@Override
 	public void resize(WidgetGeometry geometry) {
-		// TODO Auto-generated method stub
+		//TODO: Протестить, те ли вообще поля я трогаю
+		//this.setExpandGeometry((float)this.geometry.width / (float)geometry.width, (float)this.geometry.height / (float)geometry.height, 1.0f);
+		this.setExpandGeometry((float)geometry.width/(float)1920 ,(float)geometry.height/ (float)1080  , 1.0f);
+
+		float xPos;
+		float yPos;
+		
+		//Не получается сделать относительные координаты, какой-то говнокод
+		if(hasParent) {
+			xPos = ((float)this.parent.getWidgetGeometry().xCoord + (float)geometry.xCoord) / (float)1920;
+			yPos = ((float)this.parent.getWidgetGeometry().yCoord + (float)geometry.yCoord) / (float)1080;
+		} else {
+			xPos = (float)geometry.xCoord / (float)1920;
+			yPos = (float)geometry.yCoord / (float)1080;
+		}
+		
+		this.setPosition(
+				xPos, 
+				yPos,
+				this.position.z);
+
+		this.geometry = geometry;
 		
 	}
 
 	@Override
 	public void resize(WidgetSize size) {
-		// TODO Auto-generated method stub
-		
+		//TODO: Протестить, те ли вообще поля я трогаю
+		//this.setExpandGeometry((float)this.geometry.width / (float)geometry.width, (float)this.geometry.height / (float)geometry.height, 1.0f);
+		this.setExpandGeometry((float)geometry.width/ (float)1920 ,(float)geometry.height/ (float)1080  , 1.0f);
+
+		this.geometry.width = geometry.width;		
+		this.geometry.height = geometry.height;		
 	}
 
 	@Override
@@ -126,6 +168,14 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 		
 	}
 
+	@Override
+	public void addChild(IWidget child) {
+		this.childWidgets.add(child);
+		if (!child.hasParent()) {
+			child.setParent(this);
+		}
+	}
+	
 	@Override
 	public List<IWidget> getChildElements() {
 		return this.childWidgets;
@@ -269,6 +319,14 @@ public class Widget extends AbstractRenderableObject implements IWidget {
         mesh = new GraphicalMesh(vertices, vertexScruct, indices);
         		
 	}
+
+
+
+
+
+
+
+
 
 
 }

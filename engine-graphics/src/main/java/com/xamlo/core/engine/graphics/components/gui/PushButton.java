@@ -2,35 +2,40 @@ package com.xamlo.core.engine.graphics.components.gui;
 
 import com.xamlo.core.engine.graphics.api.gui.ButtonClickListener;
 import com.xamlo.core.engine.graphics.api.gui.IColor;
-import com.xamlo.core.engine.graphics.api.gui.IFont;
 import com.xamlo.core.engine.graphics.api.gui.IPushButton;
-import com.xamlo.engine.api.resources.ITextureResource;
+import com.xamlo.core.engine.graphics.components.AbstractTexture;
 
 public class PushButton extends Label implements IPushButton {
 
-    private String text;
-    private IColor textColor;
-    private IFont font;
-    private IColor buttonColor;
-    private IColor buttonHoverColor;
-    private IColor buttonPressedColor;
-    private IColor buttonDisabledColor;
-    private int buttonBorderSize;
-    private IColor buttonBorderColor;
-    private int buttonCornerRadius;
-    private ITextureResource buttonIcon;
-    private ButtonIconPosition buttonIconPosition;
-    private int buttonIconSpacing;
-    private ButtonAlignment buttonAlignment;
-    private int buttonPadding;
-    private int buttonMargin;
-    private boolean buttonEnabled;
-    private boolean buttonVisible;
-    private boolean buttonPressed;
-    private boolean buttonHovered;
-    private boolean buttonFocused;
-    private ButtonClickListener buttonClickListener;
+	protected IColor buttonColor;
+	protected IColor buttonHoverColor;
+	protected IColor buttonPressedColor;
+	protected IColor buttonDisabledColor;
+	protected int buttonBorderSize;
+	protected IColor buttonBorderColor;
+	protected int buttonCornerRadius;
+    protected AbstractTexture buttonIcon;
+    protected ButtonIconPosition buttonIconPosition;
+    protected int buttonIconSpacing;
+    protected ButtonAlignment buttonAlignment;
+    protected int buttonPadding;
+    protected int buttonMargin;
+    protected boolean buttonEnabled;
+    protected boolean buttonVisible;
+    protected boolean buttonPressed;
+    protected boolean buttonHovered;
+    protected boolean buttonFocused;
+    protected ButtonClickListener buttonClickListener;
 
+    public PushButton(String text) {
+    	super(text);
+    }
+    
+    public PushButton() {
+    	super();
+    }
+    
+    
     @Override
     public void setText(String text) {
         this.text = text;
@@ -49,16 +54,6 @@ public class PushButton extends Label implements IPushButton {
     @Override
     public IColor getTextColor() {
         return textColor;
-    }
-
-    @Override
-    public void setFont(IFont font) {
-        this.font = font;
-    }
-
-    @Override
-    public IFont getFont() {
-        return font;
     }
 
     @Override
@@ -132,12 +127,12 @@ public class PushButton extends Label implements IPushButton {
     }
 
     @Override
-    public void setButtonIcon(ITextureResource icon) {
+    public void setButtonIcon(AbstractTexture icon) {
         this.buttonIcon = icon;
     }
 
     @Override
-    public ITextureResource getButtonIcon() {
+    public AbstractTexture getButtonIcon() {
         return buttonIcon;
     }
 

@@ -51,6 +51,9 @@ public interface IWidget {
     // Возвращает список дочерних виджетов данного виджета
 	public List<IWidget> getChildElements();
 	
+	// Добавляет в список дочерних виджетов
+	public void addChild(IWidget child);
+	
     // Проверяет, есть ли у виджета фоновое изображение
 	public boolean hasBackgroundImage();
 	
