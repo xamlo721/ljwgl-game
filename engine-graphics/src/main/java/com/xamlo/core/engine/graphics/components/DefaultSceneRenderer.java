@@ -86,6 +86,7 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 			//smile.bind();
 			obj.getMesh().bind();
 			if (obj.hasBackgroundImage) {
+				System.out.println("bind texture!");
 				obj.backgroundImage.bind();
 			}
 

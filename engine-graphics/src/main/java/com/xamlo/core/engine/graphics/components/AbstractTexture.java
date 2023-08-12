@@ -15,12 +15,7 @@ public abstract class AbstractTexture implements ITextureResource<String> {
 	public abstract void bind();
 	
 	public abstract void unbind();
-
-	@Override
-	public String getName() {
-		return textureName;
-	}
-
+	
 	public AbstractTexture(String identifier, int width, int height) {
 		this.identifier = identifier;
 		this.width = width;

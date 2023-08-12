@@ -139,6 +139,7 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	@Override
 	public void setBackgroundImage(AbstractTexture image) {
 		this.backgroundImage = image;
+		this.hasBackgroundImage = true;
 	}
 
 	@Override

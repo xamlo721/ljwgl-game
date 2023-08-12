@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
+import com.xamlo.core.engine.graphics.components.AbstractTexture;
 import com.xamlo.core.engine.graphics.components.gui.Color;
 import com.xamlo.core.engine.graphics.components.gui.Widget;
 import com.xamlo.core.engine.graphics.components.gui.WidgetGeometry;
@@ -28,11 +29,11 @@ public class GUIMainMenu extends AbstractGuiScene {
 	@Override
 	public void load() {
 		backgroundImage = resourceLoader.loadTexture("texture.gui.mainmenu.background");
-		backgroundImage.bind();
+		//backgroundImage.bind();
 		
 		menuBg.setBackgroundColor(new Color(255, 0, 0));
 		menuBg.setBorder(0);
-		menuBg.setBackgroundImage(backgroundImage);
+		menuBg.setBackgroundImage((AbstractTexture)backgroundImage);
 		menuBg.resize(new WidgetGeometry(0, 0, 1920, 1080));
 		menuBg.loadMesh();
 		
