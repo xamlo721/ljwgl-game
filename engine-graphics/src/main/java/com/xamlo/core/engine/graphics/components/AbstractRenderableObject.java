@@ -3,11 +3,15 @@ package com.xamlo.core.engine.graphics.components;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import com.xamlo.core.engine.graphics.api.components.IRenderable;
+import com.xamlo.core.engine.graphics.api.components.scene.IMovable;
+import com.xamlo.core.engine.graphics.api.components.scene.IRenderable;
+import com.xamlo.core.engine.graphics.api.components.scene.IRotatable;
+import com.xamlo.core.engine.graphics.api.components.scene.IScalable;
+import com.xamlo.core.engine.graphics.api.components.scene.IStretchable;
 import com.xamlo.core.engine.graphics.api.gui.IColor;
 
 
-public abstract class AbstractRenderableObject implements IRenderable {
+public abstract class AbstractRenderableObject implements IMovable, IRenderable, IRotatable, IScalable, IStretchable  {
 	
 	/**
 	 * Матрица преобразования координат объекта в мировые
