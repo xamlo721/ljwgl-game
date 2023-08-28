@@ -1,8 +1,8 @@
-package com.xamlo.core.engine.graphics.components;
+package com.xamlo.core.engine.graphics.devices;
 
 import java.util.ArrayList;
 
-import com.xamlo.core.engine.graphics.api.components.IKeyboard;
+import com.xamlo.core.engine.graphics.api.devices.IKeyboard;
 
 public abstract class AbstractKeyboard implements IKeyboard {
 

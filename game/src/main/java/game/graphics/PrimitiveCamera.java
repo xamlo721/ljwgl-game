@@ -1,10 +1,11 @@
 package game.graphics;
 
 import org.joml.Vector3f;
+
+import com.xamlo.core.engine.graphics.api.devices.ICamera;
+
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-
-import com.xamlo.core.engine.graphics.api.components.ICamera;
 
 public class PrimitiveCamera implements ICamera {
 

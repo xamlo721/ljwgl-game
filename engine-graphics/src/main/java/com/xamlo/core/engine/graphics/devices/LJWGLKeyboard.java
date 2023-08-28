@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.components;
+package com.xamlo.core.engine.graphics.devices;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
@@ -22,14 +22,14 @@ public class LJWGLKeyboard extends AbstractKeyboard {
 	public LJWGLKeyboard() {
 		
 		
-		glfwSetFramebufferSizeCallback(Window.getInstance().getWindow(), (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
+		glfwSetFramebufferSizeCallback(LJWGLWindow.getInstance().getWindow(), (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
 		    @Override
 		    public void invoke(long window, int width, int height) {
-		        Window.getInstance().setWindowSize(width, height);
+		        LJWGLWindow.getInstance().resize(width, height);
 		    }
 		}));
 		
-		glfwSetKeyCallback(Window.getInstance().getWindow(), (keyCallback = new GLFWKeyCallback() {
+		glfwSetKeyCallback(LJWGLWindow.getInstance().getWindow(), (keyCallback = new GLFWKeyCallback() {
 
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {

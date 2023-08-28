@@ -1,31 +1,34 @@
-package com.xamlo.core.engine.graphics.components;
+package com.xamlo.core.engine.graphics.devices;
 
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.opengl.GL;
+
+import com.xamlo.core.engine.graphics.api.devices.IWindow;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 
-public class Window {
+public class LJWGLWindow implements IWindow {
 
-	private static Window instance = null;
+	private static LJWGLWindow instance = null;
 
 	private long window;
 	private int width;
 	private int height;
 	
-	public static Window getInstance() {
+	public static LJWGLWindow getInstance() {
 	    if(instance == null) {
-	    	instance = new Window();
+	    	instance = new LJWGLWindow();
 	    }
 	      return instance;
 	}
 		
+	@Override
 	public void create(int width, int height) {
 		
-		setWidth(width);
-		setHeight(height);
+		this.width = width;
+		this.height = height;
 		
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
@@ -69,20 +72,19 @@ public class Window {
 		glfwSwapInterval(1);
 	}
 	
+	@Override
 	public void setWindowTitle(String title) {
 		glfwSetWindowTitle(window, title);
 	}
 	
+	@Override
 	public void setWindowIcon(GLFWImage icon) {
 		GLFWImage.Buffer images = GLFWImage.malloc(1);
         images.put(0, icon);
 		glfwSetWindowIcon(window, images);
 	}
-	
-	/*
-	 * Когда весь кадр отрисован, буферы необходимо поменять местами друг с другом, 
-	 * чтобы задний буфер стал передним буфером и наоборот.
-	 */
+
+	@Override
 	public void swapBuffers() {
 		glfwSwapBuffers(window);
 		//Пул ивентс вызывает обработки движений клавиатуры, мышки и т.д
@@ -91,50 +93,37 @@ public class Window {
 		glfwPollEvents();
 	}
 	
+	@Override
 	public void close() {
 		glfwDestroyWindow(window);
 	}
-	
-	/**
-	 * Когда пользователь пытается закрыть окно, либо нажав виджет закрытия в строке заголовка, 
-	 * либо используя комбинацию клавиш, такую как Alt + F4, этот флаг устанавливается в 1. 
-	 * Обратите внимание, что окно на самом деле не закрыто, поэтому ожидается, 
-	 * что вы будете отслеживать этот флаг и либо уничтожите окно, 
-	 * либо предоставите пользователю какую-либо обратную связь.
-	 * 
-	 */
+
+	@Override
 	public boolean isCloseRequested() {
 		return glfwWindowShouldClose(window);
 	}
 	
-	public void setWindowSize(int x, int y){
-		glfwSetWindowSize(window, x, y);
-		setHeight(y);
-		setWidth(x);
-
+	@Override
+	public void resize(int width, int height){
+		glfwSetWindowSize(window, width, height);
+		this.width = width;
+		this.height = height;
 	}
 	
+	@Override
 	public int getWidth() {
 		return width;
 	}
 	
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	
+	@Override
 	public int getHeight() {
 		return height;
 	}
 	
-	public void setHeight(int height) {
-		this.height = height;
-	}
-	
+	@Override
 	public long getWindow() {
 		return window;
 	}
 
-	public void setWindow(long window) {
-		this.window = window;
-	}
+
 }

@@ -27,21 +27,22 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
-import com.xamlo.core.engine.graphics.api.components.ICamera;
 import com.xamlo.core.engine.graphics.api.components.IRenderEngine;
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.api.components.ISceneRenderer;
-import com.xamlo.core.engine.graphics.components.Window;
-import com.xamlo.core.engine.graphics.components.LJWGLKeyboard;
-import com.xamlo.core.engine.graphics.components.LJWGLMouse;
+import com.xamlo.core.engine.graphics.api.devices.ICamera;
+import com.xamlo.core.engine.graphics.api.devices.IWindow;
+import com.xamlo.core.engine.graphics.devices.LJWGLKeyboard;
+import com.xamlo.core.engine.graphics.devices.LJWGLMouse;
+import com.xamlo.core.engine.graphics.devices.LJWGLWindow;
 
 public class RenderEngine implements IRenderEngine {
 	
 	@SuppressWarnings("unused")
 	private GLFWErrorCallback errorCallback;
 	
-	private Window window;
-	public IScene scene;
+	private IWindow window;
+	private IScene scene;
 	private final ISceneRenderer renderer;
 	
 	private boolean isRendering;
@@ -77,7 +78,7 @@ public class RenderEngine implements IRenderEngine {
 	@Override
 	public void init() {
 		
-		window = Window.getInstance();
+		window = LJWGLWindow.getInstance();
         //camera = Camera.getInstance();
 
 		if(glfwInit() == false) {
@@ -215,7 +216,7 @@ public class RenderEngine implements IRenderEngine {
 
 			camera.rotate(new Vector3f(dy * movAmt, dx * movAmt, 0.0f));
 
-			glfwSetCursorPos(Window.getInstance().getWindow(),
+			glfwSetCursorPos(LJWGLWindow.getInstance().getWindow(),
 					mouse.getLockedCursorPosition().x(),
 					mouse.getLockedCursorPosition().y());
 			

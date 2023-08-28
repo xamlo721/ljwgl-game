@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.components;
+package com.xamlo.core.engine.graphics.devices;
 
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
@@ -36,15 +36,15 @@ public class LJWGLMouse extends AbstractMouse {
 		
 		cursorPosition = new Vector2f();
 		
-		glfwSetFramebufferSizeCallback(Window.getInstance().getWindow(), (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
+		glfwSetFramebufferSizeCallback(LJWGLWindow.getInstance().getWindow(), (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
 		    @Override
 		    public void invoke(long window, int width, int height) {
-		        Window.getInstance().setWindowSize(width, height);
+		        LJWGLWindow.getInstance().resize(width, height);
 		    }
 		}));
 		
 		
-		glfwSetMouseButtonCallback(Window.getInstance().getWindow(), (mouseButtonCallback = new GLFWMouseButtonCallback() {
+		glfwSetMouseButtonCallback(LJWGLWindow.getInstance().getWindow(), (mouseButtonCallback = new GLFWMouseButtonCallback() {
 
             @Override
             public void invoke(long window, int button, int action, int mods) {
@@ -62,7 +62,7 @@ public class LJWGLMouse extends AbstractMouse {
             }
 		}));
 		
-		glfwSetCursorPosCallback(Window.getInstance().getWindow(), (cursorPosCallback = new GLFWCursorPosCallback() {
+		glfwSetCursorPosCallback(LJWGLWindow.getInstance().getWindow(), (cursorPosCallback = new GLFWCursorPosCallback() {
 
             @Override
             public void invoke(long window, double xpos, double ypos) {
@@ -72,7 +72,7 @@ public class LJWGLMouse extends AbstractMouse {
 
 		}));
 		
-		glfwSetScrollCallback(Window.getInstance().getWindow(), (scrollCallback = new GLFWScrollCallback() {
+		glfwSetScrollCallback(LJWGLWindow.getInstance().getWindow(), (scrollCallback = new GLFWScrollCallback() {
 			
 			@Override
 			public void invoke(long window, double xoffset, double yoffset) {
@@ -94,7 +94,7 @@ public class LJWGLMouse extends AbstractMouse {
 	public void setCursorPosition(Vector2f cursorPosition) {
 		this.cursorPosition = cursorPosition;
 		
-		glfwSetCursorPos(Window.getInstance().getWindow(), cursorPosition.x(), cursorPosition.y());
+		glfwSetCursorPos(LJWGLWindow.getInstance().getWindow(), cursorPosition.x(), cursorPosition.y());
 	}
 	
 }

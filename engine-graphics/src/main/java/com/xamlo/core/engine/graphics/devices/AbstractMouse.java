@@ -1,11 +1,11 @@
-package com.xamlo.core.engine.graphics.components;
+package com.xamlo.core.engine.graphics.devices;
 
 
 import java.util.ArrayList;
 
 import org.joml.Vector2f;
 
-import com.xamlo.core.engine.graphics.api.components.IMouse;
+import com.xamlo.core.engine.graphics.api.devices.IMouse;
 
 public abstract class AbstractMouse implements IMouse {
 

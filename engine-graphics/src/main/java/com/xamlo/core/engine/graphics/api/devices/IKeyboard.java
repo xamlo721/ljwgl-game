@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.api.components;
+package com.xamlo.core.engine.graphics.api.devices;
 
 import java.util.ArrayList;
 

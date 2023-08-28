@@ -1,9 +1,9 @@
 package com.xamlo.engine;
 
 import com.xamlo.core.engine.graphics.RenderEngine;
-import com.xamlo.core.engine.graphics.api.components.ICamera;
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.api.components.ISceneRenderer;
+import com.xamlo.core.engine.graphics.api.devices.ICamera;
 import com.xamlo.core.engine.graphics.threads.RenderThread;
 import com.xamlo.engine.world.World;
 
