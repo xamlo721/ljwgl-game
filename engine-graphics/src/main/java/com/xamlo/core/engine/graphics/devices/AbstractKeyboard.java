@@ -3,8 +3,9 @@ package com.xamlo.core.engine.graphics.devices;
 import java.util.ArrayList;
 
 import com.xamlo.core.engine.graphics.api.devices.IKeyboard;
+import com.xamlo.core.engine.graphics.api.devices.IUpdatableDevice;
 
-public abstract class AbstractKeyboard implements IKeyboard {
+public abstract class AbstractKeyboard implements IKeyboard, IUpdatableDevice {
 
 	protected ArrayList<Integer> pushedKeys = new ArrayList<Integer>();
 	protected ArrayList<Integer> keysHolding = new ArrayList<Integer>();

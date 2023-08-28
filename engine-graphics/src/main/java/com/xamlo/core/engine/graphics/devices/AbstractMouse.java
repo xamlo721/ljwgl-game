@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import org.joml.Vector2f;
 
 import com.xamlo.core.engine.graphics.api.devices.IMouse;
+import com.xamlo.core.engine.graphics.api.devices.IUpdatableDevice;
 
-public abstract class AbstractMouse implements IMouse {
+public abstract class AbstractMouse implements IMouse, IUpdatableDevice {
 
 	protected ArrayList<Integer> pushedButtons = new ArrayList<Integer>();
 	protected ArrayList<Integer> buttonsHolding = new ArrayList<Integer>();
@@ -52,8 +53,6 @@ public abstract class AbstractMouse implements IMouse {
 	public Vector2f getCursorPosition() {
 		return cursorPosition;
 	}
-
-
 
 	@Override
 	public Vector2f getLockedCursorPosition() {

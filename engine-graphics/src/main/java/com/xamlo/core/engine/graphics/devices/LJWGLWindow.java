@@ -3,20 +3,14 @@ package com.xamlo.core.engine.graphics.devices;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.opengl.GL;
 
-import com.xamlo.core.engine.graphics.api.devices.IWindow;
-
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 
-public class LJWGLWindow implements IWindow {
+public class LJWGLWindow extends AbstractWindow {
 
 	private static LJWGLWindow instance = null;
 
-	private long window;
-	private int width;
-	private int height;
-	
 	public static LJWGLWindow getInstance() {
 	    if(instance == null) {
 	    	instance = new LJWGLWindow();
@@ -71,6 +65,14 @@ public class LJWGLWindow implements IWindow {
 		 */
 		glfwSwapInterval(1);
 	}
+
+	@Override
+	public void update() {
+		//Пул ивентс вызывает обработки движений клавиатуры, мышки и т.д
+		//Без него не будет нормально передвигаться окно
+		//Вызывать надо в начале каждого цикла, но пока не знаю куда перетащить
+		glfwPollEvents();		
+	}
 	
 	@Override
 	public void setWindowTitle(String title) {
@@ -87,15 +89,15 @@ public class LJWGLWindow implements IWindow {
 	@Override
 	public void swapBuffers() {
 		glfwSwapBuffers(window);
-		//Пул ивентс вызывает обработки движений клавиатуры, мышки и т.д
-		//Без него не будет нормально передвигаться окно
-		//Вызывать надо в начале каждого цикла, но пока не знаю куда перетащить
-		glfwPollEvents();
 	}
+
+
 	
 	@Override
-	public void close() {
-		glfwDestroyWindow(window);
+	public void resize(int width, int height){
+		glfwSetWindowSize(window, width, height);
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
@@ -104,26 +106,10 @@ public class LJWGLWindow implements IWindow {
 	}
 	
 	@Override
-	public void resize(int width, int height){
-		glfwSetWindowSize(window, width, height);
-		this.width = width;
-		this.height = height;
+	public void close() {
+		glfwDestroyWindow(window);
 	}
-	
-	@Override
-	public int getWidth() {
-		return width;
-	}
-	
-	@Override
-	public int getHeight() {
-		return height;
-	}
-	
-	@Override
-	public long getWindow() {
-		return window;
-	}
+
 
 
 }

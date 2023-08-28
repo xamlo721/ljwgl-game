@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 public interface IKeyboard {
 
-	public void update();
-
 	public boolean isKeyPushed(int key);
 	
 	public boolean isKeyReleased(int key);
@@ -14,8 +12,6 @@ public interface IKeyboard {
 
 	public ArrayList<Integer> getPushedKeys();
 
-	
 	public ArrayList<Integer> getKeysHolding();
-	
 	
 }

@@ -27,11 +27,13 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
+import com.xamlo.core.engine.graphics.api.components.ICamera;
 import com.xamlo.core.engine.graphics.api.components.IRenderEngine;
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.api.components.ISceneRenderer;
-import com.xamlo.core.engine.graphics.api.devices.ICamera;
-import com.xamlo.core.engine.graphics.api.devices.IWindow;
+import com.xamlo.core.engine.graphics.devices.AbstractKeyboard;
+import com.xamlo.core.engine.graphics.devices.AbstractMouse;
+import com.xamlo.core.engine.graphics.devices.AbstractWindow;
 import com.xamlo.core.engine.graphics.devices.LJWGLKeyboard;
 import com.xamlo.core.engine.graphics.devices.LJWGLMouse;
 import com.xamlo.core.engine.graphics.devices.LJWGLWindow;
@@ -41,7 +43,6 @@ public class RenderEngine implements IRenderEngine {
 	@SuppressWarnings("unused")
 	private GLFWErrorCallback errorCallback;
 	
-	private IWindow window;
 	private IScene scene;
 	private final ISceneRenderer renderer;
 	
@@ -52,8 +53,10 @@ public class RenderEngine implements IRenderEngine {
 
 	private ICamera camera;
     private Matrix4f projectionMatrix;
-    private LJWGLKeyboard keyboard;
-    private LJWGLMouse mouse;
+    
+	private AbstractWindow window;
+    private AbstractKeyboard keyboard;
+    private AbstractMouse mouse;
 
 	
 	public RenderEngine(ISceneRenderer renderer) {
@@ -221,7 +224,7 @@ public class RenderEngine implements IRenderEngine {
 					mouse.getLockedCursorPosition().y());
 			
 		}		
-		
+		window.update();
 		keyboard.update();
 		mouse.update();
 	}

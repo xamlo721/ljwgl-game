@@ -1,4 +1,4 @@
-package com.xamlo.core.engine.graphics.api.devices;
+package com.xamlo.core.engine.graphics.api.components;
 
 import org.joml.Vector3f;
 import org.joml.Matrix4f;

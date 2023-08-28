@@ -36,5 +36,4 @@ public interface IWindow {
 	
 	public void close();
 
-
 }
