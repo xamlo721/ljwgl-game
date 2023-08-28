@@ -28,7 +28,7 @@ public interface IScene {
 	
 	void tranformScene(Matrix4f transformMatrix);
 	
-	void release();
+	void unload();
 	
 	
 }

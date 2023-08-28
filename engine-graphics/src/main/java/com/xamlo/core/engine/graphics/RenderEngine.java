@@ -32,7 +32,6 @@ import com.xamlo.core.engine.graphics.api.components.IRenderEngine;
 import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.api.components.ISceneRenderer;
 import com.xamlo.core.engine.graphics.components.Window;
-import com.xamlo.core.engine.graphics.components.DefaultSceneRenderer;
 import com.xamlo.core.engine.graphics.components.LJWGLKeyboard;
 import com.xamlo.core.engine.graphics.components.LJWGLMouse;
 
@@ -46,7 +45,7 @@ public class RenderEngine implements IRenderEngine {
 	private final ISceneRenderer renderer;
 	
 	private boolean isRendering;
-	public boolean isCloseRequest;
+	private boolean isCloseRequest;
 
 	private static final float movAmt = 0.11f;
 
@@ -69,6 +68,7 @@ public class RenderEngine implements IRenderEngine {
 		this.scene = scene;
 	}
 	
+	@Override
 	public boolean isRendering() {
 		return this.isRendering && !this.window.isCloseRequested();
 	}
@@ -132,7 +132,8 @@ public class RenderEngine implements IRenderEngine {
 
 	}
 	
-	public void loadInputDevice() {
+	@Override
+	public void loadInputDevices() {
 		keyboard = new LJWGLKeyboard();
 		mouse = new LJWGLMouse();
 
@@ -151,27 +152,30 @@ public class RenderEngine implements IRenderEngine {
 
 		
 	}
-
-	public void renderFrame() {	
-        // Set the clear color
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-
-        glViewport(0, 0, window.getWidth(), window.getHeight());
-
-        scene.tranformScene(projectionMatrix);
-
-        
-		// Вся логическая сцена
-        renderer.render(scene);
+	@Override
+	public void loadScene() {
+	    this.scene.load();	
 		
+	}
+
+	@Override
+	public void transformScene() {
+		
+        scene.tranformScene(projectionMatrix);
+        
         projectionMatrix = new Matrix4f().perspective(
        		    camera.getFov(), 
            		camera.getAspectRatio(),
            	    camera.getNearDistance(), 
            	    camera.getFarDistance()
         );
-        projectionMatrix = projectionMatrix.mul(camera.getViewMatrix());
         
+        projectionMatrix = projectionMatrix.mul(camera.getViewMatrix());
+		
+	}
+
+	@Override
+	public void updateInputDevices() {
         
 		if(keyboard.isKeyHold(GLFW_KEY_W)) {
 			camera.move( new Vector3f(0.0f, 0.0f, -movAmt));
@@ -215,7 +219,26 @@ public class RenderEngine implements IRenderEngine {
 					mouse.getLockedCursorPosition().x(),
 					mouse.getLockedCursorPosition().y());
 			
-		}
+		}		
+		
+		keyboard.update();
+		mouse.update();
+	}
+	
+	
+	@Override
+	public void renderFrame() {	
+        // Set the clear color
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+
+        glViewport(0, 0, window.getWidth(), window.getHeight());
+
+
+        
+		// Вся логическая сцена
+        renderer.render(scene);
+		
+
 		//camera.setFov(camera.getFov() + 0.01f);
 		//camera.move(new Vector3f(0.0f, 0.01f, 0.01f));
 		//camera.rotate(new Vector3f(0.0f, 0.1f, 0.3f));
@@ -223,27 +246,25 @@ public class RenderEngine implements IRenderEngine {
 		// draw into OpenGL window
 		this.window.swapBuffers();
 		
-		keyboard.update();
 		
 
 	}
 
 	@Override
 	public void start() {
-		if(isRendering)
+		if(isRendering) {
 			return;
-	    
+		}
+		
 	    this.isRendering = true;
 
 	    this.renderer.init();
-	    this.scene.load();	
 	}
 
 
 	@Override
 	public void release() {
-		
-		scene.release();
+		scene.unload();
 		window.close();
 		glfwTerminate();
 		this.isCloseRequest = true;		
@@ -279,5 +300,7 @@ public class RenderEngine implements IRenderEngine {
 
 		System.out.println("GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS " + GL11.glGetInteger(GL43.GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS));
 	}
+
+
 
 }

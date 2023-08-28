@@ -1,6 +1,6 @@
 package com.xamlo.core.engine.graphics.threads;
 
-import com.xamlo.core.engine.graphics.RenderEngine;
+import com.xamlo.core.engine.graphics.api.components.IRenderEngine;
 
 /**
  * Я думаю, что я немного ошибся, позволив потоку управлять RenderEngine
@@ -11,13 +11,13 @@ import com.xamlo.core.engine.graphics.RenderEngine;
  */
 public class RenderThread extends Thread {
 
-	private RenderEngine renderingEngine;
+	private IRenderEngine renderingEngine;
 	
 	private static final long NANOSECOND = 1000000000;
 	@SuppressWarnings("unused")
 	private static final long SECOND = 1;
 
-    public RenderThread(RenderEngine renderingEngine) {
+    public RenderThread(IRenderEngine renderingEngine) {
         this.renderingEngine = renderingEngine;
         this.setName("LJWGL-Thread");
     }
@@ -29,8 +29,8 @@ public class RenderThread extends Thread {
 		renderingEngine.init();
 		//FIXME: Настройки здесь не должны находиться 100%
 		renderingEngine.createWindow(1920, 1080);
-		renderingEngine.loadInputDevice();
-    	renderingEngine.scene.load();
+		renderingEngine.loadInputDevices();
+    	renderingEngine.loadScene();	
 	    renderingEngine.start();
 
         
@@ -83,7 +83,9 @@ public class RenderThread extends Thread {
 			}
 						
 			if(isRenderFrame) {
+				renderingEngine.transformScene();
 				renderingEngine.renderFrame();
+				renderingEngine.updateInputDevices();
 				frames++;
 			} else {
 				
