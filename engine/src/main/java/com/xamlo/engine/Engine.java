@@ -17,12 +17,15 @@ public class Engine {
 	private ICamera camera;
 	private IScene scene;
 
-
 	public Engine(ICamera cam, IScene scene, ISceneRenderer sceneRenderer) {
 		this.camera = cam;
 		this.scene = scene;
 		this.isRunning = false;
 		this.renderingEngine = new RenderEngine(sceneRenderer);
+	}
+	
+	public boolean isAlive() {
+		return isRunning;
 	}
 	
 	public void init() {
@@ -36,8 +39,7 @@ public class Engine {
 	public void start() {
 		glThread.start();
 		this.isRunning = true;
-
 	}
 	
-
+	
 }

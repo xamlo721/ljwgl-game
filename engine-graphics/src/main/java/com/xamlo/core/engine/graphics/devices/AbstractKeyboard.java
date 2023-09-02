@@ -4,36 +4,37 @@ import java.util.ArrayList;
 
 import com.xamlo.core.engine.graphics.api.devices.IKeyboard;
 import com.xamlo.core.engine.graphics.api.devices.IUpdatableDevice;
+import com.xamlo.engine.api.devices.EnumKeyboardButtons;
 
 public abstract class AbstractKeyboard implements IKeyboard, IUpdatableDevice {
 
-	protected ArrayList<Integer> pushedKeys = new ArrayList<Integer>();
-	protected ArrayList<Integer> keysHolding = new ArrayList<Integer>();
-	protected ArrayList<Integer> releasedKeys = new ArrayList<Integer>();
+	protected ArrayList<EnumKeyboardButtons> pushedKeys = new ArrayList<EnumKeyboardButtons>();
+	protected ArrayList<EnumKeyboardButtons> keysHolding = new ArrayList<EnumKeyboardButtons>();
+	protected ArrayList<EnumKeyboardButtons> releasedKeys = new ArrayList<EnumKeyboardButtons>();
 
 	@Override
-	public boolean isKeyPushed(int key) {
+	public boolean isKeyPushed(EnumKeyboardButtons key) {
 		return pushedKeys.contains(key);
 	}
 
 	@Override
-	public boolean isKeyReleased(int key) {
+	public boolean isKeyReleased(EnumKeyboardButtons key) {
 		return releasedKeys.contains(key);
 	}
 
 	@Override
-	public boolean isKeyHold(int key) {
+	public boolean isKeyHold(EnumKeyboardButtons key) {
 		return keysHolding.contains(key);
 	}
 
 	@Override
-	public ArrayList<Integer> getPushedKeys() {
+	public ArrayList<EnumKeyboardButtons> getPushedKeys() {
 		return pushedKeys;
 	}
 
 
 	@Override
-	public ArrayList<Integer> getKeysHolding() {
+	public ArrayList<EnumKeyboardButtons> getKeysHolding() {
 		return keysHolding;
 	}
 

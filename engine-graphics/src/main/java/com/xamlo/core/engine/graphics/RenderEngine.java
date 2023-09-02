@@ -37,6 +37,7 @@ import com.xamlo.core.engine.graphics.devices.AbstractWindow;
 import com.xamlo.core.engine.graphics.devices.LJWGLKeyboard;
 import com.xamlo.core.engine.graphics.devices.LJWGLMouse;
 import com.xamlo.core.engine.graphics.devices.LJWGLWindow;
+import com.xamlo.engine.api.devices.EnumKeyboardButtons;
 
 public class RenderEngine implements IRenderEngine {
 	
@@ -181,34 +182,34 @@ public class RenderEngine implements IRenderEngine {
 	@Override
 	public void updateInputDevices() {
         
-		if(keyboard.isKeyHold(GLFW_KEY_W)) {
+		if(keyboard.isKeyHold(EnumKeyboardButtons.KEY_W)) {
 			camera.move( new Vector3f(0.0f, 0.0f, -movAmt));
 
 		}
-		if(keyboard.isKeyHold(GLFW_KEY_S)) {
+		if(keyboard.isKeyHold(EnumKeyboardButtons.KEY_S)) {
 			camera.move( new Vector3f(0.0f, 0.0f, movAmt));
 		}
-		if(keyboard.isKeyHold(GLFW_KEY_A)) {
+		if(keyboard.isKeyHold(EnumKeyboardButtons.KEY_A)) {
 			camera.move( new Vector3f(-movAmt, 0.0f, 0.0f));
 
 		}
-		if(keyboard.isKeyHold(GLFW_KEY_D)) {
+		if(keyboard.isKeyHold(EnumKeyboardButtons.KEY_D)) {
 			camera.move( new Vector3f(movAmt, 0.0f, 0.0f));
 		}
 		
-		if(keyboard.isKeyHold(GLFW_KEY_SPACE)) {
+		if(keyboard.isKeyHold(EnumKeyboardButtons.KEY_SPACE)) {
 			camera.move( new Vector3f(0.0f, movAmt, 0.0f));
 
 		}
-		if(keyboard.isKeyHold(GLFW_KEY_LEFT_SHIFT)) {
+		if(keyboard.isKeyHold(EnumKeyboardButtons.KEY_LEFT_SHIFT)) {
 			camera.move( new Vector3f(0.0f, -movAmt, 0.0f));
 		}
 		
-		if(keyboard.isKeyHold(GLFW_KEY_Q)) {
+		if(keyboard.isKeyHold(EnumKeyboardButtons.KEY_Q)) {
 			camera.rotate(new Vector3f(0.0f, 0.0f, movAmt));
 
 		}
-		if(keyboard.isKeyHold(GLFW_KEY_E)) {
+		if(keyboard.isKeyHold(EnumKeyboardButtons.KEY_E)) {
 			camera.rotate(new Vector3f(0.0f, 0.0f, -movAmt));
 		}
 		

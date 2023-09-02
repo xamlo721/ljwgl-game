@@ -1,7 +1,5 @@
 package com.xamlo.core.engine.graphics.api.components.scene;
 
-import org.joml.Vector3f;
-
 public interface IRenderable {
 
 	/**

@@ -64,6 +64,9 @@ public class LJWGLWindow extends AbstractWindow {
 		 *  Можно установить более высокие значения, но обычно это не рекомендуется из-за задержки ввода, к которой это приводит.
 		 */
 		glfwSwapInterval(1);
+		
+		glfwSetFramebufferSizeCallback(LJWGLWindow.getInstance().getWindow(), new GLFWWindowCallback());
+
 	}
 
 	@Override

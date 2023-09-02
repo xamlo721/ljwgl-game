@@ -4,17 +4,19 @@ import java.util.ArrayList;
 
 import org.joml.Vector2f;
 
+import com.xamlo.engine.api.devices.EnumMouseButtons;
+
 public interface IMouse {
 	
 	public void update();
 	
 	boolean isShowCursor();
 
-	public boolean isButtonPushed(int key);
+	public boolean isButtonPushed(EnumMouseButtons key);
 	
-	public boolean isButtonReleased(int key);
+	public boolean isButtonReleased(EnumMouseButtons key);
 	
-	public boolean isButtonHolding(int key);
+	public boolean isButtonHolding(EnumMouseButtons key);
 	
 	public Vector2f getCursorPosition();
 
@@ -28,9 +30,9 @@ public interface IMouse {
 
 	public void setScrollOffset(float scrollOffset);
 
-	public ArrayList<Integer> getButtonsHolding();
+	public ArrayList<EnumMouseButtons> getButtonsHolding();
 
-	public ArrayList<Integer> getPushedButtons();
+	public ArrayList<EnumMouseButtons> getPushedButtons();
 
 
 }

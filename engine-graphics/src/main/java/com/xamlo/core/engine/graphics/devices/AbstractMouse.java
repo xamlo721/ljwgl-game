@@ -7,12 +7,13 @@ import org.joml.Vector2f;
 
 import com.xamlo.core.engine.graphics.api.devices.IMouse;
 import com.xamlo.core.engine.graphics.api.devices.IUpdatableDevice;
+import com.xamlo.engine.api.devices.EnumMouseButtons;
 
 public abstract class AbstractMouse implements IMouse, IUpdatableDevice {
 
-	protected ArrayList<Integer> pushedButtons = new ArrayList<Integer>();
-	protected ArrayList<Integer> buttonsHolding = new ArrayList<Integer>();
-	protected ArrayList<Integer> releasedButtons = new ArrayList<Integer>();
+	protected ArrayList<EnumMouseButtons> pushedButtons = new ArrayList<EnumMouseButtons>();
+	protected ArrayList<EnumMouseButtons> buttonsHolding = new ArrayList<EnumMouseButtons>();
+	protected ArrayList<EnumMouseButtons> releasedButtons = new ArrayList<EnumMouseButtons>();
 
 	protected Vector2f cursorPosition;
 	protected Vector2f lockedCursorPosition;
@@ -25,27 +26,27 @@ public abstract class AbstractMouse implements IMouse, IUpdatableDevice {
 	}
 	
 	@Override
-	public boolean isButtonPushed(int key) {
+	public boolean isButtonPushed(EnumMouseButtons key) {
 		return pushedButtons.contains(key);
 	}
 
 	@Override
-	public boolean isButtonReleased(int key) {
+	public boolean isButtonReleased(EnumMouseButtons key) {
 		return releasedButtons.contains(key);
 	}
 
 	@Override
-	public boolean isButtonHolding(int key) {
+	public boolean isButtonHolding(EnumMouseButtons key) {
 		return buttonsHolding.contains(key);
 	}
 	
 	@Override
-	public ArrayList<Integer> getButtonsHolding() {
+	public ArrayList<EnumMouseButtons> getButtonsHolding() {
 		return buttonsHolding;
 	}
 
 	@Override
-	public ArrayList<Integer> getPushedButtons() {
+	public ArrayList<EnumMouseButtons> getPushedButtons() {
 		return pushedButtons;
 	}
 

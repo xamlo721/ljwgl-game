@@ -3,7 +3,7 @@ package com.xamlo.core.engine.graphics.devices;
 import com.xamlo.core.engine.graphics.api.devices.IUpdatableDevice;
 import com.xamlo.core.engine.graphics.api.devices.IWindow;
 
-public abstract class AbstractWindow  implements IWindow, IUpdatableDevice   {
+public abstract class AbstractWindow implements IWindow, IUpdatableDevice {
 
 	protected long window;
 	protected int width;
@@ -23,4 +23,5 @@ public abstract class AbstractWindow  implements IWindow, IUpdatableDevice   {
 	public long getWindow() {
 		return window;
 	}
+	
 }

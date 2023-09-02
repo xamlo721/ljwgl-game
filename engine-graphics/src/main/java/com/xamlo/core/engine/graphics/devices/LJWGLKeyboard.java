@@ -1,62 +1,18 @@
 package com.xamlo.core.engine.graphics.devices;
 
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
-
-import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
-import org.lwjgl.glfw.GLFWKeyCallback;
 
 public class LJWGLKeyboard extends AbstractKeyboard {
 	
-	@SuppressWarnings("unused")
-	private GLFWKeyCallback keyCallback;
-	
-	
-	@SuppressWarnings("unused")
-	private GLFWFramebufferSizeCallback framebufferSizeCallback;
-	
-	
 	public LJWGLKeyboard() {
-		
-		
-		glfwSetFramebufferSizeCallback(LJWGLWindow.getInstance().getWindow(), (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
-		    @Override
-		    public void invoke(long window, int width, int height) {
-		        LJWGLWindow.getInstance().resize(width, height);
-		    }
-		}));
-		
-		glfwSetKeyCallback(LJWGLWindow.getInstance().getWindow(), (keyCallback = new GLFWKeyCallback() {
-
-            @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
-            	if (action == GLFW_PRESS){
-            		if (!pushedKeys.contains(key)){
-            			pushedKeys.add(key);
-            			keysHolding.add(key);
-            		}
-                }
-            	
-                if (action == GLFW_RELEASE){
-                	keysHolding.remove(new Integer(key));
-                	releasedKeys.add(key);
-                }
-
-            }
-        }));
-		
+		glfwSetKeyCallback(LJWGLWindow.getInstance().getWindow(), new GLWFKeyBoardCallback(this));
 		
 	}
-	
 
 	@Override
 	public void update() {
 		pushedKeys.clear();
 		releasedKeys.clear();
-		glfwPollEvents();
 	}
 
 }
