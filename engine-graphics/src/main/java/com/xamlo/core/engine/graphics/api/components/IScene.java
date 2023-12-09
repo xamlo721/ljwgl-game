@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.joml.Matrix4f;
 
+import com.xamlo.core.engine.graphics.api.gui.IWidget;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 
 /*
@@ -20,6 +21,8 @@ public interface IScene {
 	void load();
 
 	List<AbstractRenderableObject> getRenderableObject();
+	
+	List<IWidget> getGuiElements();
 	
 	//TODO: Есть мнение, что сцена это совокупность объектов, которую могут рисовать
 	// всякие Renderer, они и определяют её положение в мире, а она сама не знает где она расположена

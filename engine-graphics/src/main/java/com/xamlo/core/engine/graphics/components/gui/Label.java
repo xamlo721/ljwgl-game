@@ -54,21 +54,4 @@ public class Label extends Widget implements ILabel {
         return super.getFont();
     }
 
-    @Override
-    public void init() {
-        super.init();
-        // Дополнительная инициализация для Label
-    }
-
-    @Override
-    public void release() {
-        super.release();
-        // Дополнительные действия при освобождении ресурсов Label
-    }
-
-    @Override
-    public void loadMesh() {
-        super.loadMesh();
-        // Загрузка собственной геометрии для Label
-    }
 }

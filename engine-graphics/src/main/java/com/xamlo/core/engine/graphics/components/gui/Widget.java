@@ -3,22 +3,12 @@ package com.xamlo.core.engine.graphics.components.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-
 import com.xamlo.core.engine.graphics.api.gui.IColor;
 import com.xamlo.core.engine.graphics.api.gui.IFont;
 import com.xamlo.core.engine.graphics.api.gui.IWidget;
-import com.xamlo.core.engine.graphics.api.primitives.IVertex;
-import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 import com.xamlo.core.engine.graphics.components.AbstractTexture;
-import com.xamlo.core.engine.graphics.components.GraphicalMesh;
-import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
-import com.xamlo.core.engine.graphics.components.attribs.TexCoordAttribute;
-import com.xamlo.core.engine.graphics.primitives.Vertex;
-import com.xamlo.core.engine.graphics.primitives.VertexStructure;
 
-public class Widget extends AbstractRenderableObject implements IWidget {
+public class Widget implements IWidget {
 	
 	protected WidgetGeometry geometry;
 	protected IWidget parent;
@@ -26,12 +16,13 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	protected boolean visible;
 	protected boolean isEnable;
 	protected boolean focusable;
-
+	protected boolean hasBackgroundImage; //TODO: Это Variant-ом чтоли делают? почините кто знает
+	protected AbstractTexture backgroundImage;
+	protected IColor backgroundColor;
 	protected IFont font;
 	protected String toolTipText;
 	protected Border border;
 	protected String widgetName;
-	protected GraphicalMesh mesh;
 
 	public Widget() {
 		
@@ -107,37 +98,29 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	public void resize(WidgetGeometry geometry) {
 		//TODO: Протестить, те ли вообще поля я трогаю
 		//this.setExpandGeometry((float)this.geometry.width / (float)geometry.width, (float)this.geometry.height / (float)geometry.height, 1.0f);
-		this.setExpandGeometry((float)geometry.width/(float)1920 ,(float)geometry.height/ (float)1080  , 1.0f);
 
-		float xPos;
-		float yPos;
-		
-		//Не получается сделать относительные координаты, какой-то говнокод
-		if(this.hasParent()) {
-			xPos = ((float)this.parent.getWidgetGeometry().xCoord + (float)geometry.xCoord) / (float)1920;
-			yPos = ((float)this.parent.getWidgetGeometry().yCoord + (float)geometry.yCoord) / (float)1080;
-			System.out.println("Parent coords  - xCoord: " + this.parent.getWidgetGeometry().xCoord + ", yCoord: " + this.parent.getWidgetGeometry().yCoord + ", zCoord: " + 0);
+//		float xPos;
+//		float yPos;
+//		
+//		//Не получается сделать относительные координаты, какой-то говнокод
+//		if(this.hasParent()) {
+//			xPos = ((float)this.parent.getWidgetGeometry().xCoord + (float)geometry.xCoord) / (float)1920;
+//			yPos = ((float)this.parent.getWidgetGeometry().yCoord + (float)geometry.yCoord) / (float)1080;
+//			System.out.println("Parent coords  - xCoord: " + this.parent.getWidgetGeometry().xCoord + ", yCoord: " + this.parent.getWidgetGeometry().yCoord + ", zCoord: " + 0);
+//
+//		} else {
+//			xPos = (float)geometry.xCoord / (float)1920;
+//			yPos = (float)geometry.yCoord / (float)1080;
+//		}
+		//System.out.println("Parent is " + this.parent);
 
-		} else {
-			xPos = (float)geometry.xCoord / (float)1920;
-			yPos = (float)geometry.yCoord / (float)1080;
-		}
-		System.out.println("Parent is " + this.parent);
-		this.setPosition(
-				xPos, 
-				yPos,
-				this.position.z);
-
-		System.out.println("Object resized - xCoord: " + xPos + ", yCoord: " + yPos + ", zCoord: " + this.position.z);
+		//System.out.println("Object resized - xCoord: " + xPos + ", yCoord: " + yPos + ", zCoord: " + this.position.z);
 		this.geometry = geometry;
 		
 	}
 
 	@Override
 	public void resize(WidgetSize size) {
-		//TODO: Протестить, те ли вообще поля я трогаю
-		//this.setExpandGeometry((float)this.geometry.width / (float)geometry.width, (float)this.geometry.height / (float)geometry.height, 1.0f);
-		this.setExpandGeometry((float)geometry.width/ (float)1920 ,(float)geometry.height/ (float)1080  , 1.0f);
 
 		this.geometry.width = geometry.width;		
 		this.geometry.height = geometry.height;		
@@ -273,64 +256,5 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	public boolean isFocusable() {
 		return this.focusable;
 	}
-
-	@Override
-	public void init() {
-		if (mesh == null) {
-			this.loadMesh();
-		}		
-	}
-
-	@Override
-	public void release() {
-		mesh.cleanup();
-		
-	}
-
-	@Override
-	public GraphicalMesh getMesh() {
-		return mesh;
-	}
-
-	@Override
-	public void loadMesh() {
-
-    	IVertex[] vertices = new Vertex[4];
-    	int i = 0;
-    	
-    	VertexStructure vertexScruct = new VertexStructure();
-    	vertexScruct.addAttribute(new PositionAttribute());
-    	vertexScruct.addAttribute(new TexCoordAttribute());
-    	vertexScruct.setVertexCount(4);
-    	
-    	vertices[i++] = new Vertex(5).append(new Vector3f(-1.0f,  1.0f, 0.0f)).append(new Vector2f(0.0f, 0.0f)); //V1
-    	vertices[i++] = new Vertex(5).append(new Vector3f(-1.0f, -1.0f, 0.0f)).append(new Vector2f(0.0f, 1.0f)); //V2
-    	vertices[i++] = new Vertex(5).append(new Vector3f( 1.0f, -1.0f, 0.0f)).append(new Vector2f(1.0f, 1.0f)); //V3
-    	vertices[i++] = new Vertex(5).append(new Vector3f( 1.0f,  1.0f, 0.0f)).append(new Vector2f(1.0f, 0.0f)); //V4
-
-
-    	i = 0;
-    	int[] indices = new int[6]; 
-    	//FACE
-    	indices[i++] = 0;
-    	indices[i++] = 1;
-    	indices[i++] = 3;
-    	
-    	indices[i++] = 3;
-    	indices[i++] = 1;
-    	indices[i++] = 2;
-
-        mesh = new GraphicalMesh(vertices, vertexScruct, indices);
-        		
-	}
-
-
-
-
-
-
-
-
-
 
 }

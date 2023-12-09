@@ -8,7 +8,6 @@ import com.xamlo.core.engine.graphics.api.components.scene.IRenderable;
 import com.xamlo.core.engine.graphics.api.components.scene.IRotatable;
 import com.xamlo.core.engine.graphics.api.components.scene.IScalable;
 import com.xamlo.core.engine.graphics.api.components.scene.IStretchable;
-import com.xamlo.core.engine.graphics.api.gui.IColor;
 
 
 public abstract class AbstractRenderableObject implements IMovable, IRenderable, IRotatable, IScalable, IStretchable  {
@@ -53,12 +52,7 @@ public abstract class AbstractRenderableObject implements IMovable, IRenderable,
 	 * Масштаб объекта
 	 */
 	protected float scale;
-	
-	protected boolean hasBackgroundImage; //TODO: Это Variant-ом чтоли делают? почините кто знает
-	
-	protected AbstractTexture backgroundImage;
-	
-	protected IColor backgroundColor;
+
 	
 	public AbstractRenderableObject() {
 		this.position = new Vector3f(0.0f, 0.0f, 0.0f);

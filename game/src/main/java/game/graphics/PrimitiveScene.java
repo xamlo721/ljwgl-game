@@ -2,16 +2,18 @@ package game.graphics;
 
 import com.xamlo.engine.api.resources.ITextureResource;
 import com.xamlo.engine.api.resources.ResourceLoader;
+
+import game.graphics.gui.AbstractScene;
+
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import com.xamlo.core.engine.graphics.api.components.IScene;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrimitiveScene implements IScene {
+public class PrimitiveScene extends AbstractScene {
 
 	private final ResourceLoader<String> resourceLoader;
 

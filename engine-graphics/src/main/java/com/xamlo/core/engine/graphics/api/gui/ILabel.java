@@ -1,10 +1,5 @@
 package com.xamlo.core.engine.graphics.api.gui;
 
-import com.xamlo.core.engine.graphics.api.gui.IWidget;
-import com.xamlo.core.engine.graphics.api.gui.IColor;
-import com.xamlo.core.engine.graphics.api.gui.IFont;
-
-
 public interface ILabel extends IWidget {
 
     void setText(String text);
