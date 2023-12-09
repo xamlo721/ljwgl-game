@@ -20,6 +20,11 @@
             <groupId>com.xamlo.engine</groupId>
             <artifactId>engine-world</artifactId>
         </dependency>
+        <dependency>
+		    <groupId>com.github.stephengold</groupId>
+		    <artifactId>asm-all</artifactId>
+		    <version>3.1.1</version>
+		</dependency>
     </dependencies>
 
 </project>

@@ -8,12 +8,12 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 
 import com.xamlo.engine.api.devices.EnumKeyboardButtons;
 
-public class GLWFKeyBoardCallback extends GLFWKeyCallback {
+public class KeyboardButtonCallback extends GLFWKeyCallback {
 	
 	//Сомнительное решение сюда пробрасывать клавиатуру, ну ладно. может кто знает как лучше?
 	private AbstractKeyboard keyboard;
 	
-	public GLWFKeyBoardCallback(AbstractKeyboard keyboard) {
+	public KeyboardButtonCallback(AbstractKeyboard keyboard) {
 		this.keyboard = keyboard;
 	}
 
@@ -28,7 +28,7 @@ public class GLWFKeyBoardCallback extends GLFWKeyCallback {
     		}
         }
     	
-        if (action == GLFW_RELEASE){
+        if (action == GLFW_RELEASE) {
         	keyboard.keysHolding.remove(key);
         	keyboard.releasedKeys.add(key);
         }

@@ -2,9 +2,9 @@ package com.xamlo.core.engine.graphics.devices;
 
 import java.util.ArrayList;
 
-import com.xamlo.core.engine.graphics.api.devices.IKeyboard;
 import com.xamlo.core.engine.graphics.api.devices.IUpdatableDevice;
 import com.xamlo.engine.api.devices.EnumKeyboardButtons;
+import com.xamlo.engine.api.devices.IKeyboard;
 
 public abstract class AbstractKeyboard implements IKeyboard, IUpdatableDevice {
 

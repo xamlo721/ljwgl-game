@@ -69,7 +69,7 @@ public class PrimitiveScene implements IScene {
 	}
 	
 	@Override
-	public void release() {	    
+	public void unload() {	    
 		for (AbstractRenderableObject obj : items) {
 			obj.release();
 		}

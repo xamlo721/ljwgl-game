@@ -65,7 +65,7 @@ public class LJWGLWindow extends AbstractWindow {
 		 */
 		glfwSwapInterval(1);
 		
-		glfwSetFramebufferSizeCallback(LJWGLWindow.getInstance().getWindow(), new GLFWWindowCallback());
+		glfwSetFramebufferSizeCallback(LJWGLWindow.getInstance().getWindow(), new WindowCallback());
 
 	}
 

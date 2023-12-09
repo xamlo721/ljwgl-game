@@ -1,10 +1,8 @@
-package com.xamlo.core.engine.graphics.api.devices;
+package com.xamlo.engine.api.devices;
 
 import java.util.ArrayList;
 
 import org.joml.Vector2f;
-
-import com.xamlo.engine.api.devices.EnumMouseButtons;
 
 public interface IMouse {
 	

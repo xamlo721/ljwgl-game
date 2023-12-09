@@ -1,8 +1,6 @@
-package com.xamlo.core.engine.graphics.api.devices;
+package com.xamlo.engine.api.devices;
 
 import java.util.ArrayList;
-
-import com.xamlo.engine.api.devices.EnumKeyboardButtons;
 
 public interface IKeyboard {
 

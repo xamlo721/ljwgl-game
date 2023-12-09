@@ -5,7 +5,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 public class LJWGLKeyboard extends AbstractKeyboard {
 	
 	public LJWGLKeyboard() {
-		glfwSetKeyCallback(LJWGLWindow.getInstance().getWindow(), new GLWFKeyBoardCallback(this));
+		glfwSetKeyCallback(LJWGLWindow.getInstance().getWindow(), new KeyboardButtonCallback(this));
 		
 	}
 

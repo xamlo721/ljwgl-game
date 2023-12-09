@@ -37,7 +37,7 @@ public class GUIMainMenu extends AbstractGuiScene {
 		
 	    ITextureResource<String> backgroundImage = resourceLoader.loadTexture("texture.gui.mainmenu.background");
 	    ITextureResource<String> puttonsFrameImage = resourceLoader.loadTexture("texture.gui.mainmenu.column");
-	    ITextureResource<String> puttonImage = resourceLoader.loadTexture("texture.gui.mainmenu.background");
+	    ITextureResource<String> puttonImage = resourceLoader.loadTexture("texture.gui.mainmenu.column");
 
 		menuBg = new Widget();
 		menuBg.setBackgroundColor(new Color(255, 0, 0));
@@ -55,37 +55,40 @@ public class GUIMainMenu extends AbstractGuiScene {
 		menuColumn.move(new Vector3f(0.0f, 0.0f, 0.1f));
 		
 		singleplayer = new PushButton("text.gui.mainmenu.singleplayer");
+		menuColumn.addChild(singleplayer);
 		singleplayer.setBackgroundColor(new Color(255, 0, 0));
 		singleplayer.setBorder(0);
-		//singleplayer.setBackgroundImage((AbstractTexture)puttonImage);
+		singleplayer.setBackgroundImage((AbstractTexture)puttonImage);
 		singleplayer.resize(new WidgetGeometry(10, 400, 300, 40));
 		singleplayer.loadMesh();
 		
 		multiplayer = new PushButton("text.gui.mainmenu.multiplayer");
+		menuColumn.addChild(multiplayer);
+
 		multiplayer.setBackgroundColor(new Color(255, 0, 0));
 		multiplayer.setBorder(0);
-		//multiplayer.setBackgroundImage((AbstractTexture)puttonImage);
+		multiplayer.setBackgroundImage((AbstractTexture)puttonImage);
 		multiplayer.resize(new WidgetGeometry(10, 480, 300, 40));
 		multiplayer.loadMesh();
 		
 		options = new PushButton("text.gui.mainmenu.options");
+		menuColumn.addChild(options);
+
 		options.setBackgroundColor(new Color(255, 0, 0));
 		options.setBorder(0);
-		//options.setBackgroundImage((AbstractTexture)puttonImage);
+		options.setBackgroundImage((AbstractTexture)puttonImage);
 		options.resize(new WidgetGeometry(10, 560, 300, 40));
 		options.loadMesh();
 		
 		exit = new PushButton("text.gui.mainmenu.exit");
+		menuColumn.addChild(exit);
+
 		exit.setBackgroundColor(new Color(255, 0, 0));
 		exit.setBorder(0);
-		//exit.setBackgroundImage((AbstractTexture)puttonImage);
+		exit.setBackgroundImage((AbstractTexture)puttonImage);
 		exit.resize(new WidgetGeometry(10, 640, 300, 40));
 		exit.loadMesh();
 		
-		menuColumn.addChild(singleplayer);
-		menuColumn.addChild(multiplayer);
-		menuColumn.addChild(options);
-		menuColumn.addChild(exit);
 		
 		this.addWidget(menuBg);
 		
@@ -112,7 +115,7 @@ public class GUIMainMenu extends AbstractGuiScene {
 	
 
 	@Override
-	public void release() {
+	public void unload() {
 		for (AbstractRenderableObject obj : this.widgets) {
 			obj.release();
 		}		

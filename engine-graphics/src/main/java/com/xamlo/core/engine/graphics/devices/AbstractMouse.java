@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 import org.joml.Vector2f;
 
-import com.xamlo.core.engine.graphics.api.devices.IMouse;
 import com.xamlo.core.engine.graphics.api.devices.IUpdatableDevice;
 import com.xamlo.engine.api.devices.EnumMouseButtons;
+import com.xamlo.engine.api.devices.IMouse;
 
 public abstract class AbstractMouse implements IMouse, IUpdatableDevice {
 

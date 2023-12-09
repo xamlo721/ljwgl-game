@@ -22,7 +22,6 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	
 	protected WidgetGeometry geometry;
 	protected IWidget parent;
-	protected boolean hasParent;
 	protected List<IWidget> childWidgets;
 	protected boolean visible;
 	protected boolean isEnable;
@@ -38,7 +37,6 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 		
 		this.geometry = new WidgetGeometry(0, 0, 0, 0);
 		this.parent = null;
-		this.hasParent = false;
 		this.childWidgets = new ArrayList<IWidget>();
 		this.visible = true;
 		this.isEnable = true;
@@ -56,7 +54,6 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 		this.parent.addChild(this);
 		this.geometry = new WidgetGeometry(0, 0, 0, 0);
 		this.parent = null;
-		this.hasParent = false;
 		this.childWidgets = new ArrayList<IWidget>();
 		this.visible = true;
 		this.isEnable = true;
@@ -71,13 +68,13 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	
 	@Override
 	public void setParent(IWidget parent) {
-		this.hasParent = true;
+		System.out.println("############## WE SET PARENT YAY!");
 		this.parent = parent;
 	}
 
 	@Override
 	public boolean hasParent() {
-		return this.hasParent;
+		return this.parent != null;
 	}
 
 
@@ -116,19 +113,22 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 		float yPos;
 		
 		//Не получается сделать относительные координаты, какой-то говнокод
-		if(hasParent) {
+		if(this.hasParent()) {
 			xPos = ((float)this.parent.getWidgetGeometry().xCoord + (float)geometry.xCoord) / (float)1920;
 			yPos = ((float)this.parent.getWidgetGeometry().yCoord + (float)geometry.yCoord) / (float)1080;
+			System.out.println("Parent coords  - xCoord: " + this.parent.getWidgetGeometry().xCoord + ", yCoord: " + this.parent.getWidgetGeometry().yCoord + ", zCoord: " + 0);
+
 		} else {
 			xPos = (float)geometry.xCoord / (float)1920;
 			yPos = (float)geometry.yCoord / (float)1080;
 		}
-		
+		System.out.println("Parent is " + this.parent);
 		this.setPosition(
 				xPos, 
 				yPos,
 				this.position.z);
 
+		System.out.println("Object resized - xCoord: " + xPos + ", yCoord: " + yPos + ", zCoord: " + this.position.z);
 		this.geometry = geometry;
 		
 	}
@@ -171,9 +171,13 @@ public class Widget extends AbstractRenderableObject implements IWidget {
 	@Override
 	public void addChild(IWidget child) {
 		this.childWidgets.add(child);
-		if (!child.hasParent()) {
+		//if (!child.hasParent()) {
 			child.setParent(this);
-		}
+			//Тут апдейт геометрии из-за того, что при добавлении парента, координаты становятся относительными
+			//Но я думаю что это должно как-то не тут вообще обновляться
+			this.resize(this.geometry);
+		//}
+
 	}
 	
 	@Override
