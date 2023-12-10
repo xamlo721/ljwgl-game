@@ -16,7 +16,6 @@ public class Widget implements IWidget {
 	protected boolean visible;
 	protected boolean isEnable;
 	protected boolean focusable;
-	protected boolean hasBackgroundImage; //TODO: Это Variant-ом чтоли делают? почините кто знает
 	protected AbstractTexture backgroundImage;
 	protected IColor backgroundColor;
 	protected IFont font;
@@ -32,7 +31,6 @@ public class Widget implements IWidget {
 		this.visible = true;
 		this.isEnable = true;
 		this.focusable = false;
-		this.hasBackgroundImage = false;
 		this.backgroundColor = new Color(255, 255, 255);
 		this.font = new Font("Default", 12, false, false);
 		this.toolTipText = "";
@@ -49,7 +47,6 @@ public class Widget implements IWidget {
 		this.visible = true;
 		this.isEnable = true;
 		this.focusable = false;
-		this.hasBackgroundImage = false;
 		this.backgroundColor = new Color(255, 255, 255);
 		this.font = new Font("Default", 12, false, false);
 		this.toolTipText = "";
@@ -170,20 +167,16 @@ public class Widget implements IWidget {
 
 	@Override
 	public boolean hasBackgroundImage() {
-		return this.hasBackgroundImage;
+		return this.backgroundImage != null;
 	}
 	
 	@Override
 	public void setBackgroundImage(AbstractTexture image) {
 		this.backgroundImage = image;
-		this.hasBackgroundImage = true;
 	}
 
 	@Override
 	public AbstractTexture getBackgroundImage() {
-		if (!this.hasBackgroundImage) {
-			return null;
-		}
 		return this.backgroundImage;
 	}
 
