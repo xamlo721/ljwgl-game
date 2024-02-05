@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL13.GL_LINE;
 import static org.lwjgl.opengl.GL13.glPolygonMode;
 
 import org.joml.Vector2f;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import com.xamlo.core.engine.graphics.api.components.IScene;
@@ -120,7 +121,7 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 			 * type: Указывает тип значения в данных индексов. В данном случае мы используем целые числа.
 			 * indices: Задает смещение, которое необходимо применить к данным индексов для начала рендеринга.
 			 */
-			glDrawElements(GL_TRIANGLES, obj.getMesh().getNumVertices(), GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, obj.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
 			
 			//obj.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
 			//obj.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
@@ -165,10 +166,15 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 			    	vertexScruct.addAttribute(new TexCoordAttribute());
 			    	vertexScruct.setVertexCount(4);
 			    	
-			    	vertices[i++] = new Vertex(5).append(new Vector3f(-1.0f,  1.0f, 0.0f)).append(new Vector2f(0.0f, 0.0f)); //V1
-			    	vertices[i++] = new Vertex(5).append(new Vector3f(-1.0f, -1.0f, 0.0f)).append(new Vector2f(0.0f, 1.0f)); //V2
-			    	vertices[i++] = new Vertex(5).append(new Vector3f( 1.0f, -1.0f, 0.0f)).append(new Vector2f(1.0f, 1.0f)); //V3
-			    	vertices[i++] = new Vertex(5).append(new Vector3f( 1.0f,  1.0f, 0.0f)).append(new Vector2f(1.0f, 0.0f)); //V4
+			    	Vertex v1 = (Vertex) new Vertex(5).append(new Vector3f(-1.0f,  1.0f, 0.0f)).append(new Vector2f(0.0f, 0.0f)); //V1
+			    	Vertex v2 = (Vertex) new Vertex(5).append(new Vector3f(-1.0f, -1.0f, 0.0f)).append(new Vector2f(0.0f, 1.0f)); //V2
+			    	Vertex v3 = (Vertex) new Vertex(5).append(new Vector3f( 1.0f, -1.0f, 0.0f)).append(new Vector2f(1.0f, 1.0f)); //V3
+			    	Vertex v4 = (Vertex) new Vertex(5).append(new Vector3f( 1.0f,  1.0f, 0.0f)).append(new Vector2f(1.0f, 0.0f)); //V4
+			    	
+			    	vertices[i++] = v1;
+			    	vertices[i++] = v2;
+			    	vertices[i++] = v3;
+			    	vertices[i++] = v4;
 
 
 			    	i = 0;
@@ -192,38 +198,82 @@ public class DefaultSceneRenderer implements ISceneRenderer {
 			//this.setExpandGeometry((float)geometry.width/ (float)1920 ,(float)geometry.height/ (float)1080  , 1.0f);
 
 			WidgetGeometry geometry = obj.getWidgetGeometry();
+			System.out.println("																				");
+			System.out.println("rendering UIElement :" + obj);
+			System.out.println("UIElement wight" + this + ". coords:  width [" + geometry.getXCoord() + ", " + (geometry.getWidth() + geometry.getXCoord()) + "]" );
+			System.out.println("UIElement height" + this + ". coords:  height [" + geometry.getYCoord() + ", " + (geometry.getHeight() + geometry.getYCoord()) + "]" );
+
+			
+			
+
+			
+			final float screenWidght = 1920.0f *2;
+			final float screenheight = 1080.0f *2;
+			
+			//Координты начала отрисовки объекта
+			float localScreenXCoord = ((float) geometry.getXCoord()) / screenWidght;
+			float localScreenYCoord = ((float) geometry.getYCoord()) / screenheight;
+			
+			
+			System.out.println("UIElement draw X position:  [" + localScreenXCoord + "]" );
+			System.out.println("UIElement draw Y position:  [" + localScreenYCoord + "]" );
+
+			uiGrapphicElement.setPosition(localScreenXCoord, localScreenYCoord, 0.0f);
+
+			float displayedWidth = (geometry.getWidth()) / screenWidght;
+			float displayedHeight= (geometry.getHeight()) / screenheight;
+			
+			System.out.println("UIElement draw width:  [" + displayedWidth + "]" );
+			System.out.println("UIElement draw height: [" + displayedHeight + "]" );
 			
 			uiGrapphicElement.setExpandGeometry(
-					(float) geometry.getWidth() / (float)1920,
-					(float) geometry.getHeight() / (float)1080,
-					1.0f
-			);
-
-			uiGrapphicElement.setPosition(geometry.getXCoord(), geometry.getyCoord(),  0.0f);
-
+					(float)  displayedWidth,
+					//0.5f,
+					(float)  displayedHeight, 
+					//0.5f,
+					1.0f );
 			
+			
+			
+//			uiGrapphicElement.scale(0.999f);
+//			uiGrapphicElement.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
+//			uiGrapphicElement.move(new Vector3f(0.0001f, 0.000f, -0.00025f));
+
 			
 			shaderProgram.setUniform("worldMatrix", uiGrapphicElement.getWorldMatrix());
 			
 			glActiveTexture(GL_TEXTURE0);
 			
+			//ERROR тут пустой почему-то
 			uiGrapphicElement.getMesh().bind();
+			
+			GraphicalMesh elementMesh = uiGrapphicElement.getMesh();
+			
+			for (Vector3d v : elementMesh.getVertices()) {
+				System.out.println("vertex [" + v.x + ". " + v.y + ". " + v.z +  " ]" );
+
+			}
+			
 			if (obj.hasBackgroundImage()) {
 				obj.getBackgroundImage().bind();
 			}
-
-
-			glDrawElements(GL_TRIANGLES, uiGrapphicElement.getMesh().getNumVertices(), GL_UNSIGNED_INT, 0);
 			
-			//obj.rotate(new Vector3f((float)Math.random(), 0.0f, ((float)Math.random())));
-			//obj.move(new Vec3f(0.0001f, 0.000f, -0.00025f));
-			//obj.scale(0.999f);
+			
+			
+			System.out.println("uiGrapphicElement wight" + this + ". coords:  width [" + uiGrapphicElement.position.x  + "]" );
+			System.out.println("uiGrapphicElement height" + this + ". coords:  height [" + uiGrapphicElement.position.y  + "]" );
+
+
+			glDrawElements(GL_TRIANGLES, uiGrapphicElement.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
+			
 		}
 		
 	    shaderProgram.unbind();
 
+
 		
 	}
+	
 
 	@Override
 	public void cleanup() {

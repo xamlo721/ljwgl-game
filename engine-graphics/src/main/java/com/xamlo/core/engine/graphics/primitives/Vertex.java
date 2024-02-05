@@ -2,6 +2,7 @@ package com.xamlo.core.engine.graphics.primitives;
 
 import java.nio.FloatBuffer;
 import org.joml.Vector2f;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryUtil;
@@ -75,6 +76,14 @@ public class Vertex implements IVertex {
 	@Override
 	public void release() {
 	    MemoryUtil.memFree(vertexData);
+	}
+
+	@Override
+	public Vector3d getNormalVector() {
+		float x = vertexData.get(0);
+		float y = vertexData.get(1);
+		float z = vertexData.get(2);
+		return new Vector3d(x, y, z);
 	}
 	
 }
