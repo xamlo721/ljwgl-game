@@ -170,12 +170,14 @@ public abstract class AbstractRenderableObject implements IMovable, IRenderable,
 	 * @return Матрица преобразования объекта в мировые координаты
 	 */
     public Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, float scale) {
-        worldMatrix.identity().translate(offset)
-        		.rotateX((float)Math.toRadians(rotation.x))
-                .rotateY((float)Math.toRadians(rotation.y))
-                .rotateZ((float)Math.toRadians(rotation.z))
-                .scale(scale)
-	            .scale(geometryDeformation);
+        worldMatrix
+        		//Получить единичную матрицу
+		        //.identity()
+		        .translate(offset)
+        		//.rotateX((float)Math.toRadians(rotation.x))
+                //.rotateY((float)Math.toRadians(rotation.y))
+                //.rotateZ((float)Math.toRadians(rotation.z))
+                .scale(geometryDeformation.mul(scale));
         return worldMatrix;
     }
     
@@ -186,20 +188,22 @@ public abstract class AbstractRenderableObject implements IMovable, IRenderable,
 	 * @return Матрица преобразования объекта в мировые координаты
 	 */
     public Matrix4f getWorldMatrix() {
-        worldMatrix.identity().translate(position)
-                .rotateX((float)Math.toRadians(rotation.x))
-                .rotateY((float)Math.toRadians(rotation.y))
-                .rotateZ((float)Math.toRadians(rotation.z))
-                .scale(scale)
-	            .scale(geometryDeformation);
-        //System.out.println("geometryDef: " + geometryDeformation);
-        System.out.println("position: " + position);
+        worldMatrix
+		        .identity()
+		        .translate(position)
+                .scale(geometryDeformation.mul(scale));
+
+        //.rotateX((float)Math.toRadians(rotation.x))
+        //.rotateY((float)Math.toRadians(rotation.y))
+        //.rotateZ((float)Math.toRadians(rotation.z))
+        System.out.println("[MATRIX] geometryDef: " + geometryDeformation);
+        System.out.println("[MATRIX] position: " + position);
         
-//		System.out.println("updating world matrix for rot" + this.rotation.X + ", " + this.rotation.Y + ", " + this.rotation.Z);
-//		System.out.println("{" + worldMatrix.m00() + ", " + worldMatrix.m01() + ", " + worldMatrix.m02() + ", " + worldMatrix.m03() + "}");
-//		System.out.println("{" + worldMatrix.m10() + ", " + worldMatrix.m11() + ", " + worldMatrix.m12() + ", " + worldMatrix.m13() + "}");
-//		System.out.println("{" + worldMatrix.m20() + ", " + worldMatrix.m21() + ", " + worldMatrix.m22() + ", " + worldMatrix.m23() + "}");
-//		System.out.println("{" + worldMatrix.m30() + ", " + worldMatrix.m31() + ", " + worldMatrix.m32() + ", " + worldMatrix.m33() + "}");
+		System.out.println("[MATRIX] updating world matrix for rot" + this.rotation.x + ", " + this.rotation.y + ", " + this.rotation.z);
+		System.out.println("[MATRIX] {" + worldMatrix.m00() + ", " + worldMatrix.m01() + ", " + worldMatrix.m02() + ", " + worldMatrix.m03() + "}");
+		System.out.println("[MATRIX] {" + worldMatrix.m10() + ", " + worldMatrix.m11() + ", " + worldMatrix.m12() + ", " + worldMatrix.m13() + "}");
+		System.out.println("[MATRIX] {" + worldMatrix.m20() + ", " + worldMatrix.m21() + ", " + worldMatrix.m22() + ", " + worldMatrix.m23() + "}");
+		System.out.println("[MATRIX] {" + worldMatrix.m30() + ", " + worldMatrix.m31() + ", " + worldMatrix.m32() + ", " + worldMatrix.m33() + "}");
 
         return worldMatrix;
     }

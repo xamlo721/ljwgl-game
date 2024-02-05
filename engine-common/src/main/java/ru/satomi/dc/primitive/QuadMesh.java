@@ -2,16 +2,6 @@ package ru.satomi.dc.primitive;
 
 import java.util.ArrayList;
  
-/**
- * 
- * ����� ������ � ���� ���������� ��������� ������������ 4-� �������
- * ������ � ���� ������ �����
- * 
- * ��������� ������ � ���� 4 ������� ����� � ������� ���� ����� Mesh
- * 
- * 
- *
- */
 
 public class QuadMesh extends PhysicalMesh {
 		
@@ -23,7 +13,7 @@ public class QuadMesh extends PhysicalMesh {
 		super(vertexNumber);
 		
 		faces = new ArrayList<Face4i>();
-		degree = new int[verticesCount];
+		degree = new int[vertexCount];
 		
 	}
 	

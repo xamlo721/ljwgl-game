@@ -2,6 +2,7 @@ package com.xamlo.core.engine.graphics.components;
 
 import java.nio.FloatBuffer;
 
+import org.joml.Vector3d;
 import org.lwjgl.system.MemoryUtil;
 
 import com.xamlo.core.engine.graphics.api.primitives.IVertex;
@@ -28,12 +29,14 @@ public class GraphicalMesh extends PhysicalMesh {
     }
     
     public GraphicalMesh(IVertex[] vertices, IVertexStructure structure, int[] indices) {
-    	super(vertices.length);
+    	super(0);
 
 		System.out.println("Register Mesh VertexCount: " + structure.getVertexCount() + ". VertexSize " + structure.getVertexSize());
 		
 	    FloatBuffer vertexData = MemoryUtil.memAllocFloat(structure.getVertexCount() * structure.getVertexSize());
 	    for (IVertex v : vertices) {
+	    	//ERROR
+	    	super.vertexs.add(new Vector3d());
 		    vertexData.put(v.getVertexData());
 		    v.release();
 	    }
@@ -47,7 +50,7 @@ public class GraphicalMesh extends PhysicalMesh {
 		 * Чистим за собой память. Она НЕ почистится gc, так как расположена не на стеке
 		 */
 	    MemoryUtil.memFree(vertexData);
-    	this.verticesCount = indices.length;
+    	this.vertexCount = indices.length;
     }
     
     public GraphicalMesh(Vertex[] vertices, VertexStructure structure,  int[] indices, Texture texture) {
@@ -70,7 +73,7 @@ public class GraphicalMesh extends PhysicalMesh {
     }
 
     public int getNumVertices() {
-        return this.verticesCount;
+        return this.vertexCount;
     }
 
 }
