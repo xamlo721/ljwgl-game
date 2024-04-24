@@ -1,3 +1,6 @@
 [submodule "engine-common"]
 	path = engine-common
 	url = https://github.com/xamlo721/engine-common.git
+[submodule "engine-graphics"]
+	path = engine-graphics
+	url = https://github.com/xamlo721/engine-graphics.git
