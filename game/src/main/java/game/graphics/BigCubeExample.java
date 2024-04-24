@@ -51,15 +51,15 @@ public class BigCubeExample extends AbstractRenderableObject {
 	
 		
     	int i = 0;
-    	Vertex[] vertices = new Vertex[triangles.vertexs.size()];
+    	Vertex[] vertices = new Vertex[triangles.getVertices().size()];
     	int[] indices = new int[triangles.faces.length * 3]; 
 
     	VertexStructure vertexScruct = new VertexStructure();
     	vertexScruct.addAttribute(new PositionAttribute());
     	vertexScruct.addAttribute(new ColorAttribute());
-    	vertexScruct.setVertexCount(triangles.vertexs.size());
+    	vertexScruct.setVertexCount(triangles.getVertices().size());
     	
-    	for (Vector3d point : triangles.vertexs) {
+    	for (Vector3d point : triangles.getVertices()) {
     		vertices[i] = new Vertex(6);
     		vertices[i].append(new Vector3f((float)point.x, (float)point.y, (float)point.z));
     		vertices[i].append(new Vector3f((float)Math.random(),  (float)Math.random(), (float)Math.random()));

@@ -56,8 +56,10 @@ public class Widget implements IWidget {
 	
 	@Override
 	public void setParent(IWidget parent) {
-		System.out.println("############## WE SET PARENT YAY!");
 		this.parent = parent;
+		if (geometry != null) {
+			this.resize(this.geometry);
+		}
 	}
 
 	@Override
@@ -93,25 +95,13 @@ public class Widget implements IWidget {
 
 	@Override
 	public void resize(WidgetGeometry geometry) {
-		//TODO: Протестить, те ли вообще поля я трогаю
-		//this.setExpandGeometry((float)this.geometry.width / (float)geometry.width, (float)this.geometry.height / (float)geometry.height, 1.0f);
 
-//		float xPos;
-//		float yPos;
-//		
-//		//Не получается сделать относительные координаты, какой-то говнокод
-//		if(this.hasParent()) {
-//			xPos = ((float)this.parent.getWidgetGeometry().xCoord + (float)geometry.xCoord) / (float)1920;
-//			yPos = ((float)this.parent.getWidgetGeometry().yCoord + (float)geometry.yCoord) / (float)1080;
-//			System.out.println("Parent coords  - xCoord: " + this.parent.getWidgetGeometry().xCoord + ", yCoord: " + this.parent.getWidgetGeometry().yCoord + ", zCoord: " + 0);
-//
-//		} else {
-//			xPos = (float)geometry.xCoord / (float)1920;
-//			yPos = (float)geometry.yCoord / (float)1080;
-//		}
-		//System.out.println("Parent is " + this.parent);
+		if (hasParent()) {
+			geometry.xCoord += parent.getWidgetGeometry().xCoord;
+			geometry.yCoord += parent.getWidgetGeometry().yCoord;
 
-		//System.out.println("Object resized - xCoord: " + xPos + ", yCoord: " + yPos + ", zCoord: " + this.position.z);
+		}
+		
 		this.geometry = geometry;
 		
 	}

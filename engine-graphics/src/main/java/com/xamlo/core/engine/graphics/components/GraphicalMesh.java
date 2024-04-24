@@ -23,8 +23,8 @@ public class GraphicalMesh extends PhysicalMesh {
     
     public GraphicalMesh(Vertex[] vertices) {
     	super(vertices.length);
-//    	vao = new VertexArrayObject(vertices);
-//    	vao.allocMemory(0);
+    	//vao = new VertexArrayObject(vertices);
+    	//vao.allocMemory(0);
     }
     
     public GraphicalMesh(IVertex[] vertices, IVertexStructure structure, int[] indices) {
@@ -35,10 +35,9 @@ public class GraphicalMesh extends PhysicalMesh {
 	    FloatBuffer vertexData = MemoryUtil.memAllocFloat(structure.getVertexCount() * structure.getVertexSize());
 	    
 	    for (IVertex v : vertices) {
-	    	//ERROR
 	    	super.vertexs.add(v.getNormalVector());
 		    vertexData.put(v.getVertexData());
-		    v.release();
+		    //v.release();
 	    }
 		vertexData.flip();
 
@@ -55,9 +54,12 @@ public class GraphicalMesh extends PhysicalMesh {
     
     public GraphicalMesh(Vertex[] vertices, VertexStructure structure,  int[] indices, Texture texture) {
     	this(vertices, structure, indices);
-//    	vao = new VertexArrayObject(vertices, indices, texture);
-//    	vao.allocMemory(0);
-//        this.verticesCount = indices.length;
+    	
+    	//TODO: Перенести сюда работу с текстурами из AbstractRenderableObject
+    	
+    	//vao = new VertexArrayObject(vertices, indices, texture);
+     	//vao.allocMemory(0);
+        //this.verticesCount = indices.length;
     }
     
     public void bind() {

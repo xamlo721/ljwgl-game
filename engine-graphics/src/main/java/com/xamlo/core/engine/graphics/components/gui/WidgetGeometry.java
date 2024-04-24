@@ -15,7 +15,7 @@ public class WidgetGeometry extends WidgetSize {
 		return this.xCoord;
 	}
 	
-	public int getyCoord() {
+	public int getYCoord() {
 		return this.yCoord;
 	}
 	

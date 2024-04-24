@@ -36,12 +36,12 @@ public class GUIMainMenu extends AbstractScene {
 		menuBg.setBorder(0);
 		menuBg.setBackgroundImage((AbstractTexture)backgroundImage);
 		menuBg.resize(new WidgetGeometry(0, 0, 1920, 1080));
-		
+			
 		menuColumn = new Widget(menuBg);
 		menuColumn.setBackgroundColor(new Color(255, 0, 0));
 		menuColumn.setBorder(0);
 		menuColumn.setBackgroundImage((AbstractTexture)puttonsFrameImage);
-		menuColumn.resize(new WidgetGeometry(40, 0, 340, 1080));
+		menuColumn.resize(new WidgetGeometry(100, 0, 340, 1080));
 		
 		singleplayer = new PushButton("text.gui.mainmenu.singleplayer");
 		menuColumn.addChild(singleplayer);

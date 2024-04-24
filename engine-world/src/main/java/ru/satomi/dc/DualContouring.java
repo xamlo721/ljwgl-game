@@ -96,10 +96,10 @@ public class DualContouring {
 						mesh.degree[i3]++;
 						mesh.degree[i4]++;
 			            
-						mesh.vertexs.get(i1).add(redPoint);
-						mesh.vertexs.get(i2).add(redPoint);
-						mesh.vertexs.get(i3).add(redPoint);
-						mesh.vertexs.get(i4).add(redPoint);
+						mesh.getVertices().get(i1).add(redPoint);
+						mesh.getVertices().get(i2).add(redPoint);
+						mesh.getVertices().get(i3).add(redPoint);
+						mesh.getVertices().get(i4).add(redPoint);
 
 				    }
 				}
@@ -159,10 +159,10 @@ public class DualContouring {
 						mesh.degree[i3]++;
 						mesh.degree[i4]++;
 			            
-						mesh.vertexs.get(i1).add(redPoint);
-						mesh.vertexs.get(i2).add(redPoint);
-						mesh.vertexs.get(i3).add(redPoint);
-						mesh.vertexs.get(i4).add(redPoint);
+						mesh.getVertices().get(i1).add(redPoint);
+						mesh.getVertices().get(i2).add(redPoint);
+						mesh.getVertices().get(i3).add(redPoint);
+						mesh.getVertices().get(i4).add(redPoint);
 				    }
 				}
 		    }
@@ -223,17 +223,17 @@ public class DualContouring {
 						mesh.degree[i3]++;
 						mesh.degree[i4]++;
 			            
-						mesh.vertexs.get(i1).add(redPoint);
-						mesh.vertexs.get(i2).add(redPoint);
-						mesh.vertexs.get(i3).add(redPoint);
-						mesh.vertexs.get(i4).add(redPoint);
+						mesh.getVertices().get(i1).add(redPoint);
+						mesh.getVertices().get(i2).add(redPoint);
+						mesh.getVertices().get(i3).add(redPoint);
+						mesh.getVertices().get(i4).add(redPoint);
 				    }
 				}
 		    }
 		}
 		
 		//������� ���������
-		for(int i=0; i < mesh.vertexs.size(); i++) {
+		for(int i=0; i < mesh.getVertices().size(); i++) {
 			
 		    if(mesh.degree[i] == 0) {
 		    	continue;
@@ -242,9 +242,9 @@ public class DualContouring {
 		    double ideg = 1.0f/mesh.degree[i];
 		    
 		    //centroid of edge points
-		    mesh.vertexs.get(i).x *= ideg;
-		    mesh.vertexs.get(i).y *= ideg;
-		    mesh.vertexs.get(i).z *= ideg;
+		    mesh.getVertices().get(i).x *= ideg;
+		    mesh.getVertices().get(i).y *= ideg;
+		    mesh.getVertices().get(i).z *= ideg;
 		
 		}
 		
@@ -275,8 +275,8 @@ public class DualContouring {
 		    double min1, min2;
 		    
 		    //cut along (i1,i3)
-		    double a1 = DCUtils.angle(mesh.vertexs.get(i1), mesh.vertexs.get(i2), mesh.vertexs.get(i3));
-		    double a2 = DCUtils.angle(mesh.vertexs.get(i3), mesh.vertexs.get(i4), mesh.vertexs.get(i1));
+		    double a1 = DCUtils.angle(mesh.getVertices().get(i1), mesh.getVertices().get(i2), mesh.getVertices().get(i3));
+		    double a2 = DCUtils.angle(mesh.getVertices().get(i3), mesh.getVertices().get(i4), mesh.getVertices().get(i1));
 		    
 		    if(a1 < a2) {
 		    	min1 = a1;
@@ -285,8 +285,8 @@ public class DualContouring {
 		    }
 		    
 		    //cut along (i2,i3)
-		    a1 = DCUtils.angle(mesh.vertexs.get(i1), mesh.vertexs.get(i2), mesh.vertexs.get(i4));
-		    a2 = DCUtils.angle(mesh.vertexs.get(i3), mesh.vertexs.get(i4), mesh.vertexs.get(i2));
+		    a1 = DCUtils.angle(mesh.getVertices().get(i1), mesh.getVertices().get(i2), mesh.getVertices().get(i4));
+		    a2 = DCUtils.angle(mesh.getVertices().get(i3), mesh.getVertices().get(i4), mesh.getVertices().get(i2));
 		    
 		    if(a1 < a2) {
 		    	min2 = a1;
@@ -310,11 +310,11 @@ public class DualContouring {
 		fN *= 2;
 	
 		// creates a mesh of triangles for output: ply2, povray, stl
-		TriandgleMesh t_mesh = new TriandgleMesh(mesh.verticesCount);
+		TriandgleMesh t_mesh = new TriandgleMesh(mesh.getVertexCount());
 		t_mesh.setFaceN(fN);
 		
-		for(i=0;i<mesh.verticesCount;i++){
-		    t_mesh.vertexs.add(i, mesh.vertexs.get(i));
+		for(i=0;i<mesh.getVertexCount();i++){
+		    t_mesh.getVertices().add(i, mesh.getVertices().get(i));
 		}
 		
 		for(i=0;i<fN;i++){
