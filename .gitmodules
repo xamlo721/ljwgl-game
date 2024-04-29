@@ -7,3 +7,6 @@
 [submodule "engine-world"]
 	path = engine-world
 	url = https://github.com/xamlo721/engine-world.git
+[submodule "engine"]
+	path = engine
+	url = https://github.com/xamlo721/engine.git
