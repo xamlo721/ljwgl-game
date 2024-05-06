@@ -11,8 +11,6 @@ import com.xamlo.core.engine.graphics.components.attribs.TexCoordAttribute;
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexStructure;
 
-import java.net.URI;
-
 public class CubeExample extends AbstractModel {
 
 	/**
@@ -107,6 +105,7 @@ public class CubeExample extends AbstractModel {
 	@Override
 	public void init() {
 		if (mesh == null) {
+			super.init();
 			this.loadMesh();
 		}
 
