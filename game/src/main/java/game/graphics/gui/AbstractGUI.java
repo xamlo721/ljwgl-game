@@ -2,16 +2,17 @@ package game.graphics.gui;
 
 import java.util.List;
 
-import com.xamlo.core.engine.graphics.api.gui.IWidget;
+import com.xamlo.core.engine.graphics.api.gui.IGraphicUserInterface;
+import com.xamlo.core.engine.graphics.api.gui.IUIElement;
 
 public abstract class AbstractGUI implements IGraphicUserInterface {
 
     protected int guiID;
-    protected List<IWidget> guiElements;
+    protected List<IUIElement> guiElements;
 
-	abstract void addWidget(IWidget widget);
+	abstract void addElement(IUIElement widget);
 	
-	abstract void removeWidget(IWidget widget);
+	abstract void removeElement(IUIElement widget);
 	
 	@Override
 	public int getGUIID() {
@@ -19,10 +20,8 @@ public abstract class AbstractGUI implements IGraphicUserInterface {
 	}
 	
 	@Override
-	public List<IWidget> getGuiElements() {
+	public List<IUIElement> getGuiElements() {
 		return guiElements;
 	}
-
 	
 }
-	
