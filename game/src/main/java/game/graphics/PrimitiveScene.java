@@ -1,13 +1,14 @@
 package game.graphics;
 
 import com.xamlo.engine.api.resources.ITextureResource;
-import com.xamlo.engine.api.resources.ResourceLoader;
+import com.xamlo.engine.api.resources.IResourceLoader;
 
 import game.graphics.gui.AbstractScene;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import com.xamlo.core.engine.graphics.api.gui.AbstractSceneElement;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 
 import java.util.ArrayList;
@@ -15,14 +16,14 @@ import java.util.List;
 
 public class PrimitiveScene extends AbstractScene {
 
-	private final ResourceLoader<String> resourceLoader;
+	private final IResourceLoader<String> resourceLoader;
 
-    private List<AbstractRenderableObject> items;
+    private List<AbstractSceneElement> items;
 
     private Matrix4f projectionMatrix;
     private ITextureResource<String> smile;
 
-	public PrimitiveScene(ResourceLoader<String> resourceLoader) {
+	public PrimitiveScene(IResourceLoader<String> resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
 
@@ -35,8 +36,8 @@ public class PrimitiveScene extends AbstractScene {
 	public void load() {
 		smile = resourceLoader.loadTexture("texture.example.smile");
 		smile.bind();
-		items = new ArrayList<AbstractRenderableObject>();
-		for (int i = 0; i < 5; i++) {
+		items = new ArrayList<AbstractSceneElement>();
+		for (int i = 0; i < 0; i++) {
 			CubeExample cube = new CubeExample();
 			cube.init();
 			cube.setPosition(new Vector3f(
@@ -66,7 +67,7 @@ public class PrimitiveScene extends AbstractScene {
 	}
 
 	@Override
-	public List<AbstractRenderableObject> getRenderableObject() {
+	public List<AbstractSceneElement> getRenderableObject() {
 		return this.items;
 	}
 	

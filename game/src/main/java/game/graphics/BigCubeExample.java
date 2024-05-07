@@ -5,7 +5,7 @@ import org.joml.Vector3f;
 
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexStructure;
-import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
+import com.xamlo.core.engine.graphics.api.gui.AbstractSceneElement;
 import com.xamlo.core.engine.graphics.components.GraphicalMesh;
 import com.xamlo.core.engine.graphics.components.attribs.ColorAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
@@ -16,7 +16,7 @@ import ru.satomi.dc.primitive.Face3i;
 import ru.satomi.dc.primitive.QuadMesh;
 import ru.satomi.dc.primitive.TriandgleMesh;
 
-public class BigCubeExample extends AbstractRenderableObject {
+public class BigCubeExample extends AbstractSceneElement {
 	
 	/**
 	 * Сетка точек, описывающая объект
@@ -30,6 +30,7 @@ public class BigCubeExample extends AbstractRenderableObject {
 	@Override
 	public void init() {
 		if (mesh == null) {
+			super.init();
 			this.loadMesh();
 		}		
 	}
