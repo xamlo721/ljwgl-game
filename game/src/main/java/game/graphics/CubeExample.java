@@ -3,15 +3,15 @@ package game.graphics;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import com.xamlo.core.engine.graphics.api.primitives.IVertex;
-import com.xamlo.core.engine.graphics.components.AbstractModel;
+import com.xamlo.core.engine.graphics.api.gui.AbstractSceneElement;
 import com.xamlo.core.engine.graphics.components.GraphicalMesh;
 import com.xamlo.core.engine.graphics.components.attribs.PositionAttribute;
 import com.xamlo.core.engine.graphics.components.attribs.TexCoordAttribute;
 import com.xamlo.core.engine.graphics.primitives.Vertex;
 import com.xamlo.core.engine.graphics.primitives.VertexStructure;
+import com.xamlo.engine.api.resources.IVertex;
 
-public class CubeExample extends AbstractModel {
+public class CubeExample extends AbstractSceneElement {
 
 	/**
 	 * Сетка точек, описывающая объект
@@ -20,7 +20,7 @@ public class CubeExample extends AbstractModel {
 
 	
 	public CubeExample() {
-		super("empty");
+		super();
 	}
 	
 	@Override
@@ -105,7 +105,7 @@ public class CubeExample extends AbstractModel {
 	@Override
 	public void init() {
 		if (mesh == null) {
-			super.init();
+			//super.init();
 			this.loadMesh();
 		}
 
