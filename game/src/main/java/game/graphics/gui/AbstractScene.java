@@ -15,8 +15,8 @@ import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 
 public abstract class AbstractScene extends AbstractGUI implements IScene {
 
-	private List<AbstractSceneElement> objects;
-    private Matrix4f projectionMatrix;
+	protected List<AbstractSceneElement> objects;
+	protected Matrix4f projectionMatrix;
     
 
     
@@ -51,7 +51,7 @@ public abstract class AbstractScene extends AbstractGUI implements IScene {
 	}
 
 	@Override
-	public void tranformScene(Matrix4f transformMatrix) {
+	public void setProjectionMatrix(Matrix4f transformMatrix) {
 		this.projectionMatrix = transformMatrix;
 	}
 
