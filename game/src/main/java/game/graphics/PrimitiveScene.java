@@ -5,7 +5,6 @@ import com.xamlo.engine.api.resources.IResourceLoader;
 
 import game.graphics.gui.AbstractScene;
 
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import com.xamlo.core.engine.graphics.api.gui.AbstractSceneElement;
@@ -20,17 +19,12 @@ public class PrimitiveScene extends AbstractScene {
 
     private List<AbstractSceneElement> items;
 
-    private Matrix4f projectionMatrix;
     private ITextureResource<String> smile;
 
 	public PrimitiveScene(IResourceLoader<String> resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
 
-	@Override
-    public void tranformScene(Matrix4f transformMatrix) {
-    	this.projectionMatrix = transformMatrix;
-    }
 
 	@Override
 	public void load() {
@@ -78,10 +72,7 @@ public class PrimitiveScene extends AbstractScene {
 		}
 	}
 
-	@Override
-	public Matrix4f getProjectionMatrix() {
-		return projectionMatrix;
-	}
+
 	
 
 }
