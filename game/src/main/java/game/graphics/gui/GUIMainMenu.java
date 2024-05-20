@@ -33,27 +33,27 @@ public class GUIMainMenu extends AbstractScene {
 	public void load() {
 		
 	    ITextureResource<String> backgroundImage = resourceLoader.loadTexture("texture.gui.mainmenu.background");
-	    ITextureResource<String> puttonsFrameImage = resourceLoader.loadTexture("texture.gui.mainmenu.column");
 	    ITextureResource<String> puttonImage = resourceLoader.loadTexture("texture.gui.mainmenu.column");
 
 		menuBg = new Widget();
 		menuBg.setBackgroundColor(new Color(255, 0, 0));
 		menuBg.setBackgroundImage((AbstractTexture)backgroundImage);
+		menuBg.setBackgroundColor(new Color(0,0,0, 128));
 		menuBg.resize(new UIElementGeometry(0, 0, 1920, 1080));
 		menuBg.setWidgetName("main_bg.widget");
 		
 		menuColumn = new Widget(menuBg);
-		menuColumn.setBackgroundColor(new Color(255, 0, 0));
-		menuColumn.setBackgroundImage((AbstractTexture)puttonsFrameImage);
+		menuColumn.setBackgroundColor(new Color(255, 255, 255, 96));
 		menuColumn.resize(new UIElementGeometry(200, 0, 340, 1080));
 		menuColumn.setWidgetName("main_menu_column.widget");
-		
+		menuColumn.setBackgroundColor(new Color(0,0,5, 128));
+
 		singleplayer = new PushButton("text.gui.mainmenu.singleplayer");
 		menuColumn.addChild(singleplayer);
-		singleplayer.setBackgroundColor(new Color(255, 0, 0));
-		singleplayer.setHoverColor(new Color(205, 10, 0));
+		singleplayer.setBackgroundColor(new Color(255, 255, 255, 96));
 		singleplayer.setBackgroundImage((AbstractTexture)puttonImage);
-		singleplayer.resize(new UIElementGeometry(10, 180, 300, 40));
+		singleplayer.setHoverColor(new Color(255, 255, 255, 192));
+		singleplayer.resize(new UIElementGeometry(20, 180, 300, 40));
 		singleplayer.setWidgetName("singleplayer.button");
 		singleplayer.setClickListener(new IClickListener() {
 			
@@ -66,10 +66,10 @@ public class GUIMainMenu extends AbstractScene {
 		multiplayer = new PushButton("text.gui.mainmenu.multiplayer");
 		menuColumn.addChild(multiplayer);
 
-		multiplayer.setBackgroundColor(new Color(255, 0, 0));
-		multiplayer.setHoverColor(new Color(205, 10, 0));
+		multiplayer.setBackgroundColor(new Color(255, 255, 255, 96));
+		multiplayer.setHoverColor(new Color(255, 255, 255, 192));
 		multiplayer.setBackgroundImage((AbstractTexture)puttonImage);
-		multiplayer.resize(new UIElementGeometry(10, 280, 300, 40));
+		multiplayer.resize(new UIElementGeometry(20, 280, 300, 40));
 		multiplayer.setWidgetName("multiplayer.button");
 		multiplayer.setClickListener(new IClickListener() {
 			
@@ -82,10 +82,10 @@ public class GUIMainMenu extends AbstractScene {
 		options = new PushButton("text.gui.mainmenu.options");
 		menuColumn.addChild(options);
 
-		options.setBackgroundColor(new Color(255, 0, 0));
-		options.setHoverColor(new Color(205, 10, 0));
+		options.setBackgroundColor(new Color(255, 255, 255, 96));
+		options.setHoverColor(new Color(255, 255, 255, 192));
 		options.setBackgroundImage((AbstractTexture)puttonImage);
-		options.resize(new UIElementGeometry(10, 360, 300, 40));
+		options.resize(new UIElementGeometry(20, 360, 300, 40));
 		options.setWidgetName("options.button");
 		options.setClickListener(new IClickListener() {
 			
@@ -98,10 +98,10 @@ public class GUIMainMenu extends AbstractScene {
 		exit = new PushButton("text.gui.mainmenu.exit");
 		menuColumn.addChild(exit);
 
-		exit.setBackgroundColor(new Color(255, 0, 0));
-		exit.setHoverColor(new Color(205, 10, 0));
+		exit.setBackgroundColor(new Color(255, 255, 255, 96));
+		exit.setHoverColor(new Color(255, 255, 255, 192));
 		exit.setBackgroundImage((AbstractTexture)puttonImage);
-		exit.resize(new UIElementGeometry(10, 440, 300, 40));
+		exit.resize(new UIElementGeometry(20, 440, 300, 40));
 		exit.setWidgetName("exit.button");
 		exit.setClickListener(new IClickListener() {
 			
