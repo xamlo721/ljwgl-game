@@ -2,7 +2,7 @@ package game;
 
 import com.xamlo.core.engine.graphics.api.components.ICamera;
 import com.xamlo.core.engine.graphics.components.DefaultSceneController;
-import com.xamlo.core.engine.graphics.components.DefaultSceneRenderer;
+import com.xamlo.core.engine.graphics.renderers.DefaultSceneRenderer;
 import com.xamlo.engine.api.resources.IResourceLoader;
 import com.xamlo.engine.resource.SimpleResourceLoader;
 import com.xamlo.engine.resources.ResourceLoader;

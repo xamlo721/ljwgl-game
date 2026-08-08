@@ -11,7 +11,7 @@ import com.xamlo.core.engine.graphics.components.gui.PushButton;
 import com.xamlo.core.engine.graphics.components.gui.Widget;
 import com.xamlo.core.engine.graphics.components.gui.UIElementGeometry;
 import com.xamlo.engine.api.resources.ITextureResource;
-
+import com.xamlo.engine.api.resources.IFontResource;
 import com.xamlo.engine.api.resources.IResourceLoader;
 
 public class GUIMainMenu extends AbstractScene {
@@ -34,6 +34,7 @@ public class GUIMainMenu extends AbstractScene {
 		
 	    ITextureResource<String> backgroundImage = resourceLoader.loadTexture("texture.gui.mainmenu.background");
 	    ITextureResource<String> puttonImage = resourceLoader.loadTexture("texture.gui.mainmenu.column");
+	    IFontResource<String> font = resourceLoader.loadFont("font.gui.mainmenu.roboto.bold");
 
 		menuBg = new Widget();
 		menuBg.setBackgroundColor(new Color(255, 0, 0));
