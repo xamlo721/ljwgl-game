@@ -7,6 +7,9 @@ import com.xamlo.core.engine.graphics.api.gui.elements.IWidget;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 import com.xamlo.core.engine.graphics.components.AbstractTexture;
 import com.xamlo.core.engine.graphics.components.gui.Color;
+import com.xamlo.core.engine.graphics.components.gui.FontResource;
+import com.xamlo.core.engine.graphics.font.ApplicationFont;
+import com.xamlo.core.engine.graphics.fontsystem.FontSystem;
 import com.xamlo.core.engine.graphics.components.gui.PushButton;
 import com.xamlo.core.engine.graphics.components.gui.Widget;
 import com.xamlo.core.engine.graphics.components.gui.UIElementGeometry;
@@ -35,6 +38,8 @@ public class GUIMainMenu extends AbstractScene {
 	    ITextureResource<String> backgroundImage = resourceLoader.loadTexture("texture.gui.mainmenu.background");
 	    ITextureResource<String> puttonImage = resourceLoader.loadTexture("texture.gui.mainmenu.column");
 	    IFontResource<String> font = resourceLoader.loadFont("font.gui.mainmenu.roboto.bold");
+        ApplicationFont menuFontKey = new ApplicationFont("Roboto", 24, true, false);
+        FontSystem.getInstance().attach(menuFontKey, ((FontResource) font).getGlyphFont());
 
 		menuBg = new Widget();
 		menuBg.setBackgroundColor(new Color(255, 0, 0));
@@ -55,6 +60,7 @@ public class GUIMainMenu extends AbstractScene {
 		singleplayer.setBackgroundImage((AbstractTexture)puttonImage);
 		singleplayer.setHoverColor(new Color(255, 255, 255, 192));
 		singleplayer.resize(new UIElementGeometry(20, 180, 300, 40));
+		singleplayer.setFont(menuFontKey);
 		singleplayer.setWidgetName("singleplayer.button");
 		singleplayer.setClickListener(new IClickListener() {
 			
@@ -71,6 +77,7 @@ public class GUIMainMenu extends AbstractScene {
 		multiplayer.setHoverColor(new Color(255, 255, 255, 192));
 		multiplayer.setBackgroundImage((AbstractTexture)puttonImage);
 		multiplayer.resize(new UIElementGeometry(20, 280, 300, 40));
+		multiplayer.setFont(menuFontKey);
 		multiplayer.setWidgetName("multiplayer.button");
 		multiplayer.setClickListener(new IClickListener() {
 			
@@ -87,6 +94,7 @@ public class GUIMainMenu extends AbstractScene {
 		options.setHoverColor(new Color(255, 255, 255, 192));
 		options.setBackgroundImage((AbstractTexture)puttonImage);
 		options.resize(new UIElementGeometry(20, 360, 300, 40));
+		options.setFont(menuFontKey);
 		options.setWidgetName("options.button");
 		options.setClickListener(new IClickListener() {
 			
@@ -103,6 +111,7 @@ public class GUIMainMenu extends AbstractScene {
 		exit.setHoverColor(new Color(255, 255, 255, 192));
 		exit.setBackgroundImage((AbstractTexture)puttonImage);
 		exit.resize(new UIElementGeometry(20, 440, 300, 40));
+		exit.setFont(menuFontKey);
 		exit.setWidgetName("exit.button");
 		exit.setClickListener(new IClickListener() {
 			
