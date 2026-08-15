@@ -66,7 +66,6 @@ public class GUIMainMenu extends AbstractScene {
 			
 			@Override
 			public void onClicked(IClickable button) {
-				System.out.println("Clicked on singleplayer");
 			}
 		});
 		
@@ -83,7 +82,6 @@ public class GUIMainMenu extends AbstractScene {
 			
 			@Override
 			public void onClicked(IClickable button) {
-				System.out.println("Clicked on multiplayer");
 			}
 		});
 		
@@ -100,7 +98,6 @@ public class GUIMainMenu extends AbstractScene {
 			
 			@Override
 			public void onClicked(IClickable button) {
-				System.out.println("Clicked on options");
 			}
 		});
 		
@@ -117,7 +114,6 @@ public class GUIMainMenu extends AbstractScene {
 			
 			@Override
 			public void onClicked(IClickable button) {
-				System.out.println("Clicked on exit");
 			}
 		});
 		

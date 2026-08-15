@@ -56,8 +56,6 @@ public class PrimitiveScene extends AbstractScene {
 			//big.setScale(0.25f);
 			items.add(big);
 		}
-
-		System.out.println("Primitive scene loaded");
 	}
 
 	@Override

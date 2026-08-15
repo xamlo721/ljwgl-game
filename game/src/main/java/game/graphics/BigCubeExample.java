@@ -73,7 +73,6 @@ public class BigCubeExample extends AbstractSceneElement {
     		indices[i++] = triangle.vertexIndex3;
     	}
 		
-    	System.out.println("Loading big Cube... " + triangles.faces.length + " poligons loaded.");
         mesh = new GraphicalMesh(vertices, vertexScruct, indices);
 
 	}
