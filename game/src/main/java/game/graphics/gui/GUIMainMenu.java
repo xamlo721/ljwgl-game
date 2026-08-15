@@ -54,7 +54,7 @@ public class GUIMainMenu extends AbstractScene {
 		menuColumn.setWidgetName("main_menu_column.widget");
 		menuColumn.setBackgroundColor(new Color(0,0,5, 128));
 
-		singleplayer = new PushButton("text.gui.mainmenu.singleplayer");
+		singleplayer = new PushButton(GUITexts.resolve("text.gui.mainmenu.singleplayer"));
 		menuColumn.addChild(singleplayer);
 		singleplayer.setBackgroundColor(new Color(255, 255, 255, 96));
 		singleplayer.setBackgroundImage((AbstractTexture)puttonImage);
@@ -70,7 +70,7 @@ public class GUIMainMenu extends AbstractScene {
 			}
 		});
 		
-		multiplayer = new PushButton("text.gui.mainmenu.multiplayer");
+		multiplayer = new PushButton(GUITexts.resolve("text.gui.mainmenu.multiplayer"));
 		menuColumn.addChild(multiplayer);
 
 		multiplayer.setBackgroundColor(new Color(255, 255, 255, 96));
@@ -87,7 +87,7 @@ public class GUIMainMenu extends AbstractScene {
 			}
 		});
 		
-		options = new PushButton("text.gui.mainmenu.options");
+		options = new PushButton(GUITexts.resolve("text.gui.mainmenu.options"));
 		menuColumn.addChild(options);
 
 		options.setBackgroundColor(new Color(255, 255, 255, 96));
@@ -104,7 +104,7 @@ public class GUIMainMenu extends AbstractScene {
 			}
 		});
 		
-		exit = new PushButton("text.gui.mainmenu.exit");
+		exit = new PushButton(GUITexts.resolve("text.gui.mainmenu.exit"));
 		menuColumn.addChild(exit);
 
 		exit.setBackgroundColor(new Color(255, 255, 255, 96));
