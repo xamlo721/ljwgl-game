@@ -262,14 +262,14 @@ public class GUIMainMenu extends AbstractScene {
 		modeCombo.addItem("Classic");
 		modeCombo.addItem("Relaxed");
 		modeCombo.addItem("Hardcore");
-		// Метка выбора справа от поля: выпадающий список открывается под полем
-		// (y=584..680) и не перекрывает её.
-		final Label modeState = new Label("");
+		// Метка выбора под полем: выпадающий список открывается прямо на ней
+		// (y=584..680) и при раскрытии перекрывает её (z-порядок).
+		final Label modeState = new Label("mode: —");
 		widgetsPanel.addChild(modeState);
 		modeState.setBackgroundColor(new Color(0, 0, 0, 0));
 		modeState.setAlignment(EnumAlignment.LEFT);
 		modeState.setPadding(8);
-		modeState.resize(new UIElementGeometry(244, 548, 122, 36));
+		modeState.resize(new UIElementGeometry(14, 600, 220, 32));
 		modeCombo.setSelectionListener((combo, index) -> modeState.setText("mode: " + combo.getItems().get(index)));
 
 		TabControl demoTabs = new TabControl();

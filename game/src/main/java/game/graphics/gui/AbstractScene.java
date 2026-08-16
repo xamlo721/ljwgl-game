@@ -10,7 +10,7 @@ import com.xamlo.core.engine.graphics.api.gui.AbstractSceneElement;
 import com.xamlo.core.engine.graphics.api.gui.IActivatable;
 import com.xamlo.core.engine.graphics.api.gui.IUIElement;
 import com.xamlo.core.engine.graphics.api.gui.IVisible;
-import com.xamlo.core.engine.graphics.api.gui.elements.IWidget;
+import com.xamlo.core.engine.graphics.api.gui.ZOrder;
 import com.xamlo.core.engine.graphics.components.AbstractRenderableObject;
 
 public abstract class AbstractScene extends AbstractGUI implements IScene {
@@ -71,53 +71,29 @@ public abstract class AbstractScene extends AbstractGUI implements IScene {
 	@Override
 	public IUIElement findElementAt(float xCoord, float yCoord, Object excluded) {
 
-        // Идем в обратном порядке, так как последние добавленные виджеты отрисовываются поверх остальных.
-        for (IUIElement element : guiElements) {
-        	IUIElement found = findElementAt(element, xCoord, yCoord, excluded);
-            if (found != null) {
-                return found;
+        // Идём в обратном порядке отрисовки (z-порядок): верхний элемент,
+        // содержащий точку, имеет приоритет.
+        List<IUIElement> ordered = ZOrder.sorted(guiElements);
+        for (int i = ordered.size() - 1; i >= 0; i--) {
+            IUIElement element = ordered.get(i);
+
+            // Исключаемый элемент (перетаскиваемый в DnD) заслонять нижние элементы не должен.
+            if (element == excluded) {
+                continue;
             }
 
-        }
-
-        return null;
-    }
-
-	private IUIElement findElementAt(IUIElement element, float xCoord, float yCoord, Object excluded) {
-
-        // Если виджет невидим или неактивен, то он не может быть целью
-    	if (element instanceof IVisible && !((IVisible)element).isVisible()) {
-            return null;
-        }
-        
-    	if (element instanceof IActivatable && !((IActivatable)element).isEnabled()) {
-            return null;
-    	}
-
-        // Проверяем, есть ли у виджета дочерние элементы? 
-    	// Тогда сначала проверяем их (они могут быть поверх родителя)
-        List<IUIElement> children = element.getChildElements();
-
-        for (int i = children.size() - 1; i >= 0; i--) {
-        	
-        	IUIElement child = children.get(i);
-        	
-        	if (!(child instanceof IWidget)) {
-        		continue;
-        	}
-        	
-        	IUIElement found = findElementAt(child, xCoord, yCoord, excluded);
-
-            if (found != null) {
-                return found;
+            // Если виджет невидим или неактивен, то он не может быть целью
+            if (element instanceof IVisible && !((IVisible) element).isVisible()) {
+                continue;
             }
 
-        }
+            if (element instanceof IActivatable && !((IActivatable) element).isEnabled()) {
+                continue;
+            }
 
-        // Если ни один дочерний не подошел, проверяем сам виджет.
-        // Исключаемый элемент (перетаскиваемый в DnD) заслонять нижние элементы не должен.
-        if (element != excluded && element.containsPoint(xCoord, yCoord)) {
-            return element;
+            if (element.containsPoint(xCoord, yCoord)) {
+                return element;
+            }
         }
 
         return null;
