@@ -1,5 +1,8 @@
 package game.graphics.gui;
 
+import com.xamlo.core.engine.graphics.api.gui.IDragListener;
+import com.xamlo.core.engine.graphics.api.gui.IDraggable;
+import com.xamlo.core.engine.graphics.api.gui.IDropTarget;
 import com.xamlo.core.engine.graphics.api.gui.IClickListener;
 import com.xamlo.core.engine.graphics.api.gui.IClickable;
 import com.xamlo.core.engine.graphics.api.gui.IUIElement;
@@ -116,8 +119,48 @@ public class GUIMainMenu extends AbstractScene {
 			public void onClicked(IClickable button) {
 			}
 		});
-		
-		
+
+		//Демо drag-and-drop: кнопку singleplayer можно перетаскивать мышью.
+		//Любой виджет (включая панель menuBg и колонку) принимает дроп — во время
+		//жеста активный таргет подсвечивается автоматически, при отпускании вне
+		//таргета кнопка возвращается на исходное место.
+		final int[] originalPos = new int[]{singleplayer.getGeometry().getXCoord(), singleplayer.getGeometry().getYCoord()};
+		singleplayer.setDragListener(new IDragListener() {
+
+			private float grabOffX;
+			private float grabOffY;
+
+			@Override
+			public void onDragStart(IDraggable element, float xCoord, float yCoord) {
+				this.grabOffX = xCoord - singleplayer.getGeometry().getXCoord();
+				this.grabOffY = yCoord - singleplayer.getGeometry().getYCoord();
+			}
+
+			@Override
+			public void onDrag(IDraggable element, float xCoord, float yCoord, float deltaX, float deltaY) {
+				singleplayer.setPosition((int)(xCoord - grabOffX), (int)(yCoord - grabOffY));
+			}
+
+			@Override
+			public void onDrop(IDraggable element, IDropTarget target, float xCoord, float yCoord) {
+				//Кнопка остаётся в точке сброса — перемещение уже сделано в onDrag
+			}
+
+			@Override
+			public void onDragEnd(IDraggable element, float xCoord, float yCoord) {
+				singleplayer.setPosition(originalPos[0], originalPos[1]);
+			}
+
+			@Override
+			public void onDragEnterTarget(IDraggable element, IDropTarget target) {
+			}
+
+			@Override
+			public void onDragLeaveTarget(IDraggable element, IDropTarget target) {
+			}
+		});
+
+
 		this.addElement(menuBg);
 
 	}

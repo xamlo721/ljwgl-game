@@ -65,21 +65,26 @@ public abstract class AbstractScene extends AbstractGUI implements IScene {
 	
 	@Override
     public IUIElement findElementAt(float xCoord, float yCoord) {
+    	return findElementAt(xCoord, yCoord, null);
+    }
+
+	@Override
+	public IUIElement findElementAt(float xCoord, float yCoord, Object excluded) {
 
         // Идем в обратном порядке, так как последние добавленные виджеты отрисовываются поверх остальных.
         for (IUIElement element : guiElements) {
-        	IUIElement found = findElementAt(element, xCoord, yCoord);
+        	IUIElement found = findElementAt(element, xCoord, yCoord, excluded);
             if (found != null) {
                 return found;
             }
-            
+
         }
 
         return null;
     }
-    
-    private IUIElement findElementAt(IUIElement element, float xCoord, float yCoord) {
-    	
+
+	private IUIElement findElementAt(IUIElement element, float xCoord, float yCoord, Object excluded) {
+
         // Если виджет невидим или неактивен, то он не может быть целью
     	if (element instanceof IVisible && !((IVisible)element).isVisible()) {
             return null;
@@ -101,19 +106,20 @@ public abstract class AbstractScene extends AbstractGUI implements IScene {
         		continue;
         	}
         	
-        	IUIElement found = findElementAt((IUIElement)child, xCoord, yCoord);
+        	IUIElement found = findElementAt(child, xCoord, yCoord, excluded);
 
             if (found != null) {
                 return found;
             }
-            
+
         }
-        
-        // Если ни один дочерний не подошел, проверяем сам виджет
-        if (element.containsPoint(xCoord, yCoord)) {
+
+        // Если ни один дочерний не подошел, проверяем сам виджет.
+        // Исключаемый элемент (перетаскиваемый в DnD) заслонять нижние элементы не должен.
+        if (element != excluded && element.containsPoint(xCoord, yCoord)) {
             return element;
         }
-        
+
         return null;
     }
 
