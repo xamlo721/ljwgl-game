@@ -132,13 +132,16 @@ public class GUIMainMenu extends AbstractScene {
 
 			@Override
 			public void onDragStart(IDraggable element, float xCoord, float yCoord) {
-				this.grabOffX = xCoord - singleplayer.getGeometry().getXCoord();
-				this.grabOffY = yCoord - singleplayer.getGeometry().getYCoord();
+				this.grabOffX = xCoord - singleplayer.getAbsX();
+				this.grabOffY = yCoord - singleplayer.getAbsY();
 			}
 
 			@Override
 			public void onDrag(IDraggable element, float xCoord, float yCoord, float deltaX, float deltaY) {
-				singleplayer.setPosition((int)(xCoord - grabOffX), (int)(yCoord - grabOffY));
+				IUIElement dragParent = singleplayer.getParent();
+				int parentOffsetX = dragParent != null ? (int) dragParent.getAbsX() : 0;
+				int parentOffsetY = dragParent != null ? (int) dragParent.getAbsY() : 0;
+				singleplayer.setPosition((int)(xCoord - grabOffX - parentOffsetX), (int)(yCoord - grabOffY - parentOffsetY));
 			}
 
 			@Override
