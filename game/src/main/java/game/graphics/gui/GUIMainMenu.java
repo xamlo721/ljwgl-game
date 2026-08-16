@@ -23,6 +23,7 @@ import com.xamlo.core.engine.graphics.components.gui.RadioButton;
 import com.xamlo.core.engine.graphics.components.gui.Separator;
 import com.xamlo.core.engine.graphics.components.gui.Slider;
 import com.xamlo.core.engine.graphics.components.gui.TabControl;
+import com.xamlo.core.engine.graphics.components.gui.TextField;
 import com.xamlo.core.engine.graphics.components.gui.EnumAlignment;
 import com.xamlo.core.engine.graphics.components.gui.PushButton;
 import com.xamlo.core.engine.graphics.components.gui.Widget;
@@ -271,6 +272,21 @@ public class GUIMainMenu extends AbstractScene {
 		modeState.setPadding(8);
 		modeState.resize(new UIElementGeometry(14, 600, 220, 32));
 		modeCombo.setSelectionListener((combo, index) -> modeState.setText("mode: " + combo.getItems().get(index)));
+
+		// Текстовое поле: клик ставит фокус, ввод — через char-callback,
+		// caret/выделение/placeholder, слушатель изменения.
+		final TextField nameField = new TextField();
+		widgetsPanel.addChild(nameField);
+		nameField.resize(new UIElementGeometry(14, 640, 352, 34));
+		nameField.setPlaceholder("Player name");
+		nameField.setMaxLength(16);
+		final Label nameState = new Label("name: —");
+		widgetsPanel.addChild(nameState);
+		nameState.setBackgroundColor(new Color(0, 0, 0, 0));
+		nameState.setAlignment(EnumAlignment.LEFT);
+		nameState.setPadding(8);
+		nameState.resize(new UIElementGeometry(14, 676, 352, 24));
+		nameField.setChangeListener((field, text) -> nameState.setText("name: " + (text.isEmpty() ? "—" : text)));
 
 		TabControl demoTabs = new TabControl();
 		widgetsPanel.addChild(demoTabs);
