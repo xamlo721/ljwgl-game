@@ -13,6 +13,17 @@ import com.xamlo.core.engine.graphics.components.gui.Color;
 import com.xamlo.core.engine.graphics.components.gui.FontResource;
 import com.xamlo.core.engine.graphics.font.ApplicationFont;
 import com.xamlo.core.engine.graphics.fontsystem.FontSystem;
+import com.xamlo.core.engine.graphics.components.gui.CheckBox;
+import com.xamlo.core.engine.graphics.components.gui.ComboBox;
+import com.xamlo.core.engine.graphics.components.gui.GroupBox;
+import com.xamlo.core.engine.graphics.components.gui.ImageView;
+import com.xamlo.core.engine.graphics.components.gui.Label;
+import com.xamlo.core.engine.graphics.components.gui.ProgressBar;
+import com.xamlo.core.engine.graphics.components.gui.RadioButton;
+import com.xamlo.core.engine.graphics.components.gui.Separator;
+import com.xamlo.core.engine.graphics.components.gui.Slider;
+import com.xamlo.core.engine.graphics.components.gui.TabControl;
+import com.xamlo.core.engine.graphics.components.gui.EnumAlignment;
 import com.xamlo.core.engine.graphics.components.gui.PushButton;
 import com.xamlo.core.engine.graphics.components.gui.Widget;
 import com.xamlo.core.engine.graphics.components.gui.UIElementGeometry;
@@ -163,6 +174,123 @@ public class GUIMainMenu extends AbstractScene {
 			}
 		});
 
+
+		// ===== Демо-колонка каталога виджетов (вторая панель главного меню) =====
+		final Widget widgetsPanel = new Widget(menuBg);
+		widgetsPanel.setBackgroundColor(new Color(0, 0, 5, 128));
+		widgetsPanel.resize(new UIElementGeometry(600, 0, 380, 1080));
+		widgetsPanel.setWidgetName("widgets_demo.panel");
+
+		Label heading = new Label("Widgets Catalog");
+		widgetsPanel.addChild(heading);
+		heading.setBackgroundColor(new Color(0, 0, 0, 0));
+		heading.setFont(menuFontKey);
+		heading.setAlignment(EnumAlignment.LEFT);
+		heading.setPadding(4);
+		heading.resize(new UIElementGeometry(14, 24, 352, 32));
+
+		Separator sepTop = new Separator(true);
+		widgetsPanel.addChild(sepTop);
+		sepTop.resize(new UIElementGeometry(14, 70, 352, 2));
+
+		final CheckBox cbSound = new CheckBox("Enable sound");
+		widgetsPanel.addChild(cbSound);
+		cbSound.resize(new UIElementGeometry(14, 96, 352, 36));
+		final Label checkState = new Label("");
+		widgetsPanel.addChild(checkState);
+		checkState.setBackgroundColor(new Color(0, 0, 0, 0));
+		checkState.setAlignment(EnumAlignment.LEFT);
+		checkState.setPadding(8);
+		checkState.resize(new UIElementGeometry(14, 136, 352, 24));
+		cbSound.setClickListener(button -> checkState.setText("state: " + (cbSound.isChecked() ? "on" : "off")));
+
+		RadioButton radioLow = new RadioButton("Quality: low", "quality.demo");
+		RadioButton radioMed = new RadioButton("Quality: medium", "quality.demo");
+		RadioButton radioHigh = new RadioButton("Quality: high", "quality.demo");
+		widgetsPanel.addChild(radioLow);
+		widgetsPanel.addChild(radioMed);
+		widgetsPanel.addChild(radioHigh);
+		radioLow.resize(new UIElementGeometry(14, 176, 352, 32));
+		radioMed.resize(new UIElementGeometry(14, 212, 352, 32));
+		radioHigh.resize(new UIElementGeometry(14, 248, 352, 32));
+		final Label qualityValue = new Label("");
+		widgetsPanel.addChild(qualityValue);
+		qualityValue.setBackgroundColor(new Color(0, 0, 0, 0));
+		qualityValue.setAlignment(EnumAlignment.LEFT);
+		qualityValue.setPadding(8);
+		qualityValue.resize(new UIElementGeometry(14, 288, 352, 24));
+		radioLow.setClickListener(button -> qualityValue.setText("selected: low"));
+		radioMed.setClickListener(button -> qualityValue.setText("selected: medium"));
+		radioHigh.setClickListener(button -> qualityValue.setText("selected: high"));
+
+		GroupBox perfGroup = new GroupBox();
+		widgetsPanel.addChild(perfGroup);
+		perfGroup.setTitle("Performance");
+		perfGroup.resize(new UIElementGeometry(14, 328, 352, 170));
+
+		final Slider fpsSlider = new Slider();
+		perfGroup.addChild(fpsSlider);
+		fpsSlider.resize(new UIElementGeometry(16, 44, 320, 28));
+		fpsSlider.setMinValue(30);
+		fpsSlider.setMaxValue(144);
+		fpsSlider.setValue(60);
+		final ProgressBar fpsProgress = new ProgressBar();
+		perfGroup.addChild(fpsProgress);
+		fpsProgress.resize(new UIElementGeometry(16, 84, 320, 24));
+		fpsProgress.setMinValue(30);
+		fpsProgress.setMaxValue(144);
+		fpsProgress.setValue(60);
+		final Label fpsValue = new Label("");
+		perfGroup.addChild(fpsValue);
+		fpsValue.setBackgroundColor(new Color(0, 0, 0, 0));
+		fpsValue.setAlignment(EnumAlignment.LEFT);
+		fpsValue.setPadding(8);
+		fpsValue.setText("value: " + fpsSlider.getValue());
+		fpsValue.resize(new UIElementGeometry(16, 116, 320, 24));
+		fpsSlider.setChangeListener((slider, value) -> {
+			fpsProgress.setValue(value);
+			fpsValue.setText("value: " + (int) value);
+		});
+
+		Separator sepMid = new Separator(true);
+		widgetsPanel.addChild(sepMid);
+		sepMid.resize(new UIElementGeometry(14, 520, 352, 2));
+
+		final ComboBox modeCombo = new ComboBox("Select game mode");
+		widgetsPanel.addChild(modeCombo);
+		modeCombo.resize(new UIElementGeometry(14, 548, 220, 36));
+		modeCombo.addItem("Classic");
+		modeCombo.addItem("Relaxed");
+		modeCombo.addItem("Hardcore");
+		// Метка выбора справа от поля: выпадающий список открывается под полем
+		// (y=584..680) и не перекрывает её.
+		final Label modeState = new Label("");
+		widgetsPanel.addChild(modeState);
+		modeState.setBackgroundColor(new Color(0, 0, 0, 0));
+		modeState.setAlignment(EnumAlignment.LEFT);
+		modeState.setPadding(8);
+		modeState.resize(new UIElementGeometry(244, 548, 122, 36));
+		modeCombo.setSelectionListener((combo, index) -> modeState.setText("mode: " + combo.getItems().get(index)));
+
+		TabControl demoTabs = new TabControl();
+		widgetsPanel.addChild(demoTabs);
+		demoTabs.resize(new UIElementGeometry(14, 700, 352, 240));
+		Label pageOne = new Label("Page one — general info about the catalog.");
+		pageOne.setAlignment(EnumAlignment.CENTER);
+		pageOne.setPadding(8);
+		Label pageTwo = new Label("Page two — stats and numbers live here.");
+		pageTwo.setAlignment(EnumAlignment.CENTER);
+		pageTwo.setPadding(8);
+		Label pageThree = new Label("Page three — about this engine GUI kit.");
+		pageThree.setAlignment(EnumAlignment.CENTER);
+		pageThree.setPadding(8);
+		demoTabs.addTab("Info", pageOne);
+		demoTabs.addTab("Stats", pageTwo);
+		demoTabs.addTab("About", pageThree);
+		ImageView previewImage = new ImageView();
+		pageOne.addChild(previewImage);
+		previewImage.setImage((AbstractTexture) puttonImage);
+		previewImage.resize(new UIElementGeometry(126, 60, 100, 100));
 
 		this.addElement(menuBg);
 
