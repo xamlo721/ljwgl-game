@@ -78,6 +78,8 @@ public class GUIMainMenu extends AbstractScene {
 		singleplayer.resize(new UIElementGeometry(20, 180, 300, 40));
 		singleplayer.setFont(menuFontKey);
 		singleplayer.setWidgetName("singleplayer.button");
+
+		singleplayer.setToolTipText("Play on your own");
 		singleplayer.setClickListener(new IClickListener() {
 			
 			@Override
@@ -94,6 +96,8 @@ public class GUIMainMenu extends AbstractScene {
 		multiplayer.resize(new UIElementGeometry(20, 280, 300, 40));
 		multiplayer.setFont(menuFontKey);
 		multiplayer.setWidgetName("multiplayer.button");
+
+		multiplayer.setToolTipText("Join a friend's world");
 		multiplayer.setClickListener(new IClickListener() {
 			
 			@Override
@@ -110,6 +114,8 @@ public class GUIMainMenu extends AbstractScene {
 		options.resize(new UIElementGeometry(20, 360, 300, 40));
 		options.setFont(menuFontKey);
 		options.setWidgetName("options.button");
+
+		options.setToolTipText("Tweak video, sound and controls");
 		options.setClickListener(new IClickListener() {
 			
 			@Override
@@ -126,6 +132,8 @@ public class GUIMainMenu extends AbstractScene {
 		exit.resize(new UIElementGeometry(20, 440, 300, 40));
 		exit.setFont(menuFontKey);
 		exit.setWidgetName("exit.button");
+
+		exit.setToolTipText("Quit the game");
 		exit.setClickListener(new IClickListener() {
 			
 			@Override
