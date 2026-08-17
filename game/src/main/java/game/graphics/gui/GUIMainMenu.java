@@ -280,7 +280,7 @@ public class GUIMainMenu extends AbstractScene {
 		widgetsPanel.addChild(nameField);
 		nameField.resize(new UIElementGeometry(14, 640, 352, 34));
 		nameField.setPlaceholder("Player name");
-		nameField.setMaxLength(16);
+		nameField.setMaxLength(40); // достаточно длинно для горизонтальной прокрутки
 		final Label nameState = new Label("name: —");
 		widgetsPanel.addChild(nameState);
 		nameState.setBackgroundColor(new Color(0, 0, 0, 0));
@@ -311,20 +311,25 @@ public class GUIMainMenu extends AbstractScene {
 
 		// ScrollArea: «журнал чата» выше окна по высоте; колесо над областью
 		// прокручивает содержимое, вышедшее за край обрезается и недоступно.
+		final CheckBox cbPwdMask = new CheckBox("Password mask for name field");
+		widgetsPanel.addChild(cbPwdMask);
+		cbPwdMask.resize(new UIElementGeometry(14, 946, 352, 30));
+		cbPwdMask.setClickListener(button -> nameField.setPasswordMode(cbPwdMask.isChecked()));
+
 		Separator sepScroll = new Separator();
 		widgetsPanel.addChild(sepScroll);
-		sepScroll.resize(new UIElementGeometry(14, 952, 352, 2));
+		sepScroll.resize(new UIElementGeometry(14, 980, 352, 2));
 		final Label scrollTitle = new Label("Chat log");
 		widgetsPanel.addChild(scrollTitle);
 		scrollTitle.setBackgroundColor(new Color(0, 0, 0, 0));
 		scrollTitle.setAlignment(EnumAlignment.LEFT);
 		scrollTitle.setPadding(8);
 		scrollTitle.setTextColor(new Color(170, 170, 170));
-		scrollTitle.resize(new UIElementGeometry(14, 956, 352, 20));
+		scrollTitle.resize(new UIElementGeometry(14, 984, 352, 20));
 		final ScrollArea chatLog = new ScrollArea();
 		widgetsPanel.addChild(chatLog);
 		chatLog.setBackgroundColor(new Color(16, 18, 24, 220));
-		chatLog.resize(new UIElementGeometry(14, 982, 352, 84));
+		chatLog.resize(new UIElementGeometry(14, 1008, 352, 66));
 		final int lineCount = 30;
 		final int lineHeight = 18;
 		for (int i = 0; i < lineCount; i++) {
