@@ -25,6 +25,8 @@ import com.xamlo.core.engine.graphics.components.gui.Separator;
 import com.xamlo.core.engine.graphics.components.gui.Slider;
 import com.xamlo.core.engine.graphics.components.gui.TabControl;
 import com.xamlo.core.engine.graphics.components.gui.TextField;
+import com.xamlo.core.engine.graphics.api.gui.TextLineSpec;
+import com.xamlo.core.engine.graphics.components.gui.TextBlock;
 import com.xamlo.core.engine.graphics.components.gui.EnumAlignment;
 import com.xamlo.core.engine.graphics.components.gui.PushButton;
 import com.xamlo.core.engine.graphics.components.gui.Widget;
@@ -41,6 +43,7 @@ public class GUIMainMenu extends AbstractScene {
 			private PushButton multiplayer;
 			private PushButton options;
 			private PushButton exit;
+	private TextBlock infoPanel;
 	
 	private final IResourceLoader<String> resourceLoader;
 
@@ -133,7 +136,7 @@ public class GUIMainMenu extends AbstractScene {
 		exit.setFont(menuFontKey);
 		exit.setWidgetName("exit.button");
 
-		exit.setToolTipText("Quit the game");
+		exit.setToolTipText("Quit the game\n(no save data in this engine)");
 		exit.setClickListener(new IClickListener() {
 			
 			@Override
@@ -141,7 +144,21 @@ public class GUIMainMenu extends AbstractScene {
 			}
 		});
 
-		//Демо drag-and-drop: кнопку singleplayer можно перетаскивать мышью.
+		//Демо многострочного блока TextBlock: строки без стиля наследуют цвет блока,
+		//отдельные строки переопределяют его; выравнивание левое от padding'а.
+		infoPanel = new TextBlock();
+		menuColumn.addChild(infoPanel);
+		infoPanel.setBackgroundColor(new Color(0, 0, 8, 96));
+		infoPanel.resize(new UIElementGeometry(20, 540, 300, 170));
+		infoPanel.setTextColor(new Color(190, 190, 190));
+		infoPanel.setFont(new ApplicationFont("Default", 14, false, false));
+		infoPanel.addLine(new TextLineSpec("LJWGL Engine", new Color(255, 210, 120), new ApplicationFont("Default", 20, true, false)));
+		infoPanel.addLine("Generic engine for game and app user interfaces");
+		infoPanel.addLine("Scroll areas with clipped rendering");
+		infoPanel.addLine("Drag & drop between any targets");
+		infoPanel.addLine("Hover tooltips on the buttons above");
+
+//Демо drag-and-drop: кнопку singleplayer можно перетаскивать мышью.
 		//Любой виджет (включая панель menuBg и колонку) принимает дроп — во время
 		//жеста активный таргет подсвечивается автоматически, при отпускании вне
 		//таргета кнопка возвращается на исходное место.
