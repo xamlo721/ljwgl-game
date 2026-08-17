@@ -20,6 +20,7 @@ import com.xamlo.core.engine.graphics.components.gui.ImageView;
 import com.xamlo.core.engine.graphics.components.gui.Label;
 import com.xamlo.core.engine.graphics.components.gui.ProgressBar;
 import com.xamlo.core.engine.graphics.components.gui.RadioButton;
+import com.xamlo.core.engine.graphics.components.gui.ScrollArea;
 import com.xamlo.core.engine.graphics.components.gui.Separator;
 import com.xamlo.core.engine.graphics.components.gui.Slider;
 import com.xamlo.core.engine.graphics.components.gui.TabControl;
@@ -307,6 +308,35 @@ public class GUIMainMenu extends AbstractScene {
 		pageOne.addChild(previewImage);
 		previewImage.setImage((AbstractTexture) puttonImage);
 		previewImage.resize(new UIElementGeometry(126, 60, 100, 100));
+
+		// ScrollArea: «журнал чата» выше окна по высоте; колесо над областью
+		// прокручивает содержимое, вышедшее за край обрезается и недоступно.
+		Separator sepScroll = new Separator();
+		widgetsPanel.addChild(sepScroll);
+		sepScroll.resize(new UIElementGeometry(14, 952, 352, 2));
+		final Label scrollTitle = new Label("Chat log");
+		widgetsPanel.addChild(scrollTitle);
+		scrollTitle.setBackgroundColor(new Color(0, 0, 0, 0));
+		scrollTitle.setAlignment(EnumAlignment.LEFT);
+		scrollTitle.setPadding(8);
+		scrollTitle.setTextColor(new Color(170, 170, 170));
+		scrollTitle.resize(new UIElementGeometry(14, 956, 352, 20));
+		final ScrollArea chatLog = new ScrollArea();
+		widgetsPanel.addChild(chatLog);
+		chatLog.setBackgroundColor(new Color(16, 18, 24, 220));
+		chatLog.resize(new UIElementGeometry(14, 982, 352, 84));
+		final int lineCount = 30;
+		final int lineHeight = 18;
+		for (int i = 0; i < lineCount; i++) {
+			Label line = new Label(String.format("[%02d] log entry number %d", i + 1, i + 1));
+			line.setAlignment(EnumAlignment.LEFT);
+			line.setPadding(6);
+			line.setBackgroundColor(i % 2 == 0 ? new Color(24, 27, 34) : new Color(30, 34, 42));
+			line.setTextColor(i % 3 == 0 ? new Color(120, 200, 120) : new Color(210, 210, 210));
+			chatLog.getContent().addChild(line);
+			line.resize(new UIElementGeometry(0, i * lineHeight, 352, lineHeight));
+		}
+		chatLog.setContentSize(352, lineCount * lineHeight);
 
 		this.addElement(menuBg);
 
